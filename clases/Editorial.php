@@ -1,10 +1,8 @@
 <?php
-require_once("conexion.php");
-
-class Editorial {
+    class Editorial {
     private $conexion;
-
     function __construct() {
+        require_once("conexion.php");
         $this->conexion = new Conexion();
     }
 
@@ -38,7 +36,7 @@ class Editorial {
     }
 
     function listaEditoriales() {
-        $consulta = "SELECT e.pkEditorial, e.nombreEditorial, n.nombre AS nacionalidad, e.estatus
+        $consulta = "SELECT e.pkEditorial, e.nombreEditorial, n.nombreNaci AS nacionalidad, e.estatus
                      FROM editorial e
                      INNER JOIN nacionalidad n ON e.fkNacionalidad = n.pkNacionalidad";
 

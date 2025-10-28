@@ -2,7 +2,7 @@
 $nombreEditorial = $_POST['nombreEditorial'];
 $fkNacionalidad = $_POST['fkNacionalidad'];
 
-include('../clases/Editorial.php');
+include('../clases/editorial.php');
 
 $clase = new Editorial();
 

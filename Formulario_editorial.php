@@ -8,7 +8,7 @@
 </head>
 <body>
     <?php 
-    include('menu.php'); 
+    
     include('clases/nacionalidad.php');
 
     // Crear objeto de la clase Nacionalidad para mostrar las opciones del select

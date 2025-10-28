@@ -1,10 +1,9 @@
 <?php
-$nombre = $_POST['nombre'];
+$nombreAutor = $_POST['nombreAutor'];
 $fkNacionalidad = $_POST['fkNacionalidad'];
-$estatus = $_POST['estatus'];
 include('../clases/autor.php');
 $clase = new Autor();
-$resultado = $clase->guardar($nombre, $fkNacionalidad, $estatus);
+$resultado = $clase->guardar($nombreAutor, $fkNacionalidad);
 if($resultado){
 	echo "Guardado";
 }else{

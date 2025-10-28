@@ -11,7 +11,7 @@ class Estanterias{
 		$respuesta = $this->conexion->query($consulta);
 		return $respuesta;
 	}	
-	function mostrar(){
+	function listaActivos(){
 		$consulta = "SELECT * FROM estanteria WHERE estatus='A'";
 		$respuesta = $this->conexion->query($consulta);
 

@@ -9,11 +9,11 @@
      <?php
 include('clases/estanterias.php');
 $estanteria = new Estanterias();
-$estanteriaRe = $estanteria->mostrar(); // Trae todas las categorías
+$estanteriaRe = $estanteria->listaActivos(); // Trae todas las categorías
 
 include('clases/subcategoria.php');
 $subcategorias = new Subcategoria();
-$subCategoriaRe = $subcategorias->mostrar(); // Trae todas las categorías
+$subCategoriaRe = $subcategorias->listaActivo(); // Trae todas las categorías
 ?>
     <form action="controladores/insertar_estantes.php" method="POST" enctype="multipart/form-data">
         <h2>Registrar estante:</h2>

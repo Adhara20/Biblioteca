@@ -1,7 +1,7 @@
 <?php
 $nombreNaci = $_POST['nombreNaci'];
 
-include('../clases/Nacionalidad.php');
+include('../clases/nacionalidad.php');
 
 $clase = new Nacionalidad();
 
