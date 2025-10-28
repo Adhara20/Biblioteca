@@ -12,7 +12,7 @@ include('clases/subcategoria.php');
 $clase = new Subcategoria();
 $resultado = $clase->mostrar();
 ?>
-<table border="1" cellpadding="5" >
+<table style="border='1'" cellpadding="5" >
 		<th>Nombre</th>
 		<th>Acciones</th>
 	</tr>
