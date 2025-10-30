@@ -9,9 +9,9 @@ class Libro {
 
     function registrarLibro($isbn, $titulo, $edicion, $numPaginas, $añoPublicacion, $idioma, $sinopsis, $fkAutor, $fkEditorial, $fkSubcategoria, $portada) {
     $consulta = "INSERT INTO libro 
-        (isbn, titulo, edicion, numPaginas, añoPublicacion, idioma, sinopsis, fkAutor, fkEditorial, fkSubCategoria, portada)
+        (isbn, titulo, edicion, numPaginas, añoPublicacion, idioma, sinopsis, fkAutor, fkEditorial, fkSubCategoria, portada, fechaRegistro)
         VALUES ('{$isbn}','{$titulo}','{$edicion}',{$numPaginas},'{$añoPublicacion}','{$idioma}','{$sinopsis}',{$fkAutor}, 
-            {$fkEditorial},{$fkSubcategoria},'{$portada}')";
+            {$fkEditorial},{$fkSubcategoria},'{$portada}', NOW())";
     $resultado = $this->conexion->query($consulta);
     return $resultado;
 }
