@@ -6,12 +6,14 @@
     <title></title>
 </head>
 <body>
-    <form action="controladores/insertar_estanterias.php" method="POST" enctype="multipart/form-data";>
+        <!-- Recivir el mensaje de error o de que se registro desde inserta -->
+    <?php if (isset($_GET['error'])){ ?>
+        <div style="color: red; font-weight: bold;">
+            <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+    <?php }?>
+    <form action="../controladores/insertar_estanterias.php" method="POST" enctype="multipart/form-data";>
         <h2>Registrar estanteria:</h2>
-        <label>Codigo de estanteria:</label>
-        <br>
-        <input type="text" name="codigoEstanteria" maxlength="10">
-        <br>
         <label>Pasillo:</label>
         <br>
         <input type="text" name="pasillo" maxlength="1">
@@ -28,12 +30,6 @@
         <br>
         <textarea name="descripcion"></textarea>
         <br>
-        <label>Estatus:</label>
-        <br>
-        <select name="estatus">
-        <option value="A">Activo</option>
-        <option value="I">Inactivo</option>
-        </select>
         <br>
         <input type="submit" value="Guardar">
     </form>

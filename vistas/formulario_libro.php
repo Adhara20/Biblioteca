@@ -6,12 +6,18 @@
     <title>Document</title>
 </head>
 <body>
+    <!-- Recivir el mensaje de error o de que se registro desde inserta -->
+    <?php if (isset($_GET['error'])){ ?>
+        <div style="color: red; font-weight: bold;">
+            <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+    <?php }?>
     <?php 
     
-    include('clases/libro.php');
-    include('clases/autor.php');
-    include('clases/editorial.php');
-    include('clases/subcategoria.php');
+    include('../clases/libro.php');
+    include('../clases/autor.php');
+    include('../clases/editorial.php');
+    include('../clases/subcategoria.php');
     // Obtener autores, editoriales y categorías desde sus clases
     $autor = new Autor();
     $editorial = new Editorial();
@@ -21,7 +27,7 @@
     $listaEditoriales = $editorial->listaEditoriales();
     $listaCategorias = $subcategoria->listaActivo();
     ?>
-    <form action="controladores/insertar_libro.php" method="POST" enctype="multipart/form-data">
+    <form action="../controladores/insertar_libro.php" method="POST" enctype="multipart/form-data">
         <h3>Registrar Libro</h3>
 
         <label for="isbn">ISBN</label>

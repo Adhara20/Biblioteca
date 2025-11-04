@@ -6,8 +6,23 @@ class Estanterias{
 		require_once('conexion.php');
 		$this->conexion = new Conexion();
 	}
-	function guardar($codigoEstanteria, $pasillo, $piso, $niveles, $descripcion, $estatus='A'){
-		$consulta = "INSERT INTO estanteria (codigoEstanteria, pasillo, piso, cantNiveles, descripcion, estatus) VALUES ('{$codigoEstanteria}', '{$pasillo}', '{$piso}','{$niveles}','{$descripcion}', '{$estatus}')";
+	function generarCodigoEstanteria() {
+    	$prefijo = "EST-";
+    	$consulta = "SELECT codigoEstanteria FROM estanteria WHERE codigoEstanteria LIKE '{$prefijo}%' ORDER BY codigoEstanteria DESC LIMIT 1";
+    	$resultado = $this->conexion->query($consulta);
+    	if ($fila = $resultado->fetch_assoc()) {
+    	    $ultimoNumero = intval(substr($fila['codigoEstanteria'], strlen($prefijo)));
+    	    $nuevoNumero = $ultimoNumero + 1;
+    	} else {
+    	    $nuevoNumero = 1;
+    	}
+    	$codigo = $prefijo . str_pad($nuevoNumero, 6, "0", STR_PAD_LEFT);
+    	return $codigo;
+	}
+
+	function guardar($pasillo, $piso, $niveles, $descripcion){
+		$codigoEstanteria = $this->generarCodigoEstanteria();
+		$consulta = "INSERT INTO estanteria (codigoEstanteria, pasillo, piso, cantNiveles, descripcion) VALUES ('{$codigoEstanteria}', '{$pasillo}', '{$piso}','{$niveles}','{$descripcion}')";
 		$respuesta = $this->conexion->query($consulta);
 		return $respuesta;
 	}	

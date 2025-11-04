@@ -8,7 +8,7 @@
 </head>
 <body>
       <?php 
-		include('clases/copia.php');
+		include('../clases/copia.php');
 		$clase = new Copia();
 		$resultado = $clase->lista();
 	?>

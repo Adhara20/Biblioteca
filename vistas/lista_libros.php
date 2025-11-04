@@ -7,7 +7,7 @@
 </head>
 <body>
     <?php
-    include('clases/libro.php');
+    include('../clases/libro.php');
     $clase = new Libro();
     ?>
     <div>
@@ -21,9 +21,12 @@
         <tr>
             <th>Titulo</th>
             <th>ISBN</th>
-            <th>Edición</th>
-            <th>Año de Publicación</th>
-            <th>Acciones</th>
+            <th>Autor</th>
+            <th>Edicion</th>
+            <th>Año de Publicacion</th>
+            <th>Editorial</th>
+            <th>Subcategoria</th>
+            <th>Categoria</th>
         </tr>
         <?php
             foreach($resultado as $fila){
@@ -31,8 +34,12 @@
             <tr>
                 <td style="text-center"><?=$fila["titulo"]?></td>
                 <td style="text-center"><?=$fila["isbn"]?></td>
+                <td style="text-center"><?=$fila["nombreAutor"]?></td>
                 <td style="text-center"><?=$fila["edicion"]?></td>
                 <td style="text-center"><?=$fila["añoPublicacion"]?></td>
+                <td style="text-center"><?=$fila["nombreEditorial"]?></td>
+                <td style="text-center"><?=$fila["nombreSubCategoria"]?></td>
+                <td style="text-center"><?=$fila["nombreCategoria"]?></td>
                 <td style="text-center">(proximamente...)</td>
             </tr>
         <?php
