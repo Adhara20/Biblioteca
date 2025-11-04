@@ -6,8 +6,8 @@ class Categoria{
 		require_once('conexion.php');
 		$this->conexion = new Conexion();
 	}
-	function guardar($nombre, $iconoCategoria, $estatus='A'){
-		$consulta = "INSERT INTO categoria (nombreCategoria, iconoCategoria, estatus) VALUES ('{$nombre}', '{$iconoCategoria}', '{$estatus}')";
+	function guardar($nombre, $iconoCategoria){
+		$consulta = "INSERT INTO categoria (nombreCategoria, iconoCategoria) VALUES ('{$nombre}', '{$iconoCategoria}')";
 		$respuesta = $this->conexion->query($consulta);
 		return $respuesta;
 	}	

@@ -41,14 +41,14 @@ class Libro {
     }
 
     function listaLibrosActivos() {
-        $consulta = "SELECT * FROM libro 
-                     WHERE estatus = 'A'";
+        $consulta = "SELECT l.*, c.nombreCategoria, sc.nombreSubCategoria, e.nombreEditorial, a.nombreAutor FROM categoria c INNER JOIN subCategoria sc ON c.pkCategoria = sc.fkCategoria INNER JOIN libro l ON sc.pkSubCategoria=l.fkSubCategoria INNER JOIN autor a ON a.pkAutor=l.fkAutor INNER JOIN editorial e ON l.fkEditorial=e.pkEditorial
+                     WHERE l.estatus = 'A'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
     function listaLibrosInactivos() {
-        $consulta = "SELECT * FROM libro 
-                     WHERE estatus = 'I'";
+        $consulta = "SELECT l.*, c.nombreCategoria, sc.nombreSubCategoria, e.nombreEditorial, a.nombreAutor FROM categoria c INNER JOIN subCategoria sc ON c.pkCategoria = sc.fkCategoria INNER JOIN libro l ON sc.pkSubCategoria=l.fkSubCategoria INNER JOIN autor a ON a.pkAutor=l.fkAutor INNER JOIN editorial e ON l.fkEditorial=e.pkEditorial
+                     WHERE l.estatus = 'I'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }

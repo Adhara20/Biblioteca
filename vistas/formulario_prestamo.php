@@ -10,7 +10,7 @@
     //not yet
     ?>
 
-    <form action="controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
+    <form action="../controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
     <label>Codigo Prestamo</label>
     <input type="text" name="codigo" required>
     <br>

@@ -6,14 +6,13 @@
     <title></title>
 </head>
 <body>
-    <h2>lista Estantes:</h2>
+    <h2>lista categorias:</h2>
     	<?php 
-include('clases/estantes.php');
-$clase = new Estantes();
+include('../clases/categoria.php');
+$clase = new Categoria();
 $resultado = $clase->mostrar();
 ?>
 <table border="1" cellpadding="5" >
-        <th>id</th>
 		<th>Nombre</th>
 		<th>Acciones</th>
 	</tr>
@@ -21,8 +20,7 @@ $resultado = $clase->mostrar();
 	foreach ($resultado as $fila):
 		?>
 		<tr>
-            <td><?=$fila["pkEstante"]?></td>
-			<td><?=$fila["nivel"]?></td>
+			<td><?=$fila["nombreCategoria"]?></td>
 			<td>(proximamente...)</td>
 		</tr>
 	<?php endforeach; 

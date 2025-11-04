@@ -6,22 +6,28 @@
     <title></title>
 </head>
 <body>
-    <?php
-include('clases/categoria.php');
-$categoria = new Categoria();
-$resultado = $categoria->mostrar(); // Trae todas las categorías
-?>
+    <!-- Recivir el mensaje de error o de que se registro desde inserta -->
+    <?php if (isset($_GET['error'])){ ?>
+        <div style="color: red; font-weight: bold;">
+            <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+    <?php }?>
+        <?php
+    include('../clases/categoria.php');
+    $categoria = new Categoria();
+    $resultado = $categoria->mostrar(); // Trae todas las categorías
+    ?>
     <form action="controladores/insertar_subcategoria.php" method="POST" enctype="multipart/form-data">
         <label>Nombre subcategoria:</label>
         <br>
-        <input type="text" name="nombre">
+        <input type="text" name="nombre" require>
         <br>
         <label>Icono de la subcategoria:</label>
-        <input type="text" name="nombreIconoSubCategoria">
+        <input type="file" name="IconoSubCategoria" require>
         <br>
         <label>Abreviatura:</label>
         <br>
-        <input type="text" name="abreviatura">
+        <input type="text" name="abreviatura" minlength="3" maxlength="3" require>
         <br>
         <label>Categoria:</label>
         <br>
