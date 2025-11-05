@@ -6,28 +6,32 @@
     <title></title>
 </head>
 <body>
-    <?php
-    //not yet
+    <?php //Para usuario?
+    // include('');
+    // $clase = new
+    // $resultado = $clase ->
     ?>
-
-    <form action="../controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
-    <label>Codigo Prestamo</label>
-    <input type="text" name="codigo" required>
+    <form action="controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
+    <label>codigoPrestamo</label>
+    <input type="text" name="codigoPrestamo" required>
     <br>
     <label>Fecha Limite</label>
     <input type="date" name="fechaLimite" required>
     <br>
     <label>Folio Contracto</label>
-    <input type="text" name="folio" required>
+    <input type="text" name="folioContrato" required>
     <br>
     <label>Contracto</label>
-    <input type="file" name="contracto">
+    <input type="file" name="archivoContrato">
+    <br>
+    <label>Folio Copia</label>
+    <input type="text" name="folio">
     <br> 
     <label>Usuario Solicitante</label>
-    <input type="text" name="solicita">
+    <input type="text" name="numCredS">
     <br>
     <label>Usuario Autorizante</label>
-    <input type="text" name="autoriza">
+    <input type="text" name="numCredA">
     <br>    
         <input type="submit" value="Guardar">
     </form>
