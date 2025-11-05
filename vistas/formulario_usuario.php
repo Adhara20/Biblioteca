@@ -10,17 +10,12 @@
     <div style="color: red; font-weight: bold;">
         <?= htmlspecialchars($_GET['error']) ?>
     </div>
-<?php }elseif (isset($_GET['success'])){ ?>
-    <div style="color: green; font-weight: bold;">
-        <?= htmlspecialchars($_GET['success']) ?>
-    </div>
-<?php } ?>
+<?php }?>
 
-  <form action="controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data">
+  <form action="../controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data">
     <h1>Registrar Usuario</h1>
     <!-- Despues hacer que el número se autorellene(ej. OB-0000001) -->
-    <label>Número de Credencial</label>
-    <input type="text" name="numCredencial" placeholder="Número de Credencial" required>
+    <!-- Ya se auto completa, se eliminó -->
     <label>Nombre(s):</label>
     <input type="text" name="nombres" placeholder="Nombre(s)" required>
     <label>Apellido Paterno</label>
@@ -31,18 +26,14 @@
     <input type="text" name="curp" placeholder="CURP" required>
     <label>Fecha de Nacimiento</label>
     <input type="date" name="fechaNac" required>
-    <!-- Despues quitar este campo y buscar la forma de que se calcule con la fecha actual y la de nacimiento -->
-    <label for="edad">Edad</label>
-    <input type="number" name="edad" require>
+    <!-- Despues quitar este campo y buscar la forma de que se calcule con la fecha actual y la de nacimiento(ya!) -->
     <label>Sexo:</label>
     <select name="sexo" required>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
     </select>
-    <label>Nombre de Usuario</label>
-    <input type="text" name="username" placeholder="Usuario" required>
     <label>Contraseña</label>
-    <input type="password" name="pass" placeholder="Contraseña" required>
+    <input type="password" name="pass" placeholder="De 8 a 20 caracteres" minlength="8" maxlength="20" required>
     <label>Correo</label>
     <input type="email" name="correo" placeholder="correo electronico" required>
     <label>Rol</label>

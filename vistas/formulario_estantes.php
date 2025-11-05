@@ -6,16 +6,22 @@
     <title></title>
 </head>
 <body>
-     <?php
-include('clases/estanterias.php');
-$estanteria = new Estanterias();
-$estanteriaRe = $estanteria->listaActivos(); // Trae todas las categorías
+        <!-- Recivir el mensaje de error o de que se registro desde inserta -->
+    <?php if (isset($_GET['error'])){ ?>
+        <div style="color: red; font-weight: bold;">
+            <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+    <?php }?>
+    <?php
+    include('../clases/estanterias.php');
+    $estanteria = new Estanterias();
+    $estanteriaRe = $estanteria->listaActivos(); // Trae todas las categorías
 
-include('clases/subcategoria.php');
-$subcategorias = new Subcategoria();
-$subCategoriaRe = $subcategorias->listaActivo(); // Trae todas las categorías
-?>
-    <form action="controladores/insertar_estantes.php" method="POST" enctype="multipart/form-data">
+    include('../clases/subcategoria.php');
+    $subcategorias = new Subcategoria();
+    $subCategoriaRe = $subcategorias->listaActivo(); // Trae todas las categorías
+    ?>
+    <form action="../controladores/insertar_estantes.php" method="POST" enctype="multipart/form-data">
         <h2>Registrar estante:</h2>
         <br>
         <label>Nivel:</label>

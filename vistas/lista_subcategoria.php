@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title></title>
 </head>
 <body>
-    <h2>lista autores:</h2>
+    <h2>lista subcategorias:</h2>
     	<?php 
-include('clases/autor.php');
-$clase = new Autor();
+include('../clases/subcategoria.php');
+$clase = new Subcategoria();
 $resultado = $clase->mostrar();
 ?>
-<table border="1" cellpadding="5" >
+<table style="border='1'" cellpadding="5" >
 		<th>Nombre</th>
 		<th>Acciones</th>
 	</tr>
@@ -20,10 +20,12 @@ $resultado = $clase->mostrar();
 	foreach ($resultado as $fila):
 		?>
 		<tr>
-			<td><?=$fila["nombreAutor"]?></td>
+			<td><?=$fila["nombreSubCategoria"]?></td>
 			<td>(proximamente...)</td>
 		</tr>
 	<?php endforeach; 
     ?>
+</table>
+    
 </body>
 </html>

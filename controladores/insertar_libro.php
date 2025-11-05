@@ -18,23 +18,14 @@ move_uploaded_file($ruta, '../imagenes/portadas/'.$portada);
 include('../clases/libro.php');
 $libro = new Libro();
 
-$resultado = $libro->registrarLibro(
-    $isbn,
-    $titulo,
-    $edicion,
-    $numPaginas,
-    $añoPublicacion,
-    $idioma,
-    $sinopsis,
-    $fkAutor,
-    $fkEditorial,
-    $fkSubcategoria,
-    $portada
+$resultado = $libro->registrarLibro( $isbn, $titulo, $edicion, $numPaginas, $añoPublicacion, $idioma, $sinopsis, $fkAutor, $fkEditorial, $fkSubcategoria, $portada
 );
 
 if ($resultado) {
-    echo "Libro registrado correctamente.";
-} else {
-    echo "Error al registrar el libro.";
-}
+        header("Location: ../vistas/lista_libros.php?success=Libro registrado correctamente");
+        exit;
+    } else {
+        header("Location: ../vistas/formulario_libro.php?error=Error al registrar Libro");
+        exit;
+    }
 ?>

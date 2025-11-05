@@ -6,9 +6,11 @@ $estatus = $_POST['estatus'];
 include('../clases/estantes.php');
 $clase = new Estantes();
 $resultado = $clase->guardar($nivel, $fkEstanteria, $fkSubCategoria, $estatus);
-if($resultado){
-	echo "Guardado";
-}else{
-	echo "Error";
-}
+if ($resultado) {
+        header("Location: ../vistas/lista_usuarios.php?success=Usuario registrado correctamente");
+        exit;
+    } else {
+        header("Location: ../vistas/formulario_usuario.php?error=Error al registrar el usuario");
+        exit;
+    }
 ?>

@@ -1,6 +1,5 @@
 <?php
 $isbn = $_POST['isbn'];
-$folio = $_POST['folio'];
 $fkEstanteria = $_POST['fkEstanteria'];
 
 include('../clases/copia.php');
@@ -8,11 +7,13 @@ include('../clases/copia.php');
 
 $clase = new Copia();
 
-$resultado = $clase ->guardar($isbn, $folio, $fkEstanteria);
+$resultado = $clase ->guardar($isbn, $fkEstanteria);
 
-if($resultado){
-	echo "guardado";
- }else{
- 	echo "error";
- }
+if ($resultado) {
+        header("Location: ../vistas/lista_copia.php?success=Copia Física registrada correctamente");
+        exit;
+    } else {
+        header("Location: ../vistas/formulario_copia.php?error=Error al registrar Copia Física");
+        exit;
+    }
 ?>
