@@ -6,15 +6,9 @@
     <title></title>
 </head>
 <body>
-    <?php //Para usuario?
-    // include('');
-    // $clase = new
-    // $resultado = $clase ->
-    ?>
-    <form action="controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
-    <label>codigoPrestamo</label>
-    <input type="text" name="codigoPrestamo" required>
-    <br>
+
+    <form action="../controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data">
+    
     <label>Fecha Limite</label>
     <input type="date" name="fechaLimite" required>
     <br>
