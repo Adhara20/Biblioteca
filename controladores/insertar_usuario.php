@@ -1,14 +1,12 @@
 <?php
 // Datos de usuario
-$numCredencial = $_POST['numCredencial'];
-$nombres = $_POST['nombres'];
-$apaterno = $_POST['apaterno'];
-$amaterno = $_POST['amaterno'];
-$curp = $_POST['curp'];
+//Elimine: $numCredencial = $_POST['numCredencial'];
+$nombres = strtoupper($_POST['nombres']);//strtoupper (se lo ponen a todo lo que sea texto que no afecte que no tenga minusculas)
+$apaterno = strtoupper($_POST['apaterno']);//Es para que el dato se guarde como MAYUSCULAS
+$amaterno = strtoupper($_POST['amaterno']);
+$curp = strtoupper($_POST['curp']);
 $fechaNac = $_POST['fechaNac'];
-$edad = $_POST['edad'];
 $sexo = $_POST['sexo'];
-$username = $_POST['username'];
 $pass = $_POST['pass'];
 $correo = $_POST['correo'];
 $foto = $_FILES['foto']['name']; 
@@ -21,16 +19,16 @@ include('../clases/usuario.php');
 $clase = new Usuario();
 // Validar si ya existe esa CURP con ese tipo
 if ($clase->existeCurpTipo($curp, $rol)) {
-    header("Location: ../formulario_usuario.php?error=Ya existe un usuario con esa CURP y ese tipo de cuenta");
+    header("Location: ../vistas/formulario_usuario.php?error=Ya existe un usuario con esa CURP y ese tipo de cuenta");
 
     exit;
-} else {
-    $resultado = $clase->registrarUsuario($numCredencial, $nombres, $apaterno, $amaterno, $curp, $fechaNac, $edad, $sexo, $username, $pass, $correo, $foto, $rol);
+} else {                        //Elimine $numCredencial
+    $resultado = $clase->guardar($nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $foto, $rol);
     if ($resultado) {
-        header("Location: ../formulario_usuario.php?success=Usuario registrado correctamente");
+        header("Location: ../vistas/lista_usuarios.php?success=Usuario registrado correctamente");
         exit;
     } else {
-        header("Location: ../formulario_usuario.php?error=Error al registrar el usuario");
+        header("Location: ../vistas/formulario_usuario.php?error=Error al registrar el usuario");
         exit;
     }
 }

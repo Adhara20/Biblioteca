@@ -6,12 +6,15 @@ class Usuario {
         require_once("conexion.php");
         $this->conexion = new Conexion();
     }
+                    //Dejo de recivir y mandar $numCredencia como parametro
+    function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $foto, $rol) {
+        //mando a llamar la funcion para generar números autoatisco para credenciales
+        $numCredencial = $this->generarNumCredencial();
 
-    function guardar($numCredencial, $nombres, $apaterno, $amaterno, $curp, $fechaNac, $edad, $sexo, $username, $pass, $correo, $foto, $rol) {
         $consulta = "INSERT INTO usuario 
-                     (numCredencial, nombres, apaterno, amaterno, curp, fechaNac, edad, sexo, username, pass, correo, foto, rol, fechaRegistro)
+                     (numCredencial, nombres, apaterno, amaterno, curp, fechaNac, sexo, pass, correo, foto, rol, fechaRegistro)
                      VALUES 
-                     ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}','{$edad}', '{$sexo}', '{$username}', '{$pass}', '{$correo}', '{$foto}', '{$rol}', NOW())";
+                     ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}', '{$sexo}', '{$pass}', '{$correo}', '{$foto}', '{$rol}', NOW())";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
@@ -40,14 +43,14 @@ class Usuario {
     }
 
     function listaActivos() {
-        $consulta = "SELECT numCredencial, username, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto FROM usuario WHERE estatus='A'";
+        $consulta = "SELECT numCredencial, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto, fechaNac FROM usuario WHERE estatus='A'";
 
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
 
     function listaInactivos() {
-        $consulta = "SELECT numCredencial, username, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto FROM usuario 
+        $consulta = "SELECT numCredencial, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto, fechaNac FROM usuario 
                      WHERE estatus = 'I'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
@@ -62,6 +65,44 @@ class Usuario {
     $resultado = $this->conexion->query($consulta);
     return ($resultado->num_rows > 0); 
 }
+    function generarNumCredencial() {
+    // Prefijo: Es la parte que se mantendra igual en todos los numCredenciales
+    $prefijo = "OW-";
+    // Se consulta el ultimo número que se registro, LIKE(busca los registros que se paresca al dato siguiente. $prefijo%(%se usa para indicar que solo busque registros que inicien con lo que se indica, en este caso OW-)
+    //ORDER BY numCredencial DESC LIMIT 1: busca el ultimo registro, o sea el más alto, y con LIMIT 1 se indica que solo se quiere ese
+    $consulta = "SELECT numCredencial FROM usuario WHERE numCredencial LIKE '{$prefijo}%' ORDER BY numCredencial DESC LIMIT 1";
+    $resultado = $this->conexion->query($consulta);
+    if ($fila = $resultado->fetch_assoc()) {
+        // Se usa para extraer, por ejemplo: de OW-000012, "000012" y convertirlo a numero
+        $ultimoNumero = intval(substr($fila['numCredencial'], strlen($prefijo)));
+        $nuevoNumero = $ultimoNumero + 1;//Al ultimo número se le aumenta 1 para que se cree el nuevo numero que ira despues del prefijo
+    } else {
+        //Si no hay registros, pues se empieza con 1
+        $nuevoNumero = 1;
+    }
+    // Como se ocupan x cantidad de digitos, pues con esto llena lo que sobre con 0
+    $numCredencial = $prefijo . str_pad($nuevoNumero, 6, "0", STR_PAD_LEFT);
+    return $numCredencial;
+    }
+    function obtenerEdad($fechaNac){
+        // DateTime sirve para convertir la fecha(que se guarda como texto aunque sea date) a un objeto para realizar calculos
+        $nacimiento = new DateTime($fechaNac);
+        // Se crea una variable con la fecha actual
+        $hoy = new DateTime();
+        // diff es la diferencia(resta) de la de hoy-fecNac
+        $edad = $hoy->diff($nacimiento);
+        // $edad contiene tanto días, meses y años de diferencia, con "y" toma solo años
+        return $edad->y;
+    }
+
+    function login($numCredencial, $pass) {
+        $numCredencial = $this->conexion->real_escape_string($numCredencial);
+        $password = $this->conexion->real_escape_string($password);
+        $consulta = "SELECT pkUsuario, numCredencial, rol FROM usuario WHERE numCredencial = '{$numCredencial}' AND pass = '{$pass}' AND estatus = 'A'";
+        return $this->conexion->query($consulta);
+}
+
+
 
 }
 ?>
