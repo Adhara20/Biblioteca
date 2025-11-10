@@ -52,5 +52,12 @@ class Libro {
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
+    function detalles($pkLibro) {
+    $consulta = "
+        SELECT l.*, a.nombreAutor, e.nombreEditorial, s.nombreSubCategoria, c.nombreCategoria FROM libro l INNER JOIN autor a ON l.fkAutor = a.pkAutor INNER JOIN editorial e ON l.fkEditorial = e.pkEditorial INNER JOIN subcategoria s ON l.fkSubCategoria = s.pkSubCategoria INNER JOIN categoria c ON s.fkCategoria=c.pkCategoria WHERE l.pkLibro = '{$pkLibro}'";
+    $respuesta = $this->conexion->query($consulta);
+    return $respuesta;
+}
+
 }
 ?>

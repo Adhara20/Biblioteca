@@ -1,5 +1,7 @@
 <!-- Gris claro -->
-<footer class="bg-gray-200 text-gray-800 text-center py-4 mt-auto shadow-inner">
+ </main>
+ <link rel="stylesheet" href="css/output.css">
+<footer class="bg-gray-200 text-gray-800 text-center shadow-inner p-4 ">
   <p class="text-sm">&copy; <?= date('Y'); ?> Owl Book. Todos los derechos reservados</p>
 </footer>
 <!--

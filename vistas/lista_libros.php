@@ -1,53 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Usuarios</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo de Libros</title>
+  <link rel="stylesheet" href="../css/libros.css">
 </head>
+
+<?php
+include('../clases/libro.php');
+$clase = new Libro();
+$resultado = $clase->listaLibrosActivos();
+include('../includes/header.php');
+?>
+
 <body>
-    <?php
-    include('../clases/libro.php');
-    $clase = new Libro();
-    ?>
-    <div>
-        <section>
-            <h1>Lista Libros</h1>
-    <?php 
-    
-    $resultado = $clase->listaLibrosActivos();
-    ?>
-    <table>
-        <tr>
-            <th>Titulo</th>
-            <th>ISBN</th>
-            <th>Autor</th>
-            <th>Edicion</th>
-            <th>Año de Publicacion</th>
-            <th>Editorial</th>
-            <th>Subcategoria</th>
-            <th>Categoria</th>
-        </tr>
-        <?php
-            foreach($resultado as $fila){
-        ?>
-            <tr>
-                <td style="text-center"><?=$fila["titulo"]?></td>
-                <td style="text-center"><?=$fila["isbn"]?></td>
-                <td style="text-center"><?=$fila["nombreAutor"]?></td>
-                <td style="text-center"><?=$fila["edicion"]?></td>
-                <td style="text-center"><?=$fila["añoPublicacion"]?></td>
-                <td style="text-center"><?=$fila["nombreEditorial"]?></td>
-                <td style="text-center"><?=$fila["nombreSubCategoria"]?></td>
-                <td style="text-center"><?=$fila["nombreCategoria"]?></td>
-                <td style="text-center">(proximamente...)</td>
-            </tr>
-        <?php
-            }
-        ?>
-    </table>
-        </section>
+  <?php include('../includes/menu.php'); ?>
+
+  <div class="px-10 mb-6">
+    <h1 class="titulos">Catálogo de Libros</h1>
+    <hr class="linea-separadora-listas">
+  </div>
+
+ <section class="grid-libros">
+  <?php foreach ($resultado as $fila): 
+    $titulo = htmlspecialchars($fila['titulo']);
+    $isbn = htmlspecialchars($fila['isbn']);
+    $autor = htmlspecialchars($fila['nombreAutor']);
+    $edicion = htmlspecialchars($fila['edicion']);
+    $anio = htmlspecialchars($fila['añoPublicacion'] ?? $fila['anioPublicacion'] ?? '');
+    $editorial = htmlspecialchars($fila['nombreEditorial']);
+    $categoria = htmlspecialchars($fila['nombreCategoria']);
+    $subcategoria = htmlspecialchars($fila['nombreSubCategoria']);
+    $img = htmlspecialchars($fila['portada'] ?? '');
+    $edicionLabel = trim($edicion) !== '' ? "{$edicion} Edición" : '';
+    if ($anio !== '') {
+      $edicionLabel = $edicionLabel !== '' ? "{$edicionLabel}, {$anio}" : "{$anio}";
+    }
+  ?>
+  <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="tarjeta-mini">
+    <img  src="<?= !empty($img) ? '../imagenes/portadas/' . $img : '../imagenes/portadas/placeholder.png'; ?>"  alt="Portada de <?= $titulo ?>"  class="tarjeta-mini-img">
+
+    <div class="tarjeta-mini-info">
+      <h2 class="tarjeta-mini-titulo"><?= $titulo ?></h2>
+      <p class="tarjeta-mini-autor"><?= $autor ?></p>
+      <p><strong>ISBN:</strong> <?= $isbn ?></p>
+      <p><strong>Editorial:</strong> <?= $editorial ?></p>
+      <p><strong>Categoría:</strong> <?= $categoria ?></p>
+      <p class="tarjeta-mini-extra"><?= $edicionLabel ?></p>
     </div>
-    <br>
+  </a>
+  <?php endforeach; ?>
+</section>
+
+  <?php include('../includes/footer.php'); ?>
 </body>
 </html>

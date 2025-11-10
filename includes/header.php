@@ -6,6 +6,6 @@
   <title>Owl Book</title>
   <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/output.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
-
-<body class="flex flex-col min-h-screen bg-gray-100">
