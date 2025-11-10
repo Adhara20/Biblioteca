@@ -3,49 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <title>Registrar Usuario</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+<?php include('../includes/header.php'); ?>
 <body>
-    <!-- Recivir el mensaje de error o de que se registro desde inserta -->
-<?php if (isset($_GET['error'])){ ?>
-    <div style="color: red; font-weight: bold;">
-        <?= htmlspecialchars($_GET['error']) ?>
-    </div>
-<?php }?>
+<?php include('../includes/menu.php'); ?>
 
-  <form action="../controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data">
-    <h1>Registrar Usuario</h1>
-    <!-- Despues hacer que el número se autorellene(ej. OB-0000001) -->
-    <!-- Ya se auto completa, se eliminó -->
-    <label>Nombre(s):</label>
-    <input type="text" name="nombres" placeholder="Nombre(s)" required>
-    <label>Apellido Paterno</label>
-    <input type="text" name="apaterno" placeholder="Apellido Paterno" required>
-    <label>Apellido Materno</label>
-    <input type="text" name="amaterno" placeholder="Apellido Materno">
-    <label>CURP:</label>
-    <input type="text" name="curp" placeholder="CURP" required>
-    <label>Fecha de Nacimiento</label>
-    <input type="date" name="fechaNac" required>
-    <!-- Despues quitar este campo y buscar la forma de que se calcule con la fecha actual y la de nacimiento(ya!) -->
-    <label>Sexo:</label>
-    <select name="sexo" required>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-    </select>
-    <label>Contraseña</label>
-    <input type="password" name="pass" placeholder="De 8 a 20 caracteres" minlength="8" maxlength="20" required>
-    <label>Correo</label>
-    <input type="email" name="correo" placeholder="correo electronico" required>
-    <label>Rol</label>
-    <label for="foto">Foto de Usuario</label>
-    <input type="file" name="foto">
-    <select name="rol" required>
-        <option value="L">Lector</option>
-        <option value="B">Bibliotecario</option>
-        <option value="A">Admin</option>
-    </select>
+
+  <div class="bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row w-full max-w-5xl">
     
-    <button type="submit">Guardar</button>
-  </form>
+    <!-- LADO IZQUIERDO (solo visible en pantallas grandes) -->
+    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#4F0087] to-[#7A1BC1] text-white flex-col justify-center items-center p-10">
+      <img src="../imagenes/logos/lechuzaSombraLuna.jpg" alt="Owl Book" class="h-24 w-auto mb-4 rounded-full shadow-lg">
+      <h1 class="text-3xl font-semibold mb-2">Owl Book</h1>
+      <p class="text-center text-white/90 max-w-xs">
+        “El conocimiento es la luz en la noche más oscura.”
+      </p>
+    </div>
+
+    <!-- LADO DERECHO (formulario) -->
+    <div class="flex-1 p-8 lg:p-12">
+      <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">Registrar Usuario</h2>
+
+      <!-- Mensaje de error -->
+      <?php if (isset($_GET['error'])) { ?>
+        <div class="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-center font-medium">
+          <?= htmlspecialchars($_GET['error']) ?>
+        </div>
+      <?php } ?>
+
+      <form action="../controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Nombre(s)</label>
+          <input type="text" name="nombres" placeholder="Nombre(s)" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+          <input type="text" name="apaterno" placeholder="Apellido Paterno" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Apellido Materno</label>
+          <input type="text" name="amaterno" placeholder="Apellido Materno"
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">CURP</label>
+          <input type="text" name="curp" placeholder="CURP" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase uppercase">  <!-- uppercase (es una clase de Talwing para que lo que escribas se VEA MAYÚSCULAS. Ojo, es solo para que al escribir se vea en MAYÚSCULAS, para que se guarde como Mayuscula se hace en insertar) -->
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+          <input type="date" name="fechaNac" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Sexo</label>
+          <select name="sexo" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+          <input type="email" name="correo" placeholder="correo@ejemplo.com" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input type="password" name="pass" placeholder="De 8 a 20 caracteres" minlength="8" maxlength="20" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Rol</label>
+          <select name="rol" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+            <option value="L">Lector</option>
+            <option value="B">Bibliotecario</option>
+            <option value="A">Administrador</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700">Foto de Usuario</label>
+          <input type="file" name="foto"
+            class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
+        </div>
+
+        <div class="md:col-span-2">
+          <button type="submit"
+            class="w-full bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<?php include('../includes/footer.php'); ?>
 </body>
 </html>

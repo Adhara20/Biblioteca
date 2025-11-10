@@ -4,30 +4,21 @@ if (!isset($_SESSION)) {
 }
 $pkUsuario = $_SESSION['pkUsuario'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
+// hacer una direccion universal para no tener problemas
+$rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Owl Book</title>
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus+SC&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-
-<nav class="fixed top-0 left-0 w-full z-50">
+<nav class="fixed top-0 left-0 w-full z-50 h-28">
   <!-- Logo y Nombre (Visible siempre) -->
   <div class="bg-[#4F0087] flex justify-between items-center px-6 py-3">
     <div class="flex items-center">
-      <img src="imagenes/logos/lechuzaSombraLuna.jpg" class="h-10 mr-3" alt="Logo">
+      <img src="../imagenes/logos/lechuzaSombraLuna.jpg" class="h-10 mr-3" alt="Logo">
       <h1 class="text-gray-100 text-xl font-normal" style="font-family: 'Marcellus SC', serif;">Owl Book</h1>
     </div>
 
     <?php if (!$rol): ?>
       <!-- Botón de Iniciar Sesión (solo visible sin iniciar Sesión) -->
-      <a href="vistas/login.php" class="bg-white text-[#4F0087] px-4 py-2 rounded-lg font-semibold hover:bg-[#E5E0F2] transition">
+      <a href="<?=$rutaBase?>vistas/login.php" class="bg-white text-[#4F0087] px-4 py-2 rounded-lg font-semibold hover:bg-[#E5E0F2] transition">
         Iniciar sesión
       </a>
     <?php else: ?>
@@ -40,17 +31,17 @@ $rol = $_SESSION['rol'] ?? null;
   <div id="menu" class="hidden flex-col absolute right-0 bg-white shadow-lg lg:static lg:flex lg:flex-row 
                        lg:justify-end lg:items-center lg:space-x-6 px-6 py-2">
 
-    <a href="index.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Inicio</a>
-    <a href="lista_libros.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Libros</a>
+    <a href="<?=$rutaBase?>index.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Inicio</a>
+    <a href="<?=$rutaBase?>vistas/lista_libros.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Libros</a>
 <!-- Puede ver Bibliotecario y Admin -->
     <?php if ($rol === 'A' || $rol === 'B'): ?>
-      <a href="lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Préstamos</a>
-      <a href="lista_categoria.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Clasificaciones</a>
-      <a href="lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
+      <a href="<?=$rutaBase?>vistas/lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Préstamos</a>
+      <a href="../vistas/lista_categoria.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Clasificaciones</a>
+      <a href="../vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
     <?php endif; ?>
 <!-- Puede ver Admin -->
     <?php if ($rol === 'A'): ?>
-      <a href="lista_usuarios.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Usuarios</a>
+      <a href="<?=$rutaBase?>vistas/lista_usuarios.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Usuarios</a>
     <?php endif; ?>
 <!-- Puede ver Bibliotecario y Admin -->
     <?php if ($rol === 'A' || $rol === 'B'): ?>
@@ -60,10 +51,10 @@ $rol = $_SESSION['rol'] ?? null;
           Gestión Bibliográfica ▼
         </button>
         <div class="hidden group-hover:flex lg:absolute lg:flex-col bg-white shadow-md border rounded-md mt-1 min-w-[180px]">
-          <a href="lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
-          <a href="lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
-          <a href="lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
-          <a href="lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
+          <a href="<?=$rutaBase?>lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
+          <a href="<?=$rutaBase?>lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
+          <a href="<?=$rutaBase?>lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
+          <a href="<?=$rutaBase?>lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
         </div>
       </div>
       <!-- Gestión Bibliográfica Movil -->
@@ -75,20 +66,20 @@ $rol = $_SESSION['rol'] ?? null;
           <span class="font-semibold">Gestión Bibliográfica</span>
           <button id="close-submenu" class="text-gray-700 text-xl">&times;</button>
         </div>
-        <a href="lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
-        <a href="lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
-        <a href="lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
-        <a href="lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
+        <a href="<?=$rutaBase?>lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
+        <a href="<?=$rutaBase?>lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
+        <a href="<?=$rutaBase?>lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
+        <a href="<?=$rutaBase?>lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
       </div>
     <?php endif; ?>
 <!-- Puede ver Lector -->
     <?php if ($rol === 'L'): ?>
-      <a href="mis_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Préstamos</a>
-      <a href="mis_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Multas</a>
+      <a href="<?=$rutaBase?>vistas/mis_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Préstamos</a>
+      <a href="<?=$rutaBase?>vistas/mis_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Multas</a>
     <?php endif; ?>
 
-    <a href="perfil.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mi Perfil</a>
-    <a href="controladores/cerrar_sesion.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Salir</a>
+    <a href="<?=$rutaBase?>vistas/perfil.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mi Perfil</a>
+    <a href="<?=$rutaBase?>controladores/cerrar_sesion.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Salir</a>
   </div>
   <?php endif; ?>
 </nav>
@@ -124,6 +115,10 @@ document.addEventListener('click', (e) => {
   }
 });
 </script>
+<!-- <main class="bg-gray-100 min-h-screen flex flex-col items-start justify-start pt-36 px-8"> -->
+  <!-- <main class="bg-gray-100 min-h-screen pt-36 px-8"> -->
+<main class="bg-gray-100 min-h-screen pt-36">
+  
 
-</body>
-</html>
+
+

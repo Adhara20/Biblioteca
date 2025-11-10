@@ -1,10 +1,10 @@
 <?php
 // Datos de usuario
 //Elimine: $numCredencial = $_POST['numCredencial'];
-$nombres = $_POST['nombres'];
-$apaterno = $_POST['apaterno'];
-$amaterno = $_POST['amaterno'];
-$curp = $_POST['curp'];
+$nombres = strtoupper($_POST['nombres']);//strtoupper (se lo ponen a todo lo que sea texto que no afecte que no tenga minusculas)
+$apaterno = strtoupper($_POST['apaterno']);//Es para que el dato se guarde como MAYUSCULAS
+$amaterno = strtoupper($_POST['amaterno']);
+$curp = strtoupper($_POST['curp']);
 $fechaNac = $_POST['fechaNac'];
 $sexo = $_POST['sexo'];
 $pass = $_POST['pass'];
