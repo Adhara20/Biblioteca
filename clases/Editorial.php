@@ -49,5 +49,21 @@
 
         return $editoriales;
     }
+    function buscarEditorial($termino) {
+    $consulta = "SELECT e.pkEditorial, e.nombreEditorial, n.nombreNaci AS nacionalidad
+                 FROM editorial e
+                 INNER JOIN nacionalidad n ON e.fkNacionalidad = n.pkNacionalidad
+                 WHERE e.nombreEditorial LIKE '%{$termino}%'";
+
+    $resultado = $this->conexion->query($consulta);
+
+    $editoriales = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $editoriales[] = $fila;
+    }
+
+    return $editoriales;
+}
+
 }
 ?>

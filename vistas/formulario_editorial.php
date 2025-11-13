@@ -7,20 +7,16 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-        <!-- Recivir el mensaje de error o de que se registro desde inserta -->
-    <?php if (isset($_GET['error'])){ ?>
-        <div style="color: red; font-weight: bold;">
-            <?= htmlspecialchars($_GET['error']) ?>
-        </div>
-    <?php }?>
     <?php 
-    include('../clases/nacionalidad.php');
+    
+    include('clases/nacionalidad.php');
+
     // Crear objeto de la clase Nacionalidad para mostrar las opciones del select
     $clase = new Nacionalidad();
     $resultado = $clase->listaNacionalidades();
     ?>
 
-    <form id="form" action="../controladores/insertar_editorial.php" method="POST">
+    <form id="form" action="Controladores/insertar_editorial.php" method="POST">
         <h3>Formulario Editorial</h3>
 
         <label>Nombre de la Editorial:</label><br>

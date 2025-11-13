@@ -35,5 +35,11 @@ class Nacionalidad {
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
+    function buscarNacionalidad($busqueda) {
+    $consulta = "SELECT * FROM nacionalidad 
+                 WHERE nombreNaci LIKE '%{$busqueda}%'";
+    return $this->conexion->query($consulta);
+}
+
 }
 ?>
