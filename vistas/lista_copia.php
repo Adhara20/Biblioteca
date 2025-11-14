@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/copias.css">
 </head>
-<form action="../controladores/buscar_copia.php">
-  <h3>Buscar</h3>
-  <input type="text" name="buscador" required> 
-  <button type="submit">Buscar</button>
-</form>
+<?php 
+        include('../includes/header.php');
+	?>
 <body>
       <?php 
 		include('../clases/copia.php');
 		$clase = new Copia();
 		$resultado = $clase->lista();
+        include('../includes/menu.php');
 	?>
-
-    <table class="table table-responsive">
+    <div class="px-10 mb-4">
+    <h1 class="titulos">Registro de Copias</h1>
+    <hr class="linea-separadora-listas">
+    </div>
+    <div class="tabla-copias-container">
+    <table class="table-copias">
     <tr>
         <th>ISBN</th>
         <th>Folio</th>
@@ -36,5 +40,6 @@
         </tr>
     <?php } ?>
 </table>
+</div>
 </body>
 </html>
