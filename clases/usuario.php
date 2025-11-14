@@ -42,20 +42,6 @@ class Usuario {
         return $resultado;
     }
 
-    function listaActivos() {
-        $consulta = "SELECT numCredencial, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto, fechaNac FROM usuario WHERE estatus='A'";
-
-        $resultado = $this->conexion->query($consulta);
-        return $resultado;
-    }
-
-    function listaInactivos() {
-        $consulta = "SELECT numCredencial, curp, rol, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, '')) AS nombreCompleto, fechaNac FROM usuario 
-                     WHERE estatus = 'I'";
-        $resultado = $this->conexion->query($consulta);
-        return $resultado;
-    }
-
     function existeCurpTipo($curp, $rol) {
     if ($rol == 'L') {
         $consulta = "SELECT * FROM usuario WHERE curp = '$curp' AND rol = 'L'";
@@ -100,7 +86,64 @@ class Usuario {
         $password = $this->conexion->real_escape_string($password);
         $consulta = "SELECT pkUsuario, numCredencial, rol FROM usuario WHERE numCredencial = '{$numCredencial}' AND pass = '{$pass}' AND estatus = 'A'";
         return $this->conexion->query($consulta);
-}
+    }
+    function filtrar($buscar = '', $rol = '', $estatus = '', $vetado = '', $sexo = '', $fechaRegistro = '') {
+       $consulta = "SELECT *,
+                CONCAT(
+                    COALESCE(nombres, ''), ' ',
+                    COALESCE(apaterno, ''), ' ',
+                    COALESCE(amaterno, '')
+                ) AS nombreCompleto
+             FROM usuario
+             WHERE 1=1";
+        // Barra de Busqueda
+        if (!empty($buscar)) {
+            $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+            $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+            $consulta .= " AND (
+                numCredencial LIKE '%$buscar%' 
+                OR nombres LIKE '%$buscar%' 
+                OR apaterno LIKE '%$buscar%' 
+                OR amaterno LIKE '%$buscar%' 
+                OR CONCAT(
+                    COALESCE(nombres, ''), ' ',
+                    COALESCE(apaterno, ''), ' ',
+                    COALESCE(amaterno, '')
+                ) LIKE '%$buscar%'
+                OR curp LIKE '%$buscar%' 
+                OR correo LIKE '%$buscar%')";
+        }
+        // Select Rol
+        if (!empty($rol)) {
+            $categoria = mysqli_real_escape_string($this->conexion, $rol);
+            $consulta .= " AND rol = '$rol'";
+        }
+        // Select Estatus
+        if (!empty($estatus)) {
+            $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+            $consulta .= " AND estatus = '$estatus'";
+        }else {
+        // Si no se elige estatus, por defecto muestra los activos
+        $consulta .= " AND estatus = 'A'";
+        }
+        // Select EstatusPrestamista
+        if (!empty($vetado)) {
+            $estatus = mysqli_real_escape_string($this->conexion, $vetado);
+            $consulta .= " AND estatusPrestamista = '$vetado'";
+        }
+        // Select Genero
+        if (!empty($sexo)) {
+            $estatus = mysqli_real_escape_string($this->conexion, $sexo);
+            $consulta .= " AND sexo = '$sexo'";
+        }
+        // Select Fecha de Registro
+        if (!empty($fechaRegistro)) {
+            $estatus = mysqli_real_escape_string($this->conexion, $fechaRegistro);
+            $consulta .= " AND fechaRegistro = '$fechaRegistro'";
+        }
+        $resultado = mysqli_query($this->conexion, $consulta);
+        return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    }
 
 
 

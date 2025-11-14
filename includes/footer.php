@@ -1,4 +1,5 @@
 <!-- Gris claro -->
+  </div>
  </main>
  <link rel="stylesheet" href="css/output.css">
 <footer class="bg-gray-200 text-gray-800 text-center shadow-inner p-4 ">

@@ -20,7 +20,7 @@ if (mysqli_num_rows($resultado) > 0) {
     header('Location: ../index.php');
     exit;
 } else {
-    header('Location: ../login.php?error=Credenciales incorrectas');
+    header('Location: ../vistas/login.php?error=Credenciales incorrectas');
     exit;
 }
 ?>
