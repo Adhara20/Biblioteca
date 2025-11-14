@@ -5,17 +5,18 @@ include('../includes/header.php');
 <body class="bg-gray-100 text-gray-900">
   <?php include('../includes/menu.php'); ?>
 
-  <!-- 🔹 PHP: obtener datos del libro -->
+  <!-- obtener datos del libro -->
   <?php
-  include('../clases/libro.php');
-  $clase = new Libro();
+  include('../clases/libro.php');//Incluyes la clase
+  $clase = new Libro();//creas instacia
   $pkLibro = $_GET['pkLibro'] ?? null;
-
+  //Obtienes la pk de libro
   if (!$pkLibro) {
       echo "<p>No se especificó el libro.</p>";
       exit;
   }
-
+  //Mandas a llamar la clase de detalles en la variable $resultado
+  //Revicen en mi clase Libro como esta la funcion de detalles
   $resultado = $clase->detalles($pkLibro);
 
   if ($resultado && $resultado->num_rows > 0) {
@@ -25,26 +26,25 @@ include('../includes/header.php');
       exit;
   }
 
-  // Imagen (usa placeholder si no hay)
+  // Mostrar Imagen (usa placeholder si no hay)
   $imgRuta = !empty($fila['portada'])
       ? "../imagenes/portadas/{$fila['portada']}"
       : "../imagenes/portadas/placeholder.png";
   ?>
-
-  <!-- 🔹 Título principal -->
+  <!--  Título principal -->
   <div class="w-full flex flex-col items-start px-8 mt-8">
     <div class="w-full max-w-4xl mx-auto">
-      <h1 class="titulos">Detalles del Libro</h1>
+      <h1 class="titulos">Detalles del Libro</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
       <hr class="linea-separadora mb-6">
     </div>
   </div>
 
-  <!-- 🔹 Contenedor principal -->
+  <!--  Contenedor principal: Contenido -->
    <!-- <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 border border-gray-300 mb-12 mx-auto flex flex-col md:flex-row gap-8"> -->
   <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 border border-gray-300 mb-12 mx-auto flex flex-col md:flex-row-reverse gap-8">
 
 
-    <!--  Portada del libro -->
+    <!--  Portada del libro (Si es algo que no lleve imagen, pueden omitirla)-->
     <div class="flex-shrink-0 w-full md:w-1/3 flex justify-center items-start">
       <img 
         src="<?= $imgRuta ?>" 
@@ -53,16 +53,16 @@ include('../includes/header.php');
       >
     </div>
 
-    <!--  Datos del libro -->
+    <!--  Datos del libro. (Aqui lo cambian por los datos de lo que les tocó) -->
     <div class="flex-1">
       <div class="mb-6 text-center md:text-left">
-        <h2 class="text-2xl font-semibold text-[#4F0087]"><?= $fila['titulo'] ?></h2>
-        <p class="text-gray-600">Información General</p>
+        <h2 class="text-2xl font-semibold text-[#4F0087]"><?= $fila['titulo'] ?></h2><!--El nombre o codigo de lo que les tocó. En algunos casos, dependiendo, pueden omitirlo--> 
+        <p class="text-gray-600">Información General</p><!--Lo dejan igual--> 
       </div>
 
       <div class="border-t border-gray-300 pt-4">
         <dl class="divide-y divide-gray-200">
-
+          <!--  Estos son los datos-->
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">ISBN:</dt>
             <dd class="col-span-2 text-gray-800"><?= $fila['isbn'] ?></dd>
@@ -121,7 +121,7 @@ include('../includes/header.php');
         </dl>
       </div>
 
-      <!-- 🔘 Botones de acción -->
+      <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
         <a href="#" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
           Editar
