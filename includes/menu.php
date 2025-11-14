@@ -117,7 +117,8 @@ document.addEventListener('click', (e) => {
 </script>
 <!-- <main class="bg-gray-100 min-h-screen flex flex-col items-start justify-start pt-36 px-8"> -->
   <!-- <main class="bg-gray-100 min-h-screen pt-36 px-8"> -->
-<main class="bg-gray-100 min-h-screen pt-36">
+<main class="bg-gray-100 flex flex-col min-h-screen pt-36">
+  <div class="flex-1">
   
 
 
