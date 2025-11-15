@@ -2,20 +2,13 @@
 ob_start();
 include('../clases/libro.php');
 
-
 $claseLibro = new Libro();
-$resultadoLibros = $claseLibro->listaLibrosActivos();
 
+// Obtener todos los libros activos con la función filtrar()
+$libros = $claseLibro->filtrar('', '', 'A');
 
-$libros = [];
-if ($resultadoLibros) {
-    while ($fila = $resultadoLibros->fetch_assoc()) {
-        $libros[] = $fila;
-    }
-}
 ob_end_clean();
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -38,9 +31,17 @@ ob_end_clean();
         <label>Libro:</label><br>
         <select name="fkLibro" required>
             <option value="">Seleccione un libro</option>
-            <?php foreach ($libros as $libro): ?>
-                <option value="<?= $libro['pkLibro'] ?>"><?= $libro['titulo'] ?></option>
-            <?php endforeach; ?>
+
+            <?php if (!empty($libros)): ?>
+                <?php foreach ($libros as $libro): ?>
+                    <option value="<?= $libro['pkLibro'] ?>">
+                        <?= $libro['titulo'] ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <option value="">No hay libros activos</option>
+            <?php endif; ?>
+
         </select><br><br>
 
         <input type="submit" class="boton" value="Guardar">

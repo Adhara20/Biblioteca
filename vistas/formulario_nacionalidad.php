@@ -1,18 +1,20 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Registrar Nacionalidad</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-    <?php 
-    
-    include('clases/nacionalidad.php');
+    <?php
+
+    include('../clases/nacionalidad.php');
     ?>
 
-    <form id="form" action="Controladores/insertar_nacionalidad.php" method="POST">
+    <form id="form" action="../controladores/insertar_nacionalidad.php" method="POST">
         <h3>Formulario Nacionalidad</h3>
 
         <label>Nombre de la Nacionalidad:</label><br>
@@ -21,4 +23,5 @@
         <input type="submit" class="boton" value="Guardar">
     </form>
 </body>
+
 </html>

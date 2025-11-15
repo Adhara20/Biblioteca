@@ -1,36 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8">
-	<title>Lista Nacionalidades</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lista de nacionalidades</title>
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/copias.css">
 </head>
+<?php
+include('../includes/header.php');
+?>
 
 <body>
-	<h2>Lista de Nacionalidades:</h2>
-    <form action="../controladores/buscar_nacionalidad.php" method="GET">
-		<h3>Buscar Nacionalidad</h3>
-		<input type="text" name="buscador" required placeholder="Ejemplo: Mexicana">
-		<button type="submit">Buscar</button>
-	</form>
-
 	<?php
 	include('../clases/nacionalidad.php');
 	$nac = new Nacionalidad();
 	$resultado = $nac->listaNacionalidades();
+	include('../includes/menu.php');
 	?>
-	<table border="1" cellpadding="5">
-		<tr>
-			<th>ID</th>
-			<th>Nacionalidad</th>
-		</tr>
-		<?php while ($fila = $resultado->fetch_assoc()): ?>
+	<div class="px-10 mb-4">
+		<h1 class="titulos">Registro de Copias</h1>
+		<hr class="linea-separadora-listas">
+	</div>
+	<div class="tabla-copias-container">
+		<table class="table-copias">
 			<tr>
-				<td><?= $fila['pkNacionalidad'] ?></td>
-				<td><?= $fila['nombreNaci'] ?></td>
+
+				<th>Nacionalidad</th>
 			</tr>
-		<?php endwhile; ?>
-	</table>
+			<?php while ($fila = $resultado->fetch_assoc()): ?>
+				<tr>
+
+					<td><?= $fila['nombreNaci'] ?></td>
+				</tr>
+			<?php endwhile; ?>
+		</table>
+	</div>
 </body>
 
 </html>
