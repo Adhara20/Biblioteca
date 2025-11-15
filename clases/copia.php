@@ -57,7 +57,7 @@ class Copia
     {
         $consulta = "
         SELECT 
-            c.folio,
+            c.*
             l.isbn,
             l.titulo,
             s.nombreSubCategoria,
@@ -72,4 +72,42 @@ class Copia
         $resultado = $this->conexion->query($consulta);
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
+    
+    function filtrar($buscar = '', $subcategoria = '', $estatus = '') {
+    $consulta = "SELECT c.*, 
+           sb.nombreSubCategoria,
+           e.codigoEstanteria,
+           l.isbn, l.titulo
+    FROM copiaF c
+    INNER JOIN estanteria e ON e.pkEstanteria = c.fkEstanteria
+    INNER JOIN libro l ON c.fkLibro = l.pkLibro
+    INNER JOIN subCategoria sb ON l.fkSubCategoria=sb.pkSubCategoria
+    WHERE 1=1";
+
+    if (!empty($buscar)) {
+        $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+        $consulta .= " AND (c.folio LIKE '%$buscar%' 
+                    OR l.titulo LIKE '%$buscar%' 
+                    OR e.codigoEstanteria LIKE '%$buscar%' 
+                    OR l.isbn LIKE '%$buscar%')";
+    }
+
+    if (!empty($subcategoria)) {
+        $subcategoria = mysqli_real_escape_string($this->conexion, $subcategoria);
+        $consulta .= " AND sb.pkSubCategoria = '$subcategoria'";
+    }
+
+    if (!empty($estatus)) {
+        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+        $consulta .= " AND c.estatus = '$estatus'";
+    } else {
+        // Si no se elige estatus, por defecto muestra los activos
+        $consulta .= " AND c.estatus = 'A'";
+    }
+
+    $resultado = mysqli_query($this->conexion, $consulta);
+    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+}
+
+
 }
