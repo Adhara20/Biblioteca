@@ -7,14 +7,14 @@ class Usuario {
         $this->conexion = new Conexion();
     }
                     //Dejo de recivir y mandar $numCredencia como parametro
-    function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $foto, $rol) {
+    function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $fotoNombre, $rol) {
         //mando a llamar la funcion para generar números autoatisco para credenciales
         $numCredencial = $this->generarNumCredencial();
 
         $consulta = "INSERT INTO usuario 
                      (numCredencial, nombres, apaterno, amaterno, curp, fechaNac, sexo, pass, correo, foto, rol, fechaRegistro)
                      VALUES 
-                     ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}', '{$sexo}', '{$pass}', '{$correo}', '{$foto}', '{$rol}', NOW())";
+                     ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}', '{$sexo}', '{$pass}', '{$correo}', '{$fotoNombre}', '{$rol}', NOW())";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }

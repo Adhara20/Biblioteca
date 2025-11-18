@@ -4,12 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Libros</title>
-  <!-- Ponen estos enlaces -->
   <link rel="stylesheet" href="../css/listas.css">
   <link rel="stylesheet" href="../css/filtros.css">
   <!-- <link rel="stylesheet" href="../css/style.css"> -->
-
-
 </head>
 
 <?php
@@ -34,10 +31,6 @@ include('../includes/header.php');
     <h1 class="titulos">Libros</h1>
     <hr class="linea-separadora-listas">
   </div>
-  <!-- Aquí agregan esto -->
-  <!-- MENSAJE DE EXITO -->
-<?php include('../includes/notificacion.php'); ?>
-
 
   <!-- Botón visible solo en móvil -->
   <div class="contenedor-btn-filtro block lg:hidden">
@@ -51,9 +44,9 @@ include('../includes/header.php');
 
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_libros.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
-    <input type="text" name="buscar" class="input-busqueda uppercase"
+    <input type="text" name="buscar" class="input-busqueda"
            placeholder="Buscar por título, autor o ISBN..."
-           value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>" >
+           value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
     <select name="categoria" class="select-filtro">
       <option value="">Todas las categorías</option>
@@ -114,7 +107,7 @@ include('../includes/header.php');
         $isbn = htmlspecialchars($fila['isbn']);
         $autor = htmlspecialchars($fila['nombreAutor']);
         $edicion = htmlspecialchars($fila['edicion']);
-        $anio = htmlspecialchars($fila['anioPublicacion'] ?? '');
+        $anio = htmlspecialchars($fila['añoPublicacion'] ?? '');
         $editorial = htmlspecialchars($fila['nombreEditorial']);
         $categoria = htmlspecialchars($fila['nombreCategoria']);
         $subcategoria = htmlspecialchars($fila['nombreSubCategoria']);
@@ -124,8 +117,10 @@ include('../includes/header.php');
           $edicionLabel = $edicionLabel !== '' ? "{$edicionLabel}, {$anio}" : "{$anio}";
         }
       ?>
-      <!-- Cambió de aqui -->
     <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px]">
+
+
+
 
     <!-- Btn de Menú Kebab centrado derecha (Botón de tres puntos) -->
      <!-- Agregar en caso de no querer que sea clicleable la tarjeta: event.preventDefault() -->
@@ -139,7 +134,6 @@ include('../includes/header.php');
     <!-- Menú Kebab: Ver detalles, Editar, Desactivar(Baja), Activar(Alta) -->
     <div class="menu-kebab hidden absolute right-4 top-14 bg-white shadow-lg rounded-lg border w-40 z-30">
       <!-- Detalles -->
-       <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
           onclick="event.stopPropagation();">
@@ -147,39 +141,30 @@ include('../includes/header.php');
            <span class="text-sm/6">Ver Detalles</span>
           </a>
           <!-- Editar -->
-           <!-- cambiar la ruta del archivo en  href y el pk-->
-        <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
-          onclick="event.stopPropagation();">
-           <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
-           <span class="text-sm/6">Editar</span>
-          </a>
+        <button class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-blue-400">
+          <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
+          <span class="text-sm/6">Editar</span>
+        </button>
         <!-- Desactivar(si el registro está Activo) -->
         <?php if (($fila['estatus'] ?? '') === 'A'): ?>
-          <!-- Desactivar -->
-           <!-- cambiar la ruta del archivo en  href y el pk-->
-          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
-          onclick="event.stopPropagation();">
-           <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
-           <span class="text-sm/6">Desactivar</span>
-          </a>
+          <button class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400">
+            <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
+            <span class="text-sm/6">Desactivar</span>
+          </button>
           <!-- Activar(si el registro está Inactivo) -->
         <?php else: ?>
-          <!-- cambiar la ruta del archivo en  href y el pk-->
-            <a href="../controladores/activar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
-          onclick="event.stopPropagation();">
-           <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
-           <span class="text-sm/6">Activar</span>
-          </a>
+            <button class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400">
+              <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
+              <span class="text-sm/6">Activar</span>
+            </button>
         <?php endif; ?>
     </div>
+
     <!-- Contenido (Tarjeta)-->
     <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 
        class="flex items-center gap-4 w-full">
 
-        <!-- Portada (Sino tiene imagen, quient esto)--> 
+        <!-- Portada -->
         <img 
             src="<?= !empty($img) ? '../imagenes/portadas/' . $img : '../imagenes/portadas/placeholder.png'; ?>" 
             alt="Portada de <?= $titulo ?>" 
@@ -197,7 +182,7 @@ include('../includes/header.php');
         </div>
 
     </a>
-<!-- hasta Acá (</a>) --> 
+
 </div>
       <?php endforeach; ?>
     <?php else: ?>
@@ -230,7 +215,6 @@ include('../includes/header.php');
     }
   });
 
-// En Script nomas agregan de aqui para abajo
   // kebab
   function toggleKebab(btn) {
       // cerrar todos menos el actual
@@ -248,7 +232,6 @@ include('../includes/header.php');
           document.querySelectorAll(".menu-kebab").forEach(menu => menu.classList.add("hidden"));
       }
   });
-  // Hasta aca
   </script>
   <!-- Footer -->
   <?php include('../includes/footer.php'); ?>

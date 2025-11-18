@@ -85,7 +85,7 @@ include('../includes/header.php');
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Año de Publicación:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['añoPublicacion'] ?></dd>
+            <dd class="col-span-2 text-gray-800"><?= $fila['anioPublicacion'] ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
@@ -123,10 +123,11 @@ include('../includes/header.php');
 
       <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
-        <a href="#" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
+        <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 
+        class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
           Editar
         </a>
-        <a href="#" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+        <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
           Dar de baja
         </a>
       </div>
