@@ -1,0 +1,46 @@
+
+.linea-separadora-listas {
+  width: 98%;
+  max-width: 1600px;
+  border: none;
+  border-top: 3px solid #000000;
+  margin: 0 auto 25px auto;
+  display: block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 640px) {
+  .linea-separadora-listas {
+    width: 95%;
+    border-top-width: 2px;
+    margin-bottom: 20px;
+  }
+}
+/* -------------------------
+   GRID DE LISTA DE LIBROS
+   (SIGUE USÁNDOSE)
+------------------------- */
+
+.grid-listas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.2rem;
+  justify-items: center;
+  padding: 1rem 2rem;
+  overflow: visible !important;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .grid-listas {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-listas {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}

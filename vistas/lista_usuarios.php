@@ -22,7 +22,8 @@ include('../controladores/filtrar_usuarios.php');
     <h1 class="titulos">Usuarios</h1>
   <hr class="linea-separadora-listas">
   </div>
-  
+<!-- Mensaje de Exito para: insertar, dar de baja o alta (editar se muesta en Detalle, no listas) -->
+  <?php include('../includes/notificacion.php'); ?>
 
   <!-- Botón visible solo en móvil -->
 <div class="contenedor-btn-filtro block lg:hidden">

@@ -71,3 +71,9 @@ table.table-prestamos tr:nth-child(even) {
     margin-bottom: 2px;
   }
 }
+table.table-copias tr,
+table.table-usuarios tr,
+table.table-nacionalidades tr {
+    overflow: visible;
+    position: relative;
+}

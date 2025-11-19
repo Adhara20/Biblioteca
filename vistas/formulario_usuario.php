@@ -26,57 +26,53 @@
       <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">Registrar Usuario</h2>
 
       <!-- Mensaje de error -->
-      <?php if (isset($_GET['error'])) { ?>
-        <div class="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-center font-medium">
-          <?= htmlspecialchars($_GET['error']) ?>
-        </div>
-      <?php } ?>
+      <?php include('../includes/notificacion.php'); ?>
 
       <form action="../controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Nombre(s)</label>
           <input type="text" name="nombres" placeholder="Nombre(s)" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase" value="<?= $_SESSION['form_usuario']['nombres'] ?? '' ?>">
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
           <input type="text" name="apaterno" placeholder="Apellido Paterno" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase" value="<?= $_SESSION['form_usuario']['apaterno'] ?? '' ?>">
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Apellido Materno</label>
           <input type="text" name="amaterno" placeholder="Apellido Materno"
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase" value="<?= $_SESSION['form_usuario']['amaterno'] ?? '' ?>">
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">CURP</label>
           <input type="text" name="curp" placeholder="CURP" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase uppercase">  <!-- uppercase (es una clase de Talwing para que lo que escribas se VEA MAYÚSCULAS. Ojo, es solo para que al escribir se vea en MAYÚSCULAS, para que se guarde como Mayuscula se hace en insertar) -->
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase" value="<?= $_SESSION['form_usuario']['curp'] ?? '' ?>">  <!-- uppercase (es una clase de Talwing para que lo que escribas se VEA MAYÚSCULAS. Ojo, es solo para que al escribir se vea en MAYÚSCULAS, para que se guarde como Mayuscula se hace en insertar) -->
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
           <input type="date" name="fechaNac" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" value="<?= $_SESSION['form_usuario']['fechaNac'] ?? '' ?>">
         </div>
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Sexo</label>
           <select name="sexo" required
             class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
-            <option value="M">Masculino</option>
-            <option value="F">Femenino</option>
+            <option value="M" <?= (isset($_SESSION['form_usuario']['sexo']) && $_SESSION['form_usuario']['sexo'] === 'M') ? 'selected' : '' ?>>Masculino</option>
+            <option value="F" <?= (isset($_SESSION['form_usuario']['sexo']) && $_SESSION['form_usuario']['sexo'] === 'F') ? 'selected' : '' ?>>Femenino</option>
           </select>
         </div>
 
         <div class="md:col-span-2">
           <label class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
           <input type="email" name="correo" placeholder="correo@ejemplo.com" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" value="<?= $_SESSION['form_usuario']['correo'] ?? '' ?>">
         </div>
 
         <div>
@@ -89,9 +85,9 @@
           <label class="block text-sm font-medium text-gray-700">Rol</label>
           <select name="rol" required
             class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
-            <option value="L">Lector</option>
-            <option value="B">Bibliotecario</option>
-            <option value="A">Administrador</option>
+            <option value="L" <?= (isset($_SESSION['form_usuario']['rol']) && $_SESSION['form_usuario']['rol'] === 'L') ? 'selected' : '' ?>>Lector</option>
+            <option value="B" <?= (isset($_SESSION['form_usuario']['rol']) && $_SESSION['form_usuario']['rol'] === 'B') ? 'selected' : '' ?>>Bibliotecario</option>
+            <option value="A" <?= (isset($_SESSION['form_usuario']['rol']) && $_SESSION['form_usuario']['rol'] === 'A') ? 'selected' : '' ?>>Administrador</option>
           </select>
         </div>
 
