@@ -33,7 +33,7 @@ class Prestamo{
     }
 
     function obtenerfolio($folio) {
-        $consulta = "SELECT pkCopiaF FROM copiaf WHERE folio = '{$folio}'";
+        $consulta = "SELECT pkCopiaF FROM copiaF WHERE folio = '{$folio}'";
         $resultado = $this->conexion->query($consulta);
         if ($fila = $resultado->fetch_assoc()) {
             return $fila['pkCopiaF'];
@@ -44,6 +44,7 @@ class Prestamo{
     function verPrestamo() {
         $consulta = "
             SELECT 
+                p.pkPrestamo,
                 p.codigoPrestamo,
                 p.fechaRegistro,
                 p.fechaLimite,
