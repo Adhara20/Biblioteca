@@ -15,7 +15,7 @@ $resultado = $clase->guardar($fechaLimite, $folioContrato, $archivoContrato, $fo
 
 
 if ($resultado) {
-        header("Location: ../vistas/lista_prestamo.php?success=Prestamo registrado correctamente");
+        header("Location: ../vistas/lista_prestamos.php?success=Prestamo registrado correctamente");
         exit;
     } else {
         header("Location: ../vistas/formulario_prestamo.php?error=Error al registrar Prestamo");

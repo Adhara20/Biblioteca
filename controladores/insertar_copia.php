@@ -10,7 +10,7 @@ $clase = new Copia();
 $resultado = $clase ->guardar($isbn, $fkEstanteria);
 
 if ($resultado) {
-        header("Location: ../vistas/lista_copia.php?success=Copia Física registrada correctamente");
+        header("Location: ../vistas/lista_copias.php?success=Copia Física registrada correctamente");
         exit;
     } else {
         header("Location: ../vistas/formulario_copia.php?error=Error al registrar Copia Física");
