@@ -49,7 +49,7 @@ include('../includes/menu.php');
 </div>
 
   <!-- Filtros en pantallas grandes -->
-  <form method="GET" action="lista_prestamo.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
+  <form method="GET" action="lista_prestamos.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
     <input type="text" name="buscar" class="input-busqueda w-48"
            placeholder="Buscar por Usuario, Codigo..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
@@ -79,7 +79,7 @@ include('../includes/menu.php');
     <button type="button" id="cerrarPanel" class="cerrar-panel">&times;</button>
     <h2>Filtros</h2>
 
-      <form method="GET" action="lista_prestamo.php" class="form-filtros-movil">
+      <form method="GET" action="lista_prestamos.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
                placeholder="Buscar por..."
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">

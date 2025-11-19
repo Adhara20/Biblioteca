@@ -35,7 +35,7 @@
 </div>
 
   <!-- Filtros en pantallas grandes -->
-  <form method="GET" action="lista_copia.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
+  <form method="GET" action="lista_copias.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
     <input type="text" name="buscar" class="input-busqueda w-48"
            placeholder="Buscar por ISBN, Titulo, Folio..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
@@ -65,7 +65,7 @@
     <button type="button" id="cerrarPanel" class="cerrar-panel">&times;</button>
     <h2>Filtros</h2>
 
-      <form method="GET" action="lista_usuarios.php" class="form-filtros-movil">
+      <form method="GET" action="lista_copias.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
                placeholder="Buscar por..."
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
@@ -102,12 +102,13 @@
     </tr>
     <?php foreach ($resultadoCF as $fila) { ?>
         <tr>
-            <td><?=$fila["isbn"]?></td>
-            <td><?=$fila["folio"]?></td>
-            <td><?=$fila["titulo"]?></td>
-            <td><?=$fila["nombreSubCategoria"]?></td>
-            <td><?=$fila["codigoEstanteria"]?></td>
+          <td data-label="ISBN"><?= htmlspecialchars($fila["isbn"]) ?></td>
+          <td data-label="Folio"><?= htmlspecialchars($fila["folio"]) ?></td>
+          <td data-label="Título"><?= htmlspecialchars($fila["titulo"]) ?></td>
+          <td data-label="Subcategoría"><?= htmlspecialchars($fila["nombreSubCategoria"]) ?></td>
+          <td data-label="Estantería"><?= htmlspecialchars($fila["codigoEstanteria"]) ?></td>
         </tr>
+
     <?php } ?>
 </table>
 </div>
