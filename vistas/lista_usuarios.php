@@ -110,18 +110,12 @@ include('../controladores/filtrar_usuarios.php');
     </div>
   </div>
 
-  <?php if (isset($_GET['success'])) { ?>
-    <div class="bg-green-100 text-green-800 p-3 rounded-md mb-4 font-semibold">
-      <?= htmlspecialchars($_GET['success']) ?>
-    </div>
-  <?php } ?>
-
   <!-- Lista envuelta en div (Esto no se lo agreuen, si ven que su contenido queda al borde, me dicen primero)-->
   <div class="px-8">
     <!-- Lista de usuarios -->
     <ul role="list" class="bg-gray-100">
       <?php foreach ($resultado as $fila) {
-        // Obtener el Rol, y
+        // Obtener el Rol y traducir
         if ($fila["rol"] === 'A') {
         $rolTraducido = 'Administrador';
         } elseif ($fila["rol"] === 'B') {
@@ -136,10 +130,11 @@ include('../controladores/filtrar_usuarios.php');
         // Obtener la foto del usuario y guardarla en una variable
         $rutaImagen = !empty($fila["foto"]) ? "../imagenes/usuarios/" . $fila["foto"] : "../imagenes/usuarios/default.png"; // imagen por defecto
       ?>
-        <li class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-white rounded-xl shadow mb-4 hover:bg-gray-50 transition">
-          <!--  Imagen -->
+        <li 
+        onclick="window.location='detalle_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>'"
+        class="relative flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-white rounded-xl shadow mb-4 hover:bg-gray-50 transition">
+          <!-- Imagen -->
           <div class="flex-shrink-0">
-            <!-- Mostrarla con la variable de la rutaImagen -->
             <img src="<?= htmlspecialchars($rutaImagen ?? '../imagenes/usuarios/default.png') ?>" 
                  alt="Foto de <?= htmlspecialchars($nombreCompleto) ?>" 
                  class="w-16 h-16 rounded-full object-cover border border-gray-300">
@@ -148,17 +143,69 @@ include('../controladores/filtrar_usuarios.php');
           <!-- Info principal -->
           <div class="flex-1 text-center sm:text-left">
             <p class="text-lg font-semibold text-[#4F0087]"><?= htmlspecialchars($nombreCompleto) ?></p>
-            <p class="text-sm text-gray-600"><?= htmlspecialchars($fila["curp"] ?? '') ?></p>
-            <p class="text-xs text-gray-500">Núm. Credencial: <?= htmlspecialchars($fila["numCredencial"] ?? '') ?></p>
+            <p class="text-xs text-gray-500"><span class="font-semibold">Núm. Credencial:</span> <span class="font-bold"><?= htmlspecialchars($fila["numCredencial"] ?? '') ?></span></p>
+            <p class="text-sm text-gray-600"><span class="font-semibold">CURP:</span> <?= htmlspecialchars($fila["curp"] ?? '') ?></p>
           </div>
 
           <!-- Info a la derecha -->
-          <div class="text-sm text-center sm:text-right">
+          <div class="text-sm text-center sm:text-right sm:pr-14">
             <p class="font-medium"><?= $rolTraducido ?></p>
-            <p class="text-gray-500">Edad: <?= $clase->obtenerEdad($fila["fechaNac"]) ?></p>
-            <p class="text-xs text-gray-400">Nacido el <?= htmlspecialchars($fila["fechaNac"]) ?></p>
+            <p class="text-gray-500"><span class="font-medium">Edad:</span> <?= $clase->obtenerEdad($fila["fechaNac"]) ?> años</p>
+            <p class="text-xs text-gray-700 font-medium">Nacido el <?= htmlspecialchars($fila["fechaNac"]) ?></p>
+            <?php
+              if(htmlspecialchars($fila["estatus"] ?? '') == 'A' ){
+                $estatus='ACTIVO';
+                $color= 'text-green-500 font-extrabold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+              }else{
+                $estatus='INACTIVO';
+                $color= 'text-red-400 font-extrabold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+              }
+            ?>
+            <p class="text-xs <?= $color ?>"><?= $estatus ?></p>
           </div>
-      </li>
+
+          <!-- Botón Kebab (tres puntitos) -->
+          <button 
+              class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded hover:bg-gray-200 z-20 btn-kebab"
+              onclick="event.stopPropagation(); toggleKebab(this)"
+              aria-label="Abrir acciones">
+              <img src="../imagenes/btn Iconos/btnAcciones.png" class="w-6 h-6" alt="Acciones">
+          </button>
+
+          <!-- Menú Kebab -->
+          <div class="menu-kebab hidden absolute right-4 top-14 bg-white shadow-lg rounded-lg border w-40 z-30">
+            <a href="detalle_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
+               class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
+               onclick="event.stopPropagation();">
+               <img src="../imagenes/btn Iconos/btnVer.png" class="w-4 h-4">
+               <span class="text-sm">Ver Detalles</span>
+            </a>
+
+            <a href="editar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
+               class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
+               onclick="event.stopPropagation();">
+               <img src="../imagenes/btn Iconos/btnEditar.png" class="w-4 h-4">
+               <span class="text-sm">Editar</span>
+            </a>
+
+            <?php if ($fila['estatus'] === 'A'): ?>
+              <a href="../controladores/desactivar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
+                 class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
+                 onclick="event.stopPropagation();">
+                 <img src="../imagenes/btn Iconos/btbBaja.png" class="w-4 h-4">
+                 <span class="text-sm">Desactivar</span>
+              </a>
+            <?php else: ?>
+              <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
+                 class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
+                 onclick="event.stopPropagation();">
+                 <img src="../imagenes/btn Iconos/btnAlta.png" class="w-4 h-4">
+                 <span class="text-sm">Activar</span>
+              </a>
+            <?php endif; ?>
+          </div>
+        </li>
+
       <?php } ?>
     </ul>
   </div>
@@ -166,29 +213,48 @@ include('../controladores/filtrar_usuarios.php');
   <?php include('../includes/footer.php'); ?>
 
   <!-- Script abrir/cerrar panel -->
-  <script>
-    const btnFiltros = document.getElementById('btnFiltros');
-    const panelFiltros = document.getElementById('panelFiltros');
-    const cerrarPanel = document.getElementById('cerrarPanel');
-        
-    btnFiltros.addEventListener('click', () => {
-      panelFiltros.classList.add('mostrar');
-      panelFiltros.classList.remove('oculto');
-    });
-    
-    cerrarPanel.addEventListener('click', () => {
+    <script>
+  // panel filtros (movil)
+  const btnFiltros = document.getElementById('btnFiltros');
+  const panelFiltros = document.getElementById('panelFiltros');
+  const cerrarPanel = document.getElementById('cerrarPanel');
+
+  btnFiltros?.addEventListener('click', () => {
+    panelFiltros.classList.add('mostrar');
+    panelFiltros.classList.remove('oculto');
+  });
+
+  cerrarPanel?.addEventListener('click', () => {
+    panelFiltros.classList.remove('mostrar');
+    panelFiltros.classList.add('oculto');
+  });
+
+  panelFiltros?.addEventListener('click', (e) => {
+    if (e.target === panelFiltros) {
       panelFiltros.classList.remove('mostrar');
       panelFiltros.classList.add('oculto');
-    });
-    
-    // Cerrar al hacer click fuera del contenido
-    panelFiltros.addEventListener('click', (e) => {
-      if (e.target === panelFiltros) {
-        panelFiltros.classList.remove('mostrar');
-        panelFiltros.classList.add('oculto');
-      }
-    });
+    }
+  });
 
+// En Script nomas agregan de aqui para abajo
+  // kebab
+  function toggleKebab(btn) {
+      // cerrar todos menos el actual
+      document.querySelectorAll(".menu-kebab").forEach(menu => {
+          if (menu !== btn.nextElementSibling) menu.classList.add("hidden");
+      });
+      btn.nextElementSibling.classList.toggle("hidden");
+  }
+
+  // cerrar kebab si da click fuera
+  document.addEventListener("click", function(e) {
+      const isKebabButton = e.target.closest(".btn-kebab");
+      const isMenu = e.target.closest(".menu-kebab");
+      if (!isKebabButton && !isMenu) {
+          document.querySelectorAll(".menu-kebab").forEach(menu => menu.classList.add("hidden"));
+      }
+  });
+  // Hasta aca
   </script>
 </body>
 </html>

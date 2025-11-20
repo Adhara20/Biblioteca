@@ -118,6 +118,23 @@ include('../includes/header.php');
             <dd class="col-span-2 text-gray-700 text-justify"><?= $fila['sinopsis'] ?></dd>
           </div>
 
+          <!-- !!!!! -->
+          <!-- Agregen esto al final pero antes de los botones, cpien y peguen tal cual ->> -->
+          <div class="py-3 grid grid-cols-3 gap-4">
+                <dt class="font-medium text-gray-700">Estatus:</dt>
+                <?php
+                if($fila['estatus'] == 'A'){
+                    $estatus ='ACTIVO';
+                    $color= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }else{
+                    $estatus ='INACTIVO';
+                    $color= 'text-red-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }
+                ?>
+                <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
+            </div>
+            <!-- <<- -->
+
         </dl>
       </div>
 
@@ -127,9 +144,19 @@ include('../includes/header.php');
         class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
           Editar
         </a>
-        <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+        <!-- !!!!!! -->
+        <!-- Copian de aquí: -->
+        <!-- Validar Estatus para mostrar Botón -->
+        <?php
+          if($fila['estatus'] == 'A'){
+        ?>
+          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
           Dar de baja
         </a>
+        <?php
+          }
+        ?>
+        <!-- : Hasta acá y reemplazan el botón de Dar de Baja -->
       </div>
     </div>
   </div>

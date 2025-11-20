@@ -1,5 +1,4 @@
 <?php
-
 $pkLibro = $_POST['pkLibro'];
 $isbn = $_POST['isbn'];
 $titulo = strtoupper($_POST['titulo']);
