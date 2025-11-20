@@ -6,42 +6,45 @@ class Usuario {
         require_once("conexion.php");
         $this->conexion = new Conexion();
     }
-                    //Dejo de recivir y mandar $numCredencia como parametro
-    function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $fotoNombre, $rol) {
-        //mando a llamar la funcion para generar números autoatisco para credenciales
-        $numCredencial = $this->generarNumCredencial();
 
+    // Registrar
+    function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $fotoNombre, $rol) {
+        //mando a llamar la funcion para generar números automaticos para credenciales
+        $numCredencial = $this->generarNumCredencial();
         $consulta = "INSERT INTO usuario 
-                     (numCredencial, nombres, apaterno, amaterno, curp, fechaNac, sexo, pass, correo, foto, rol, fechaRegistro)
-                     VALUES 
-                     ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}', '{$sexo}', '{$pass}', '{$correo}', '{$fotoNombre}', '{$rol}', NOW())";
+        (numCredencial, nombres, apaterno, amaterno, curp, fechaNac, sexo, pass, correo, foto, rol, fechaRegistro)
+        VALUES 
+        ('{$numCredencial}', '{$nombres}', '{$apaterno}', '{$amaterno}', '{$curp}', '{$fechaNac}', '{$sexo}', '{$pass}', '{$correo}', '{$fotoNombre}', '{$rol}', NOW())";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
 
-    function darBaja($pkUsuario) {
+    // Dar baja
+    function desactivar($pkUsuario) {
         $consulta = "UPDATE usuario 
                      SET estatus = 'I' 
-                     WHERE pkUsuario = '$pkUsuario'";
+                     WHERE pkUsuario = '{$pkUsuario}'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
 
-    function darAlta($pkUsuario) {
+    // Dar alta
+    function activar($pkUsuario) {
         $consulta = "UPDATE usuario 
                      SET estatus = 'A' 
-                     WHERE pkUsuario = '$pkUsuario'";
+                     WHERE pkUsuario = '{$pkUsuario}'";
+        $resultado = $this->conexion->query($consulta);
+        return $resultado;
+    }
+    // ver
+    function detalles($pkUsuario) {
+        $consulta = "SELECT *, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, ' ')) AS nombreCompleto FROM usuario 
+                     WHERE pkUsuario = '{$pkUsuario}'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
 
-    function ver($pkUsuario) {
-        $consulta = "SELECT * FROM usuario 
-                     WHERE pkUsuario = '$pkUsuario'";
-        $resultado = $this->conexion->query($consulta);
-        return $resultado;
-    }
-
+    // Para validad al guardar
     function existeCurpTipo($curp, $rol) {
     if ($rol == 'L') {
         $consulta = "SELECT * FROM usuario WHERE curp = '$curp' AND rol = 'L'";
@@ -50,7 +53,20 @@ class Usuario {
     }
     $resultado = $this->conexion->query($consulta);
     return ($resultado->num_rows > 0); 
-}
+    }
+
+    // Para validad al actualizar
+    function existeCurpTipoActualizar($curp, $rol, $pkUsuario) {
+    if ($rol == 'L') {
+        $consulta = "SELECT * FROM usuario WHERE curp = '{$curp}' AND rol = 'L' AND pkUsuario != '{$pkUsuario}'";
+    } else {
+        $consulta = "SELECT * FROM usuario WHERE curp = '{$curp}' AND rol IN ('A','B') AND pkUsuario != '{$pkUsuario}'";
+    }
+    $resultado = $this->conexion->query($consulta);
+    return ($resultado->num_rows > 0);
+    }
+
+    // Generar codigo-número
     function generarNumCredencial() {
     // Prefijo: Es la parte que se mantendra igual en todos los numCredenciales
     $prefijo = "OW-";
@@ -70,6 +86,8 @@ class Usuario {
     $numCredencial = $prefijo . str_pad($nuevoNumero, 6, "0", STR_PAD_LEFT);
     return $numCredencial;
     }
+
+    // Calcular edad
     function obtenerEdad($fechaNac){
         // DateTime sirve para convertir la fecha(que se guarda como texto aunque sea date) a un objeto para realizar calculos
         $nacimiento = new DateTime($fechaNac);
@@ -81,12 +99,14 @@ class Usuario {
         return $edad->y;
     }
 
+    // Iniciar sesión
     function login($numCredencial, $pass) {
         $numCredencial = $this->conexion->real_escape_string($numCredencial);
-        $password = $this->conexion->real_escape_string($password);
+        $pass = $this->conexion->real_escape_string($pass);
         $consulta = "SELECT pkUsuario, numCredencial, rol FROM usuario WHERE numCredencial = '{$numCredencial}' AND pass = '{$pass}' AND estatus = 'A'";
         return $this->conexion->query($consulta);
     }
+    // filtrar y mostrar listas
     function filtrar($buscar = '', $rol = '', $estatus = '', $vetado = '', $sexo = '', $fechaRegistro = '') {
        $consulta = "SELECT *,
                 CONCAT(
@@ -144,6 +164,34 @@ class Usuario {
         $resultado = mysqli_query($this->conexion, $consulta);
         return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
     }
+
+    function actualizarCompleto( $pkUsuario, $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $rol, $foto){
+       $consulta = "UPDATE usuario SET 
+                   nombres      = '{$nombres}',
+                   apaterno     = '{$apaterno}',
+                   amaterno     = '{$amaterno}',
+                   curp         = '{$curp}',
+                   fechaNac     = '{$fechaNac}',
+                   sexo         = '{$sexo}',
+                   pass         = '{$pass}',
+                   correo       = '{$correo}',
+                   rol          = '{$rol}',
+                   foto         = '{$foto}'
+               WHERE pkUsuario = '{$pkUsuario}'";
+
+       return $this->conexion->query($consulta);
+    }
+    function actualizarBasico( $pkUsuario, $nombres, $apaterno, $amaterno, $pass, $correo, $foto) {
+    $consulta = "UPDATE usuario SET 
+                nombres  = '{$nombres}',
+                apaterno = '{$apaterno}',
+                amaterno = '{$amaterno}',
+                pass     = '{$pass}',
+                correo   = '{$correo}',
+                foto     = '{$foto}'
+            WHERE pkUsuario = '{$pkUsuario}'";
+    return $this->conexion->query($consulta);
+}
 
 
 

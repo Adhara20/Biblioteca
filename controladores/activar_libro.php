@@ -6,7 +6,7 @@
 
     $resultado = $clase->activar($pkLibro);
     if($resultado){
-        header('Location: ../vistas/lista_libros.php?success=Libro desactivado Exito');
+        header('Location: ../vistas/lista_libros.php?success=Libro activado Exito');
         exit;
     }else{
         header('Location: ../vistas/lista_libros.php?error=Error al activar Libro');

@@ -123,9 +123,21 @@ include('../includes/header.php');
         if ($anio !== '') {
           $edicionLabel = $edicionLabel !== '' ? "{$edicionLabel}, {$anio}" : "{$anio}";
         }
+        // !!!!!
+        // copien esto y pegenlo tal cual ->
+        if(htmlspecialchars($fila['estatus'])=='A'){
+          $estatus = 'ACTIVO';
+          $colorEstatus= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        }else{
+          $estatus = 'INACTIVO';
+          $colorEstatus= 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        }
+        // <-
+        
       ?>
-      <!-- Cambió de aqui -->
-    <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px]">
+      <!-- !!!!! -->
+      <!-- Remplacen su div, por este                                                                   -->
+    <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px] border-[3px] border-[<?= $colorEstatus ?>]">
 
     <!-- Btn de Menú Kebab centrado derecha (Botón de tres puntos) -->
      <!-- Agregar en caso de no querer que sea clicleable la tarjeta: event.preventDefault() -->
@@ -194,6 +206,8 @@ include('../includes/header.php');
             <p class="text-sm text-gray-600"><strong>Editorial:</strong> <?= $editorial ?></p>
             <p class="text-sm text-gray-600"><strong>Categoría:</strong> <?= $categoria ?></p>
             <p class="text-sm text-gray-500"><?= $edicionLabel ?></p>
+            <!-- !!!!! Peguen esto al final aquí tal cual -->
+            <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>
 
     </a>

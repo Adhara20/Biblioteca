@@ -2,12 +2,39 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registrar Usuario</title>
+  <title>Editar Usuario</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <?php include('../includes/header.php'); ?>
 <body>
 <?php include('../includes/menu.php'); ?>
+
+<?php
+include('../clases/usuario.php');
+$clase = new Usuario();
+
+$pkUsuario = $_GET['pkUsuario'] ?? null;
+
+if (!$pkUsuario) {
+    echo "<p>No se especificó Usuario.</p>";
+    exit;
+}
+
+// Usas tu función "detalles" como pediste
+$resultado = $clase->detalles($pkUsuario);
+
+if ($resultado && $resultado->num_rows > 0) {
+    $fila = $resultado->fetch_assoc();
+} else {
+    echo "<p>No se encontró Usuario.</p>";
+    exit;
+}
+
+// Determinar imagen actual
+$imgRuta = !empty($fila['foto']) 
+    ? "../imagenes/usuarios/" . $fila['foto']
+    : "../imagenes/usuarios/placeholder.png";
+?>
 
   <div class="min-h-screen flex justify-center items-center px-4 py-10">
 
@@ -29,7 +56,13 @@
       <!-- Mensaje de error -->
       <?php include('../includes/notificacion.php'); ?>
 
-      <form action="../controladores/insertar_usuario.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form action="../controladores/actualizar_usuario.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <!-- PK -->
+    <input type="hidden" name="pkUsuario" value="<?= $fila['pkUsuario'] ?>">
+
+    <!-- PORTADA ACTUAL (para el controlador) -->
+    <input type="hidden" name="fotoActual" value="<?= $fila['foto'] ?>">
 
         <div>
           <label class="block text-sm font-medium text-gray-700">Nombre(s)</label>
@@ -80,13 +113,13 @@
         <div>
           <label class="block text-sm font-medium text-gray-700">Contraseña</label>
           <input type="password" name="pass" placeholder="De 8 a 20 caracteres" minlength="8" maxlength="20" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" <?= $_SESSION['form_usuario']['pass'] ?? '' ?>>
         </div>
         <!-- Confirmar Contraseñ -->
          <div>
           <label class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
           <input type="password" name="confirmarPass" placeholder="De 8 a 20 caracteres" minlength="8" maxlength="20" required
-            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" <?= $_SESSION['form_usuario']['pass'] ?? '' ?>>
         </div>
 
         <div>
@@ -100,14 +133,22 @@
         </div>
 
         <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700">Foto de Usuario</label>
-          <input type="file" name="foto"
-            class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
+          <img src="<?= $imgRuta ?>" class="w-32 h-32 object-cover border rounded-full shadow mt-2">
+            <label class="block text-sm font-medium text-gray-700 mt-3">
+                Subir nueva foto (opcional)
+            </label>
+            <input type="file" name="foto" class="w-full mt-1 p-2 border rounded-md bg-white">
         </div>
 
-        <div class="md:col-span-2">
+        <!-- BOTONES -->
+        <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
+          <a href="detalle_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
+             class="w-full md:w-32 bg-[#B55780] text-white py-2 rounded-md font-semibold hover:bg-[#c46b93] transition text-center">
+             Cancelar
+          </a>
+
           <button type="submit"
-            class="w-full bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
+            class="w-full md:w-32 bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
             Guardar
           </button>
         </div>
