@@ -40,7 +40,7 @@ include('../includes/menu.php');
     <h1 class="titulos">Registro de Préstamos</h1>
     <hr class="linea-separadora-listas">
 </div>
-
+<?include('../includes/notificacion.php');?>
 
 <!-- BOTÓN FILTROS MÓVIL -->
 <div class="contenedor-btn-filtro block lg:hidden">

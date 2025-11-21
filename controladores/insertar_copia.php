@@ -1,13 +1,12 @@
 <?php
 $isbn = $_POST['isbn'];
-$fkEstanteria = $_POST['fkEstanteria'];
 
 include('../clases/copia.php');
 
 
 $clase = new Copia();
 
-$resultado = $clase ->guardar($isbn, $fkEstanteria);
+$resultado = $clase ->guardar($isbn);
 
 if ($resultado) {
         header("Location: ../vistas/lista_copias.php?success=Copia Física registrada correctamente");

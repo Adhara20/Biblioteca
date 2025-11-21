@@ -3,33 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Libros</title>
+  <title>Registro de Copias</title>
   <!-- Ponen estos enlaces -->
   <link rel="stylesheet" href="../css/listas.css">
   <link rel="stylesheet" href="../css/filtros.css">
-
 </head>
 
-<?php
-// --- Clases ---
-include('../clases/libro.php');
-include('../clases/categoria.php');
-
-// --- CONTROLADOR DE FILTRADO (Tambien Muestra) ---
-include('../controladores/filtrar_libros.php'); // ← Aquí se define $resultado
-
-// --- CATEGORIAS ---
-$cat = new Categoria;
-$cats = $cat->mostrar();
-
+<?php 
 include('../includes/header.php');
 ?>
-
 <body>
-  <?php include('../includes/menu.php'); ?>
+  <?php 
+        include('../controladores/filtrar_copias.php'); // Aquí deberías obtener $resultadoCopias
+        include('../clases/subcategoria.php');
+        $clase = new Subcategoria;
+        $resultadoSub = $clase->listaActivo();
+        include('../includes/menu.php');
+	?>
 
   <div class="px-10 mb-6">
-    <h1 class="titulos">Libros</h1>
+    <h1 class="titulos">Registro de Copias</h1>
     <hr class="linea-separadora-listas">
   </div>
   <!-- Aquí agregan esto -->
@@ -38,90 +31,95 @@ include('../includes/header.php');
 
 
   <!-- Botón visible solo en móvil -->
-  <div class="contenedor-btn-filtro block lg:hidden">
-    <button id="btnFiltros" class="flex items-center gap-2 text-[#7C23BA] hover:text-[#4F0087] transition-colors duration-200">
-      <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5" aria-hidden="true">
-        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2l-5 6v5l-4-2v-3L3 6V4z" clip-rule="evenodd" />
-      </svg>
-      <span>Filtros</span>
-    </button>
-  </div>
+<div class="contenedor-btn-filtro block lg:hidden">
+  <button id="btnFiltros" class="flex items-center gap-2 text-[#7C23BA] hover:text-[#4F0087] transition-colors duration-200">
+    <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+      <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2l-5 6v5l-4-2v-3L3 6V4z" clip-rule="evenodd" />
+    </svg>
+    <span>Filtros</span>
+  </button>
+</div>
 
-  <!-- Formulario en pantallas grandes -->
-  <form method="GET" action="lista_libros.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
-    <input type="text" name="buscar" class="input-busqueda uppercase"
-           placeholder="Buscar por título, autor o ISBN..."
-           value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>" >
+  <!-- Filtros en pantallas grandes -->
+  <form method="GET" action="lista_copias.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
+    <input type="text" name="buscar" class="input-busqueda w-48"
+           placeholder="Buscar por ISBN, Titulo, Folio..."
+           value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
-    <select name="categoria" class="select-filtro">
+    <select name="estatus"  class="select-filtro w-40">
+      <option value="">Estatus</option>
+      <option value="A" <?= (($_GET['estatus'] ?? '') === 'A') ? 'selected' : '' ?>>Activo</option>
+      <option value="I" <?= (($_GET['estatus'] ?? '') === 'I') ? 'selected' : '' ?>>Inactivo</option>
+    </select>
+
+    <select name="subcategoria" class="select-filtro">
       <option value="">Todas las categorías</option>
-      <?php foreach ($cats as $filaCat): ?>
-        <option value="<?= htmlspecialchars($filaCat['pkCategoria']) ?>"
-          <?= (isset($_GET['categoria']) && $_GET['categoria'] == $filaCat['pkCategoria']) ? 'selected' : '' ?>>
-          <?= htmlspecialchars($filaCat['nombreCategoria']) ?>
+      <?php foreach ($resultadoSub as $fila): ?>
+        <option value="<?= htmlspecialchars($fila['pkSubCategoria']) ?>" 
+          <?= (isset($_GET['subcategoria']) && $_GET['subcategoria'] == $fila['pkSubCategoria']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($fila['nombreSubCategoria']) ?>
         </option>
       <?php endforeach; ?>
     </select>
 
-    <select name="estatus" class="select-filtro">
-      <option value="">Estatus</option>
-      <option value="A" <?= (isset($_GET['estatus']) && $_GET['estatus'] === 'A') ? 'selected' : '' ?>>Activo</option>
-      <option value="I" <?= (isset($_GET['estatus']) && $_GET['estatus'] === 'I') ? 'selected' : '' ?>>Inactivo</option>
-    </select>
-
-    <button type="submit" class="btn-filtro shrink-0">Buscar</button>
+    <button type="submit" class="btn-filtro ml-auto shrink-0">Buscar</button>
   </form>
 
-  <!-- Panel lateral (slidebar de filtros para móvil) -->
+  <!-- Panel lateral móvil -->
   <div id="panelFiltros" class="panel-filtros oculto">
-    <div class="panel-filtros-contenido">
-      <button type="button" id="cerrarPanel" class="cerrar-panel">&times;</button>
-      <h2>Filtros</h2>
+  <div class="panel-filtros-contenido">
+    <button type="button" id="cerrarPanel" class="cerrar-panel">&times;</button>
+    <h2>Filtros</h2>
 
-      <form method="GET" action="lista_libros.php" class="form-filtros-movil">
+      <form method="GET" action="lista_copias.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
-               placeholder="Buscar por título, autor o ISBN..."
+               placeholder="Buscar por..."
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
-
-        <select name="categoria" class="select-filtro">
-          <option value="">Todas las categorías</option>
-          <?php foreach ($cats as $filaCat): ?>
-            <option value="<?= htmlspecialchars($filaCat['pkCategoria']) ?>"
-              <?= (isset($_GET['categoria']) && $_GET['categoria'] == $filaCat['pkCategoria']) ? 'selected' : '' ?>>
-              <?= htmlspecialchars($filaCat['nombreCategoria']) ?>
-            </option>
-          <?php endforeach; ?>
-        </select>
 
         <select name="estatus" class="select-filtro">
           <option value="">Estatus</option>
-          <option value="A" <?= (isset($_GET['estatus']) && $_GET['estatus'] === 'A') ? 'selected' : '' ?>>Activo</option>
-          <option value="I" <?= (isset($_GET['estatus']) && $_GET['estatus'] === 'I') ? 'selected' : '' ?>>Inactivo</option>
+          <option value="A" <?= (($_GET['estatus'] ?? '') === 'A') ? 'selected' : '' ?>>Activo</option>
+          <option value="I" <?= (($_GET['estatus'] ?? '') === 'I') ? 'selected' : '' ?>>Inactivo</option>
         </select>
+
+        <select name="subcategoria" class="select-filtro">
+      <option value="">Todas las categorías</option>
+      <?php foreach ($resultadoSub as $fila): ?>
+        <option value="<?= htmlspecialchars($fila['pkSubCategoria']) ?>" 
+          <?= (isset($_GET['subcategoria']) && $_GET['subcategoria'] == $fila['pkSubCategoria']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($fila['nombreSubCategoria']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
 
         <button type="submit" class="btn-filtro">Aplicar filtros</button>
       </form>
     </div>
   </div>
 
-  <!-- Obtener resultados -->
-  <section class="grid-listas">
-    <?php if (!empty($resultado)): ?>
-      <?php foreach ($resultado as $fila): 
-        $titulo = htmlspecialchars($fila['titulo']);
-        $isbn = htmlspecialchars($fila['isbn']);
-        $autor = htmlspecialchars($fila['nombreAutor']);
-        $edicion = htmlspecialchars($fila['edicion']);
-        $anio = htmlspecialchars($fila['anioPublicacion'] ?? '');
-        $editorial = htmlspecialchars($fila['nombreEditorial']);
-        $categoria = htmlspecialchars($fila['nombreCategoria']);
-        $subcategoria = htmlspecialchars($fila['nombreSubCategoria']);
-        $img = htmlspecialchars($fila['portada'] ?? '');
-        $edicionLabel = trim($edicion) !== '' ? "{$edicion} Edición" : '';
-        if ($anio !== '') {
-          $edicionLabel = $edicionLabel !== '' ? "{$edicionLabel}, {$anio}" : "{$anio}";
+  <!-- LISTADO -->
+<section class="grid-listas">
+
+<?php if (!empty($resultadoCF)): ?>
+<?php foreach ($resultadoCF as $fila): ?>
+
+<?php 
+$isbn = htmlspecialchars($fila['isbn']);
+$folio = htmlspecialchars($fila['folio']);
+$titulo = htmlspecialchars($fila['titulo']);
+$nombreSubCategoria = htmlspecialchars($fila['nombreSubCategoria'] ?? '---');
+$img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro (nuevo)
+
+// copien esto y pegenlo tal cual ->
+        if(htmlspecialchars($fila['estatus'])=='A'){
+          $estatus = 'ACTIVO';
+          $colorEstatus= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        }else{
+          $estatus = 'INACTIVO';
+          $colorEstatus= 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         }
-      ?>
+        // <-
+?>
       <!-- Cambió de aqui -->
     <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px]">
 
@@ -138,7 +136,7 @@ include('../includes/header.php');
     <div class="menu-kebab hidden absolute right-4 top-14 bg-white shadow-lg rounded-lg border w-40 z-30">
       <!-- Detalles -->
        <!-- cambiar la ruta del archivo en  href y el pk-->
-        <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
+        <a href="detalle_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
           onclick="event.stopPropagation();">
            <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
@@ -146,7 +144,7 @@ include('../includes/header.php');
           </a>
           <!-- Editar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
-        <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
+        <a href="editar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
           onclick="event.stopPropagation();">
            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
@@ -156,7 +154,7 @@ include('../includes/header.php');
         <?php if (($fila['estatus'] ?? '') === 'A'): ?>
           <!-- Desactivar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
-          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
+          <a href="../controladores/desactivar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
           onclick="event.stopPropagation();">
            <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
@@ -165,7 +163,7 @@ include('../includes/header.php');
           <!-- Activar(si el registro está Inactivo) -->
         <?php else: ?>
           <!-- cambiar la ruta del archivo en  href y el pk-->
-            <a href="../controladores/activar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
+            <a href="../controladores/activar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
           onclick="event.stopPropagation();">
            <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
@@ -174,7 +172,7 @@ include('../includes/header.php');
         <?php endif; ?>
     </div>
     <!-- Contenido (Tarjeta)-->
-    <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 
+    <a href="detalle_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>" 
        class="flex items-center gap-4 w-full">
 
         <!-- Portada (Sino tiene imagen, quient esto)--> 
@@ -186,12 +184,11 @@ include('../includes/header.php');
 
         <!-- Info -->
         <div class="flex flex-col gap-1 flex-1 mr-8">
-            <h2 class="text-lg font-bold text-purple-900"><?= $titulo ?></h2>
-            <p class="text-sm font-bold text-gray-700"><?= $autor ?></p>
             <p class="text-sm text-gray-600"><strong>ISBN:</strong> <?= $isbn ?></p>
-            <p class="text-sm text-gray-600"><strong>Editorial:</strong> <?= $editorial ?></p>
-            <p class="text-sm text-gray-600"><strong>Categoría:</strong> <?= $categoria ?></p>
-            <p class="text-sm text-gray-500"><?= $edicionLabel ?></p>
+            <p class="text-sm text-gray-600"><strong>Folio:</strong> <?= $folio ?></p>
+            <p class="text-sm text-gray-600"><strong>Título:</strong> <?= $titulo ?></p>
+            <p class="text-sm text-gray-600"><strong>Subcategoría:</strong> <?= $nombreSubCategoria ?></p>
+            <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>
 
     </a>
@@ -200,7 +197,7 @@ include('../includes/header.php');
       <?php endforeach; ?>
     <?php else: ?>
       <!-- En caso de no encontrar nada/No tener Registros -->
-      <p class="no-resultados">No se encontraron libros con esos filtros.</p>
+      <p class="no-resultados">No se encontraron copias con esos filtros.</p>
     <?php endif; ?>
   </section>
 
