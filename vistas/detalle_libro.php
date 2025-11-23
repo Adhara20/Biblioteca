@@ -147,15 +147,22 @@ include('../includes/header.php');
         <!-- !!!!!! -->
         <!-- Copian de aquí: -->
         <!-- Validar Estatus para mostrar Botón -->
+         <!-- !!!!! Peguén esto y remplacen el if del boton -->
         <?php
           if($fila['estatus'] == 'A'){
         ?>
-          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
-          Dar de baja
-        </a>
+          <a href="../controladores/desactivar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+            Desactivar
+          </a>
         <?php
-          }
+          }else{
         ?>
+        <!-- Nomas le acomodan el nombre del controlador -->
+          <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
+            Activar
+          </a>
+        <?php } ?>
+        <!-- !!! hasta aqui -->
         <!-- : Hasta acá y reemplazan el botón de Dar de Baja -->
       </div>
     </div>

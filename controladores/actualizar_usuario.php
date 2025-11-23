@@ -1,35 +1,23 @@
 <?php
-session_start(); // ← SIEMPRE
-
-// QUIÉN ESTÁ EDITANDO
-$rolEditor = $_SESSION['rol'] ?? null;
-$pkEditor  = $_SESSION['pkUsuario'] ?? null;
-
-$pkUsuario = $_POST['pkUsuario'];
-$nombres   = strtoupper($_POST['nombres']);
-$apaterno  = strtoupper($_POST['apaterno']);
-$amaterno  = strtoupper($_POST['amaterno']);
-$curp      = strtoupper($_POST['curp']);
-$fechaNac  = $_POST['fechaNac'];
-$sexo      = $_POST['sexo'];
-$pass      = $_POST['pass'];
-$correo    = $_POST['correo'];
-$rol       = $_POST['rol'];  // Solo editable si es admin
-
-$fotoActual = $_POST['fotoActual'];
+session_start();
 
 include('../clases/usuario.php');
 $usuario = new Usuario();
 
-// VALIDAR CURP ÚNICA POR ROL (solo si es admin)
-if ($rolEditor == 'A') {
-    if ($usuario->existeCurpTipoActualizar($curp, $rol, $pkUsuario)) {
-        header("Location: ../vistas/editar_usuario.php?pkUsuario=$pkUsuario&error=Esta CURP ya pertenece a otro Usuario con ese Rol");
-        exit;
-    }
-}
+// Datos principales
+$pkUsuario = $_POST['pkUsuario'];
+$nombres   = strtoupper($_POST['nombres']);
+$apaterno  = strtoupper($_POST['apaterno']);
+$amaterno  = strtoupper($_POST['amaterno']);
+$correo    = $_POST['correo'];
 
-// VALIDAR FOTO
+$rolLog = $_SESSION['rol'];
+$pkUsuarioLog = $_SESSION['pkUsuario'];
+
+
+// Foto
+$fotoActual = $_POST['fotoActual'];
+
 if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== 0) {
     $foto = $fotoActual;
 } else {
@@ -39,9 +27,48 @@ if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== 0) {
     $foto = $fotoNueva;
 }
 
-// DECIDIR QUÉ ACTUALIZACIÓN USAR: COMPLETA O BÁSICA
-if ($rolEditor == 'A') {
-    // ADMIN → puede editar todo
+
+// Contraseñas
+$passActual     = $_POST['pass_actual']     ?? null;
+$passNueva      = $_POST['pass_nueva']      ?? null;
+$passConfirmar  = $_POST['pass_confirmar']  ?? null;
+
+$cambiarPass = false;
+
+// ¿Quiere cambiar contraseña?
+if (!empty($passNueva) || !empty($passConfirmar)) {
+
+    // 1 Validar si coinciden
+    if ($passNueva !== $passConfirmar) {
+        header("Location: ../vistas/editar_usuario.php?pkUsuario=$pkUsuario&error=Las contraseñas no coinciden");
+        exit;
+    }
+
+    // 2 Si esta editando SU propio perfil -> validar contraseña actual
+    if ($pkUsuarioLog == $pkUsuario) {
+        $datos = $usuario->detalles($pkUsuario)->fetch_assoc();
+        if ($datos['pass'] !== $passActual) {
+            header("Location: ../vistas/editar_usuario.php?pkUsuario=$pkUsuario&error=La contraseña actual es incorrecta");
+            exit;
+        }
+    }
+
+    $cambiarPass = true;
+}
+
+
+// Opción 1: Un admin puede editar el perfil de los demas usuario(menos el suyos)
+if ($rolLog == 'A' && $pkUsuarioLog != $pkUsuario) {
+
+    $curp = strtoupper($_POST['curp']);
+    $fechaNac = $_POST['fechaNac'];
+    $sexo = $_POST['sexo'];
+    $rolNuevo = $_POST['rol']; // admin sí puede cambiar rol
+
+    $passParaGuardar = $cambiarPass ? $passNueva : ($_POST['pass_actual_bd'] ?? null);
+
+
+    // Ejecutar actualización total
     $resultado = $usuario->actualizarCompleto(
         $pkUsuario,
         $nombres,
@@ -50,31 +77,53 @@ if ($rolEditor == 'A') {
         $curp,
         $fechaNac,
         $sexo,
-        $pass,
+        $passParaGuardar,
         $correo,
-        $rol,
+        $rolNuevo,
         $foto
     );
 
-} else {
-    // USUARIO NORMAL → solo puede editar datos básicos
-    $resultado = $usuario->actualizarBasico(
-        $pkUsuario,
-        $nombres,
-        $apaterno,
-        $amaterno,
-        $pass,
-        $correo,
-        $foto
-    );
+    $redirectS = "../vistas/detalle_usuario.php?pkUsuario=$pkUsuario";
+    $redirectE = "../vistas/editar_usuario.php?pkUsuario=$pkUsuario";
+
+    if ($resultado) {
+        header("Location: $redirectS&success=Perfil actualizado correctamente");
+    } else {
+        header("Location: $redirectE&error=Error al actualizar");
+    }
+    exit;
+
 }
 
-// REDIRECCIÓN
-if ($resultado) {
-    header("Location: ../vistas/detalle_usuario.php?pkUsuario=$pkUsuario&success=Usuario actualizado correctamente");
-} else {
-    header("Location: ../vistas/editar_usuario.php?pkUsuario=$pkUsuario&error=Error al actualizar");
+
+// Opción 2: Cualquier usuario puede editar su propio Perfil
+$passParaGuardar = $cambiarPass ? $passNueva : null;
+
+// Obtener contraseña actual si no se cambia
+if (!$passParaGuardar) {
+    $datos = $usuario->detalles($pkUsuario)->fetch_assoc();
+    $passParaGuardar = $datos['pass'];
 }
 
-exit;
+$resultado = $usuario->actualizarBasico(
+    $pkUsuario,
+    $nombres,
+    $apaterno,
+    $amaterno,
+    $passParaGuardar,
+    $correo,
+    $foto
+);
+
+    $redirectS = "../vistas/detalle_usuario.php?pkUsuario=$pkUsuario";
+    $redirectE = "../vistas/editar_usuario.php?pkUsuario=$pkUsuario";
+
+    if ($resultado) {
+        header("Location: $redirectS&success=Perfil actualizado correctamente");
+    } else {
+        header("Location: $redirectE&error=Error al actualizar");
+    }
+    exit;
+
+
 ?>

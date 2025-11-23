@@ -2,7 +2,7 @@
 if (!isset($_SESSION)) {
   session_start();
 }
-$pkUsuario = $_SESSION['pkUsuario'] ?? null;
+$pkUsuarioLog = $_SESSION['pkUsuarioLog'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 // hacer una direccion universal para no tener problemas
 $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';

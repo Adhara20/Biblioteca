@@ -12,7 +12,7 @@ if (mysqli_num_rows($resultado) > 0) {
     session_start();
 
     // Variables de sesión
-    $_SESSION['pkUsuario'] = $datos['pkUsuario']; 
+    $_SESSION['pkUsuarioLog'] = $datos['pkUsuario'];
     $_SESSION['numCredencial'] = $datos['numCredencial'];
     $_SESSION['nombre'] = $datos['nombre'];
     $_SESSION['rol'] = $datos['rol']; 

@@ -36,6 +36,7 @@ include('../includes/header.php');
     <div class="w-full max-w-4xl mx-auto">
       <h1 class="titulos">Perfil</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
       <hr class="linea-separadora mb-6">
+      <?php include('../includes/notificacion.php'); ?>
     </div>
   </div>
 
@@ -171,11 +172,15 @@ include('../includes/header.php');
           if($fila['estatus'] == 'A'){
         ?>
           <a href="../controladores/desactivar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
-          Dar de baja
-        </a>
+            Desactivar
+          </a>
         <?php
-          }
+          }else{
         ?>
+          <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
+            Activar
+          </a>
+        <?php } ?>
         <!-- Hasta acá y reemplazan el botón de Dar de Baja -->
         
       </div>
