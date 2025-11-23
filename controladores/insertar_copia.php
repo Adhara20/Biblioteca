@@ -1,12 +1,12 @@
 <?php
 $isbn = $_POST['isbn'];
-
+$observaciones = $_POST['observaciones'];
 include('../clases/copia.php');
 
 
 $clase = new Copia();
 
-$resultado = $clase ->guardar($isbn);
+$resultado = $clase ->guardar($isbn, $observaciones);
 
 if ($resultado) {
         header("Location: ../vistas/lista_copias.php?success=Copia Física registrada correctamente");

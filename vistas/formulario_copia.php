@@ -26,6 +26,18 @@
       <input type="text" name="isbn" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Fecha de adquisición</label>
+      <input type="date" name="fechaAdquisicion" value="<?= date('Y-m-d') ?>" readonly
+         class="w-full mt-1 p-2 border rounded-md bg-gray-200 text-gray-600">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Observaciones</label>
+      <textarea name="observaciones" rows="4" placeholder="Observaciones"
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]"></textarea>
+    </div>
     
   <!-- BOTONES -->
     <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">

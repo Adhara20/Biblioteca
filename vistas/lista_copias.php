@@ -21,10 +21,26 @@ include('../includes/header.php');
         include('../includes/menu.php');
 	?>
 
+<!-- !!!!!! -->
+  <!-- Copian todo este Div y lo reemplazan por su div de Titulo y Linea separadora(es lo mismo pero con el boton acomodado) -->
   <div class="px-10 mb-6">
-    <h1 class="titulos">Registro de Copias</h1>
+    <div class="flex items-center justify-between">
+      <div>
+        <!-- Nomas le dejan el nombre de su cosa -->
+        <h1 class="titulos">Copias</h1>
+      </div>
+
+      <div class="flex items-center">
+        <!-- !!!! Aquí le ponen el nombre de su formulario -->
+        <a href="formulario_copia.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#49B79A] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+          <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
+          Agregar Copias
+        </a>
+      </div>
+    </div>
     <hr class="linea-separadora-listas">
   </div>
+<!-- !!!! -->
   <!-- Aquí agregan esto -->
   <!-- MENSAJE DE EXITO -->
 <?php include('../includes/notificacion.php'); ?>

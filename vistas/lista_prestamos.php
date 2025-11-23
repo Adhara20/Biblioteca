@@ -36,10 +36,27 @@ if ($buscar === '' && $estatus === '' && $estatusDevolucion === '' && $fechaRegi
 include('../includes/menu.php');
 ?>
 
-<div class="px-10 mb-4">
-    <h1 class="titulos">Registro de Préstamos</h1>
+<!-- !!!!!! -->
+  <!-- Copian todo este Div y lo reemplazan por su div de Titulo y Linea separadora(es lo mismo pero con el boton acomodado) -->
+  <div class="px-10 mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <!-- Nomas le dejan el nombre de su cosa -->
+        <h1 class="titulos">Prestamos</h1>
+      </div>
+
+      <div class="flex items-center">
+        <!-- !!!! Aquí le ponen el nombre de su formulario -->
+        <a href="formulario_prestamo.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#49B79A] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+          <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
+          Agregar Prestamos
+        </a>
+      </div>
+    </div>
     <hr class="linea-separadora-listas">
-</div>
+  </div>
+<!-- !!!! -->
+
 <?include('../includes/notificacion.php');?>
 
 <!-- BOTÓN FILTROS MÓVIL -->
@@ -131,6 +148,29 @@ $fkUsuarioSolicita = htmlspecialchars($fila['numSolicitante']);
 $fkUsuarioAutoriza = htmlspecialchars($fila['numAutorizante']);
 $estatus = htmlspecialchars($fila['estatus']);
 $estatusDevolucion = htmlspecialchars($fila['estatusDevolucion']);
+
+// copien esto y pegenlo tal cual ->
+
+    if ($fila['estatus'] == 'EnProceso') {
+        $estatus = 'En Proceso';
+        $color = 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    } elseif ($fila['estatus'] == 'Cancelado') {
+        $estatus = 'Cancelado';
+        $color = 'text-red-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    } elseif ($fila['estatus'] == 'Completado') {
+        $estatus = 'Completado';
+        $color = 'text-emerald-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    }
+
+    //estatus 2
+
+    if ($fila['estatusDevolucion'] == 'ATiempo') {
+        $estatusDevolucion = 'A Tiempo';
+        $colorDevolucion = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    } elseif ($fila['estatusDevolucion'] == 'Vencido') {
+        $estatusDevolucion = 'Vencido';
+        $colorDevolucion = 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    }
 ?>
 
 <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px]">
@@ -157,17 +197,18 @@ $estatusDevolucion = htmlspecialchars($fila['estatusDevolucion']);
             <span class="text-sm">Editar</span>
         </a>
 
-        <?php if ($estatus === "EnProceso"): ?>
-            <a href="../controladores/estatus_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>&accion=cancelar"
-                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-red-400">
-                <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
-                <span class="text-sm">Cancelar</span>
-            </a>
-
-            <a href="../controladores/estatus_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>&accion=cancelar"
+        <?php if ($estatus === "En Proceso"): ?>
+            <a href="../controladores/completar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>&accion=completar"
                 class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-green-400">
-                <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
+                <img src="../imagenes/btn%20Iconos/btnAlta.png" class="size-4">
                 <span class="text-sm">Completar</span>
+            </a>
+        <?php endif; ?>
+        <?php if ($estatus === "En Proceso"): ?>
+            <a href="../controladores/cancelar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>&accion=cancelar"
+                class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-red-400">
+                <img src="../imagenes/btn%20Iconos/btbBaja.png" class="size-4">
+                <span class="text-sm">Cancelar</span>
             </a>
         <?php endif; ?>
     </div>
@@ -185,9 +226,10 @@ $estatusDevolucion = htmlspecialchars($fila['estatusDevolucion']);
 
             <p class="text-sm"><strong>Fecha Registro:</strong> <?= $fechaRegistro ?></p>
             <p class="text-sm"><strong>Fecha Límite:</strong> <?= $fechaLimite ?></p>
+            <p class="text-sm"><strong>Fecha Entrega:</strong> <?= $fechaEntrega ?></p>
 
-            <p class="text-sm"><strong>Estatus:</strong> <?= $estatus ?></p>
-            <p class="text-sm"><strong>Devolución:</strong> <?= $estatusDevolucion ?></p>
+            <p class="text-sm <?= $color ?>"><?= $estatus ?></p>
+            <p class="text-sm <?= $colorDevolucion ?>"><?= $estatusDevolucion ?></p>
         </div>
     </a>
 
