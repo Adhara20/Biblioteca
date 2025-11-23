@@ -53,8 +53,6 @@ $listaEditoriales = $editorial->listaEditoriales();
 $listaCategorias = $subcategoria->listaActivo();
 ?>
 
-<!-- MENSAJE DE Exito -->
-<?php include('../includes/notificacion.php') ?>
 
 
 <!-- TÍTULO -->
@@ -63,6 +61,8 @@ $listaCategorias = $subcategoria->listaActivo();
       <h1 class="titulos">Editar Libro</h1>
       <hr class="linea-separadora mb-6">
   </div>
+  <!-- MENSAJE DE Exito -->
+<?php include('../includes/notificacion.php') ?>
 </div>
 
 <!-- CONTENEDOR PRINCIPAL -->

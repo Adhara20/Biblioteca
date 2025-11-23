@@ -19,9 +19,22 @@ include('../controladores/filtrar_usuarios.php');
   <?php include('../includes/menu.php'); ?>
 
   <div class="px-10 mb-6">
-    <h1 class="titulos">Usuarios</h1>
-  <hr class="linea-separadora-listas">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="titulos">Usuarios</h1>
+      </div>
+      <div class="flex items-center">
+        <a href="formulario_usuarios.php" 
+          class="rounded-md text-white font-medium transition 
+                 bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm
+                 px-4 py-2 w-full sm:w-40 text-center">
+          Agregar Usuario
+        </a>
+      </div>
+    </div>
+    <hr class="linea-separadora-listas">
   </div>
+
 <!-- Mensaje de Exito para: insertar, dar de baja o alta (editar se muesta en Detalle, no listas) -->
   <?php include('../includes/notificacion.php'); ?>
 
