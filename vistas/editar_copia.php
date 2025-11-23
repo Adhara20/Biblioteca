@@ -82,6 +82,12 @@ $listaCategorias = $subcategoria->listaActivo();
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
 
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Observaciones</label>
+      <textarea name="observaciones" rows="4" placeholder="Observaciones"
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]"><?= $fila['observaciones'] ?></textarea>
+    </div>
+
     <!-- BOTONES -->
     <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
       <a href="detalle_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"

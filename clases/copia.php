@@ -20,7 +20,7 @@ class Copia
         return null;
     }
 
-    function guardar($isbn)
+    function guardar($isbn, $observaciones)
     {
         $fkLibro = $this->obtenerIdLibroIsbn($isbn);
         $folio = $this->generarFolio();
@@ -30,8 +30,8 @@ class Copia
         }
 
         // YA NO SE USA fkEstanteria
-        $consulta = "INSERT INTO copiaF (folio, fkLibro, fechaAdquisicion)
-                     VALUES ('{$folio}', '{$fkLibro}', NOW())";
+        $consulta = "INSERT INTO copiaF (folio, fkLibro, observaciones, fechaAdquisicion)
+                     VALUES ('{$folio}', '{$fkLibro}', '{$observaciones}',NOW())";
 
         return $this->conexion->query($consulta);
     }
@@ -103,6 +103,23 @@ class Copia
                      WHERE pkCopiaF = '{$pkCopiaF}'";
 
         return $this->conexion->query($consulta);
+    }
+
+    function actualizar($pkCopiaF, $isbn, $observaciones) {
+    $fkLibro = $this->obtenerIdLibroIsbn($isbn);
+
+    if (!$fkLibro) {
+        return false; // ISBN no existe
+    }
+
+    $consulta = "UPDATE copiaF 
+                SET fkLibro = '{$fkLibro}',
+                observaciones = '{$observaciones}' 
+                WHERE pkCopiaF = '{$pkCopiaF}'
+    ";
+
+    return $this->conexion->query($consulta);
+    return $resultado;
     }
 
     function filtrar($buscar = '', $subcategoria = '', $estatus = '') 

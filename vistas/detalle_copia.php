@@ -83,6 +83,11 @@ include('../includes/header.php');
             <dd class="col-span-2 text-gray-800"><?= $fila['nombreSubCategoria'] ?></dd>
           </div>
 
+          <div class="py-3 grid grid-cols-3 gap-4">
+            <dt class="font-medium text-gray-700">Observaciones:</dt>
+            <dd class="col-span-2 text-gray-700 text-justify"><?= $fila['observaciones'] ?></dd>
+          </div>
+
         </dl>
       </div>
 
@@ -95,6 +100,20 @@ include('../includes/header.php');
                 }else{
                     $estatus ='INACTIVO';
                     $color= 'text-red-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }
+                ?>
+                <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
+            </div>
+
+        <div class="py-3 grid grid-cols-3 gap-4">
+                <dt class="font-medium text-gray-700">Disponibilidad:</dt>
+                <?php
+                if($fila['disponibilidad'] == 'Disponible'){
+                    $estatus ='Disponible';
+                    $color= 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }else{
+                    $estatus ='Prestado';
+                    $color= 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
                 }
                 ?>
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
