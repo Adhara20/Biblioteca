@@ -40,7 +40,7 @@ include('../includes/header.php');
             <h1 class="titulos">Nacionalidades</h1>
         </div>
         <div class="flex items-center">
-            <a href="formulario_nacionalidad.php" class="rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+            <a href="formulario_nacionalidad.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
                 Agregar Nacionalidad
             </a>
         </div>

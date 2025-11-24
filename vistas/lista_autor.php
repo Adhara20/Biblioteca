@@ -29,15 +29,20 @@ include('../includes/header.php');
 <body>
   <?php include('../includes/menu.php'); ?>
 
-    <div class="px-10 mb-6 flex justify-between items-center">
-    <h1 class="titulos">Lista Autores</h1>
+    <div class="px-10 mb-6">
+        <div class="flex items-center justify-between">
+            <h1 class="titulos">Autores</h1>
 
-        <a href="formulario_autor.php"
-       class="bg-[#3BAA8D] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#49B79A] transition">
-        Agregar Autor
-    </a>
-</div>
-    <hr class="linea-separadora-listas">
+            <div class="flex items-center">
+                <a href="formulario_autor.php" 
+                   class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+                   Agregar Autor
+                </a>
+            </div>
+        </div>
+        <hr class="linea-separadora-listas">
+    </div>
+
       <!-- Botón visible solo en móvil -->
      <div class="contenedor-btn-filtro block lg:hidden">
         <button id="btnFiltros" class="flex items-center gap-2 text-[#7C23BA] hover:text-[#4F0087] transition-colors duration-200">

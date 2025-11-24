@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Categorias</title>
+  <title>Categorías</title>
   <link rel="stylesheet" href="../css/listas.css">
   <link rel="stylesheet" href="../css/filtros.css">
 </head>
@@ -24,14 +24,21 @@ include('../includes/header.php');
 <body>
   <?php include('../includes/menu.php'); ?>
 
-  <div class="px-10 mb-6 flex justify-between items-center">
-    <h1 class="titulos">Listas Categorias</h1>
-          <a href="formulario_categoria.php"
-       class="bg-[#3BAA8D] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#49B79A] transition">
-        Agregar Categoria
-    </a>
-</div>
-  <hr class="linea-separadora-listas">
+  <div class="px-10 mb-6">
+        <div class="flex items-center justify-between">
+            <h1 class="titulos">Categorías</h1>
+
+            <a href="formulario_categoria.php" 
+   class="rounded-md text-white font-medium transition 
+          bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
+          shadow-sm px-4 py-2 text-center whitespace-nowrap
+          sm:min-w-[11rem] md:min-w-[12rem]">
+   Agregar Categoría
+</a>
+
+        </div>
+        <hr class="linea-separadora-listas">
+    </div>
 
   <!-- Botón visible solo en móvil -->
      <div class="contenedor-btn-filtro block lg:hidden">
