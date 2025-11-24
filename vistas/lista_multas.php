@@ -1,54 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de multas</title>
-    <link rel="stylesheet" href="../css/bootstrap.css">
-    <link rel="stylesheet" href="../css/copias.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multas</title>
+  <link rel="stylesheet" href="../css/listas.css">
+  <link rel="stylesheet" href="../css/filtros.css">
 </head>
+
 <?php
+include('../clases/Multa.php');
+
+// --- CONTROLADOR DE FILTRADO ---
+$m = new Multa();
+$buscar = $_GET['buscar'] ?? '';
+$estatus = $_GET['estatus'] ?? '';
+
+$resultado = $m->listaMultas($buscar, $estatus);
+
 include('../includes/header.php');
 ?>
 
 <body>
-    <?php
-    include('../clases/Multa.php');
-    $clase = new Multa();
-    $resultado = $clase->listaMultas();
-    include('../includes/menu.php');
-    ?>
-    <div class="px-10 mb-4">
-        <h1 class="titulos">Registro de multas</h1>
-        <hr class="linea-separadora-listas">
-    </div>
-    <div class="tabla-copias-container">
-        <table class="table-copias">
-            <tr>
+  <?php include('../includes/menu.php'); ?>
 
-                <th>Código Multa</th>
-                <th>Tipo</th>
-                <th>Usuario</th>
-                <th>Monto</th>
-                <th>Fecha Registro</th>
-                <th>Fecha Pago</th>
-                <th>Préstamo</th>
-
-            </tr>
-            <?php foreach ($resultado as $fila): ?>
-                <tr>
-                    <td><?= $fila["codigoMulta"] ?></td>
-                    <td><?= $fila["tipoMulta"] ?></td>
-                    <td><?= $fila["usuarioSolicita"] ?></td>
-                    <td><?= $fila["montoMulta"] ?></td>
-                    <td><?= $fila["fechaRegistro"] ?></td>
-                    <td><?= $fila["fechaPago"] ?></td>
-                    <td><?= $fila["fkPrestamo"] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
+  <div class="px-10 mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="titulos">Multas</h1>
+      </div>
+      <div class="flex items-center">
+        <a href="formulario_multa.php" class="rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+          Agregar Multa
+        </a>
+      </div>
     </div>
+    <hr class="linea-separadora-listas">
+  </div>
+
+  <?php include('../includes/notificacion.php'); ?>
+
+  <!-- Botón visible solo en móvil -->
+  <div class="contenedor-btn-filtro block lg:hidden">
+    <button id="btnFiltros" class="flex items-center gap-2 text-[#7C23BA] hover:text-[#4F0087] transition-colors duration-200">
+      <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5" aria-hidden="true">
+        <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2l-5 6v5l-4-2v-3L3 6V4z" clip-rule="evenodd" />
+      </svg>
+      <span>Filtros</span>
+    </button>
+  </div>
+
+  <!-- Formulario en pantallas grandes -->
+  <form method="GET" action="lista_multas.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
+    <input type="text" name="buscar" class="input-busqueda uppercase"
+           placeholder="Buscar por código o tipo..."
+           value="<?= htmlspecialchars($buscar) ?>">
+
+    <select name="estatus" class="select-filtro">
+      <option value="">Estatus</option>
+      <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Pendiente</option>
+      <option value="P" <?= ($estatus === 'P') ? 'selected' : '' ?>>Pagada</option>
+    </select>
+
+    <button type="submit" class="btn-filtro shrink-0">Buscar</button>
+  </form>
+
+  <!-- Panel lateral (filtros móvil) -->
+  <div id="panelFiltros" class="panel-filtros oculto">
+    <div class="panel-filtros-contenido">
+      <button type="button" id="cerrarPanel" class="cerrar-panel">&times;</button>
+      <h2>Filtros</h2>
+
+      <form method="GET" action="lista_multas.php" class="form-filtros-movil">
+        <input type="text" name="buscar" class="input-busqueda"
+               placeholder="Buscar por código o tipo..."
+               value="<?= htmlspecialchars($buscar) ?>">
+
+        <select name="estatus" class="select-filtro">
+          <option value="">Estatus</option>
+          <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Pendiente</option>
+          <option value="P" <?= ($estatus === 'P') ? 'selected' : '' ?>>Pagada</option>
+        </select>
+
+        <button type="submit" class="btn-filtro">Aplicar filtros</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  <section class="grid-listas">
+    <?php if (!empty($resultado)): ?>
+      <?php foreach ($resultado as $fila): 
+        $codigo = htmlspecialchars($fila['codigoMulta']);
+        $tipo = htmlspecialchars($fila['tipoMulta']);
+        $monto = htmlspecialchars($fila['montoMulta']);
+        $fechaRegistro = htmlspecialchars($fila['fechaRegistro']);
+        $fechaPago = htmlspecialchars($fila['fechaPago'] ?? '—');
+
+        if ($fila['estatus'] === 'A') {
+            $estatusTexto = 'PENDIENTE';
+            $colorEstatus = 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        } else {
+            $estatusTexto = 'PAGADA';
+            $colorEstatus = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        }
+      ?>
+        <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px] border-[3px] border-[<?= $colorEstatus ?>]">
+
+          <button 
+            class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded hover:bg-gray-200 z-20 btn-kebab"
+            onclick="event.stopPropagation(); toggleKebab(this)"
+            aria-label="Abrir acciones">
+            <img src="/Biblioteca/imagenes/btn Iconos/btnAcciones.png" class="size-6" alt="Acciones">
+          </button>
+
+          <div class="menu-kebab hidden absolute right-4 top-14 bg-white shadow-lg rounded-lg border w-40 z-30">
+            <a href="detalle_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+               class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
+               onclick="event.stopPropagation();">
+              <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
+              <span class="text-sm/6">Ver Detalles</span>
+            </a>
+            <a href="editar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+               class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
+               onclick="event.stopPropagation();">
+              <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
+              <span class="text-sm/6">Editar</span>
+            </a>
+
+            <?php if ($fila['estatus'] === 'A'): ?>
+              <a href="../controladores/desactivar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+                 class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
+                 onclick="event.stopPropagation();">
+                <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
+                <span class="text-sm/6">Marcar como Pagada</span>
+              </a>
+            <?php else: ?>
+              <a href="../controladores/activar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+                 class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
+                 onclick="event.stopPropagation();">
+                <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
+                <span class="text-sm/6">Marcar como Pendiente</span>
+              </a>
+            <?php endif; ?>
+          </div>
+
+          <a href="detalle_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" class="flex flex-col gap-1 w-full">
+            <h2 class="text-lg font-bold text-purple-900">Multa #<?= $codigo ?></h2>
+            <p class="text-sm text-gray-700"><strong>Tipo:</strong> <?= $tipo ?></p>
+            <p class="text-sm text-gray-700"><strong>Monto:</strong> $<?= $monto ?></p>
+            <p class="text-sm text-gray-600"><strong>Registrada:</strong> <?= $fechaRegistro ?></p>
+            <p class="text-sm text-gray-600"><strong>Pagada:</strong> <?= $fechaPago ?></p>
+            <p class="text-sm <?= $colorEstatus ?>"><?= $estatusTexto ?></p>
+          </a>
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p class="no-resultados">No se encontraron multas con esos filtros.</p>
+    <?php endif; ?>
+  </section>
+
+  <script>
+    // panel filtros móvil
+    const btnFiltros = document.getElementById('btnFiltros');
+    const panelFiltros = document.getElementById('panelFiltros');
+    const cerrarPanel = document.getElementById('cerrarPanel');
+
+    btnFiltros?.addEventListener('click', () => {
+      panelFiltros.classList.add('mostrar');
+      panelFiltros.classList.remove('oculto');
+    });
+
+    cerrarPanel?.addEventListener('click', () => {
+      panelFiltros.classList.remove('mostrar');
+      panelFiltros.classList.add('oculto');
+    });
+
+    panelFiltros?.addEventListener('click', (e) => {
+      if (e.target === panelFiltros) {
+        panelFiltros.classList.remove('mostrar');
+        panelFiltros.classList.add('oculto');
+      }
+    });
+
+    // kebab
+    function toggleKebab(btn) {
+        document.querySelectorAll(".menu-kebab").forEach(menu => {
+            if (menu !== btn.nextElementSibling) menu.classList.add("hidden");
+        });
+        btn.nextElementSibling.classList.toggle("hidden");
+    }
+
+    document.addEventListener("click", function(e) {
+        const isKebabButton = e.target.closest(".btn-kebab");
+        const isMenu = e.target.closest(".menu-kebab");
+        if (!isKebabButton && !isMenu) {
+            document.querySelectorAll(".menu-kebab").forEach(menu => menu.classList.add("hidden"));
+        }
+    });
+  </script>
+
+  <?php include('../includes/footer.php'); ?>
 </body>
-
 </html>
