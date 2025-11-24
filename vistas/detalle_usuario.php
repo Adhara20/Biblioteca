@@ -20,7 +20,7 @@ include('../includes/header.php');
 
   // Si no eres admin, solo te dejo ver tu propio perfil
   if ($rol != 'A' && $pkUsuario != $pkUsuarioLog) {
-      echo "<p>No tienes permiso para ver este perfil.</p>";
+      header("Location: ../index.php?error=No puedes acceder a esté usuario");
       exit;
   }
 
@@ -165,18 +165,10 @@ include('../includes/header.php');
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
             </div>
 
-            <!-- Enlaces -->
-<div class="flex items-center gap-6 mt-4">
-  <a href="lista_urls.php?pkLibro=<?= $fila['pkLibro'] ?>"
-     class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
-     Ver URLs
-  </a>
-
-  <a href="lista_copias.php?pkLibro=<?= $fila['pkLibro'] ?>"
-     class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
-     Ver Copias Físicas
-  </a>
-</div>
+            <div class="py-3 grid grid-cols-3 gap-4">
+              <dt class="font-medium text-gray-700">Fecha de Registro:</dt>
+              <dd class="col-span-2 text-gray-800"><?= $fila['fechaRegistro'] ?></dd>
+            </div>
 
         </dl>
       </div>
@@ -198,14 +190,15 @@ include('../includes/header.php');
         <?php
           if($fila['estatus'] == 'A'){
         ?>
-          <a href="../controladores/desactivar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+          <a href="../controladores/desactivar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition
+           bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
             Desactivar
           </a>
         <?php
           }else{
         ?>
           <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class=" px-4 py-2.5 rounded-md text-white font-medium transition
-          bg-[#34B980] hover:bg-[#2EA66F] shadow-sm">
+          bg-[#34B980] hover:bg-[#c0eed9] hover:text-[#34B980] border hover:border-[#34B980] shadow-sm">
             Activar
           </a>
         <?php } ?>

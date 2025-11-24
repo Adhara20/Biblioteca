@@ -17,7 +17,7 @@ include('../includes/header.php');
         include('../controladores/filtrar_copias.php'); // Aquí deberías obtener $resultadoCopias
         include('../clases/subcategoria.php');
         $clase = new Subcategoria;
-        $resultadoSub = $clase->listaActivo();
+        $resultadoSub = $clase->mostrar();
         include('../includes/menu.php');
 	?>
 
@@ -32,7 +32,7 @@ include('../includes/header.php');
 
       <div class="flex items-center">
         <!-- !!!! Aquí le ponen el nombre de su formulario -->
-        <a href="formulario_copia.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#49B79A] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+        <a href="formulario_copia.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
           Agregar Copias
         </a>

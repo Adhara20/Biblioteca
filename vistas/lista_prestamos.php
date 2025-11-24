@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Préstamos</title>
+    <title>Préstamos</title>
 
     <link rel="stylesheet" href="../css/listas.css">
     <link rel="stylesheet" href="../css/filtros.css">
@@ -39,22 +39,20 @@ include('../includes/menu.php');
 <!-- !!!!!! -->
   <!-- Copian todo este Div y lo reemplazan por su div de Titulo y Linea separadora(es lo mismo pero con el boton acomodado) -->
   <div class="px-10 mb-6">
-    <div class="flex items-center justify-between">
-      <div>
-        <!-- Nomas le dejan el nombre de su cosa -->
-        <h1 class="titulos">Prestamos</h1>
-      </div>
+        <div class="flex items-center justify-between">
+            <h1 class="titulos">Prestamos</h1>
 
-      <div class="flex items-center">
-        <!-- !!!! Aquí le ponen el nombre de su formulario -->
-        <a href="formulario_prestamo.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#49B79A] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
-          <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
-          Agregar Prestamos
-        </a>
-      </div>
+            <a href="formulario_prestamo.php" 
+   class="rounded-md text-white font-medium transition 
+          bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
+          shadow-sm px-4 py-2 text-center whitespace-nowrap
+          sm:min-w-[11rem] md:min-w-[12rem]">
+   Agregar Préstamo
+</a>
+
+        </div>
+        <hr class="linea-separadora-listas">
     </div>
-    <hr class="linea-separadora-listas">
-  </div>
 <!-- !!!! -->
 
 <?include('../includes/notificacion.php');?>

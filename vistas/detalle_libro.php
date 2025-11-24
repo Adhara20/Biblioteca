@@ -154,9 +154,9 @@ include('../includes/header.php');
     
       <!-- Botones de acción | Se queda igual -->
        <!-- Nuevo if ¡¡¡ -->
-    
+    <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
       <div class="flex justify-end gap-3 mt-8">
-        <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
+        
         <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 
         class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
           hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
@@ -168,8 +168,10 @@ include('../includes/header.php');
          <!-- !!!!! Peguén esto y remplacen el if del boton -->
         <?php
           if($fila['estatus'] == 'A'){
-        ?>
-          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+        ?>      
+                                                                                              <!-- class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+                                                                                              hover:bg-[#5780B5] hover:text-blue-200  shadow-sm"> -->
+          <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
             Desactivar
           </a>
         <?php
@@ -177,16 +179,15 @@ include('../includes/header.php');
         ?>
         <!-- Nomas le acomodan el nombre del controlador -->
           <a href="../controladores/activar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class=" px-4 py-2.5 rounded-md text-white font-medium transition
-          bg-[#34B980] hover:bg-[#2EA66F] shadow-sm">
+          bg-[#34B980] hover:bg-[#c0eed9] hover:text-[#34B980] border hover:border-[#34B980] shadow-sm">
             Activar
           </a>
         <?php } ?>
         <!-- !!! hasta aqui -->
         <!-- : Hasta acá y reemplazan el botón de Dar de Baja -->
-         <?php } ?>
-      <!-- finIf -->
-    
       </div>
+      <?php } ?>
+      <!-- finIf -->
       
     </div>
   </div>
