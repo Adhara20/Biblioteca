@@ -39,12 +39,7 @@ $imgRuta = !empty($fila['portada'])
     : "../imagenes/portadas/placeholder.png";
 ?>
 
-<?php
-include('../clases/subcategoria.php');
 
-$subcategoria = new Subcategoria();
-$listaCategorias = $subcategoria->mostrar();
-?>
 
 <!-- MENSAJE DE Exito -->
 <?php include('../includes/notificacion.php') ?>
