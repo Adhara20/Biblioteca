@@ -4,49 +4,66 @@ include('../clases/libro.php');
 
 $claseLibro = new Libro();
 
-// Obtener todos los libros activos con la función filtrar()
+// Obtener todos los libros activos
 $libros = $claseLibro->filtrar('', '', 'A');
 
 ob_end_clean();
 ?>
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registrar URL</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
+<?php include('../includes/header.php'); ?>
+<body class="bg-gray-100 text-gray-900">
 
-<body>
+<?php include('../includes/menu.php'); ?>
 
-    <form id="form" action="../controladores/insertar_url.php" method="POST">
+<?php include('../includes/notificacion.php'); ?>
 
-        <h3>Formulario URL</h3>
+<div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 lg:p-12 border border-gray-300 mx-auto mb-10">
+    <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
+        Formulario URL
+    </h2>
 
-        <label>URL:</label><br>
-        <input class="inp" type="text" name="url" required><br>
+    <form action="../controladores/insertar_url.php" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <label>Libro:</label><br>
-        <select name="fkLibro" required>
-            <option value="">Seleccione un libro</option>
+        <!-- URL -->
+        <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">URL</label>
+            <input type="url" name="url" placeholder="https://ejemplo.com" required
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
+                value="<?= $_SESSION['form_url']['url'] ?? '' ?>">
+        </div>
 
-            <?php if (!empty($libros)): ?>
-                <?php foreach ($libros as $libro): ?>
-                    <option value="<?= $libro['pkLibro'] ?>">
-                        <?= $libro['titulo'] ?>
-                    </option>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <option value="">No hay libros activos</option>
-            <?php endif; ?>
+        <!-- Libro -->
+        <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">Libro (opcional)</label>
+            <select name="fkLibro" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+                <option value="">Seleccione un libro</option>
+                <?php if (!empty($libros)): ?>
+                    <?php foreach ($libros as $libro): ?>
+                        <option value="<?= $libro['pkLibro'] ?>"
+                            <?= (isset($_SESSION['form_url']['fkLibro']) && $_SESSION['form_url']['fkLibro'] == $libro['pkLibro']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($libro['titulo']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <option value="">No hay libros activos</option>
+                <?php endif; ?>
+            </select>
+        </div>
 
-        </select><br><br>
+        <!-- Botones -->
+        <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
+            <a href="lista_urls.php"
+                class="w-full md:w-32 text-center bg-[#B55780] text-white py-2 rounded-md font-semibold hover:bg-[#c46b93] transition">
+                Cancelar
+            </a>
+            <button type="submit"
+                class="w-full md:w-32 bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
+                Guardar
+            </button>
+        </div>
 
-        <input type="submit" class="boton" value="Guardar">
     </form>
+</div>
 
+<?php include('../includes/footer.php'); ?>
 </body>
-
-</html>

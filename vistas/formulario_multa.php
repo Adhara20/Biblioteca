@@ -1,45 +1,85 @@
-<?php
-    //require_once("../clases/prestamo.php");
-    //$clasePrestamo = new Prestamo();
-    //$resultadoPrestamos = $clasePrestamo->listaPrestamosActivos();
-    ?>
-<!DOCTYPE html>
-<html>
+<?php include('../includes/header.php'); ?>
+<body class="bg-gray-100 text-gray-900">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Formulario Multa</title>
-</head>
+<?php include('../includes/menu.php'); ?>
+<?php include('../includes/notificacion.php'); ?>
 
-<body>
-    <form action="../Controladores/insertar_multa.php" method="POST">
-        <h3>Registrar Multa</h3>
+<?php 
 
+$form = $_SESSION['form_multa'] ?? [];
+?>
 
-        <label>Tipo de Multa:</label><br>
-        <select name="tipoMulta" required>
-            <option value="">Seleccione un tipo</option>
-            <option value="Retraso">Retraso</option>
-            <option value="Daño">Daño</option>
-            <option value="Perdido">Perdido</option>
-        </select><br><br>
+<div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 lg:p-10 border border-gray-300 mx-auto mb-10">
 
-        <label>Monto:</label><br>
-        <input type="number" step="0.01" name="montoMulta" required><br>
+    <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
+        Registrar Multa
+    </h2>
 
-        <label>Fecha de Registro:</label><br>
-        <input type="date" name="fechaRegistro" required><br>
+    <form action="../controladores/insertar_multa.php" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <label>Fecha de Pago:</label><br>
-        <input type="date" name="fechaPago"><br>
+        <!-- Tipo de multa -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Tipo de Multa</label>
+            <select name="tipoMulta" required
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+                <option value="">Seleccione un tipo</option>
+                <option value="Retraso" <?= ($form['tipoMulta'] ?? '') === 'Retraso' ? 'selected':'' ?>>Retraso</option>
+                <option value="Daño"    <?= ($form['tipoMulta'] ?? '') === 'Daño' ? 'selected':'' ?>>Daño</option>
+                <option value="Perdido" <?= ($form['tipoMulta'] ?? '') === 'Perdido' ? 'selected':'' ?>>Perdido</option>
+            </select>
+        </div>
 
-        <label>Préstamo Relacionado:</label><br>
-        <input type="text" name="fkPrestamo" placeholder="Escribe el número del préstamo existente" required><br><br>
+        <!-- Monto -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Monto</label>
+            <input type="number" step="0.01" name="montoMulta" required
+                value="<?= $form['montoMulta'] ?? '' ?>"
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
 
+        <!-- Fecha Registro -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
+            <input type="date" name="fechaRegistro" required
+                value="<?= $form['fechaRegistro'] ?? '' ?>"
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
 
-        <input type="submit" value="Guardar">
+        <!-- Fecha Pago -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Fecha de Pago</label>
+            <input type="date" name="fechaPago"
+                value="<?= $form['fechaPago'] ?? '' ?>"
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
+
+        <!-- Préstamo -->
+        <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700">Préstamo Relacionado</label>
+            <input type="text" name="fkPrestamo" required
+                placeholder="Escribe el número del préstamo existente"
+                value="<?= $form['fkPrestamo'] ?? '' ?>"
+                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        </div>
+
+        <!-- Botones -->
+        <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
+
+            <a href="lista_multas.php"
+                class="w-full md:w-32 text-center bg-[#B55780] text-white py-2 rounded-md font-semibold hover:bg-[#c46b93] transition">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                class="w-full md:w-32 bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
+                Guardar
+            </button>
+
+        </div>
+
     </form>
-</body>
 
-</html>
+</div>
+
+<?php include('../includes/footer.php'); ?>
+</body>
