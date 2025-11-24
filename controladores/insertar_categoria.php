@@ -1,11 +1,25 @@
 <?php
-$nombre = $_POST['nombre'];
-$iconoCategoria = $_FILES['IconoCategoria']['name']; 
-$ruta = $_FILES['IconoCategoria']['tmp_name'];
-move_uploaded_file($ruta, '../imagenes/categorias/'.$iconoCategoria);
+session_start(); // Iniciar sesión
+$nombreCategoria = $_POST['nombreCategoria'];
+// $iconoCategoria = $_FILES['IconoCategoria']['name']; 
+// $ruta = $_FILES['IconoCategoria']['tmp_name'];
+// move_uploaded_file($ruta, '../imagenes/categorias/'.$iconoCategoria);
+$_SESSION['form_categoria'] = [
+    'nombreCategoria' => $_POST['nombreCategoria'],
+
+];
+// --- Validar la portada obligatoria ---
+if (!isset($_FILES['iconoCategoria']) || $_FILES['iconoCategoria']['error'] !== 0) {
+    header("Location: ../vistas/formulario_categoria.php?error=Debes subir el icono de la categoria");
+    exit;
+}
+// Preparar la portada (sin moverla todavía)
+$iconoCategoria = $_FILES['iconoCategoria']['name'];
+$iconoCategoriaTmp    = $_FILES['iconoCategoria']['tmp_name'];
+$ruta   = '../imagenes/categorias/' . $iconoCategoria;
 include('../clases/categoria.php');
 $clase = new Categoria();
-$resultado = $clase->guardar($nombre, $iconoCategoria);
+$resultado = $clase->guardar($nombreCategoria, $iconoCategoria);
 if ($resultado) {
         header("Location: ../vistas/lista_categoria.php?success=Categoria registrada correctamente");
         exit;
