@@ -10,11 +10,20 @@ include('../includes/header.php');
   include('../clases/usuario.php');//Incluyes la clase
   $clase = new Usuario();//creas instacia
   $pkUsuario = $_GET['pkUsuario'] ?? null;
+  // Crear una variable que indique que el usuarioLog sea el mismo que el de la sesion
+  $miPerfil = ($pkUsuario == $pkUsuarioLog);
   //Obtienes la pk de usuario
   if (!$pkUsuario) {
       echo "<p>No se especificó Usuario.</p>";
       exit;
   }
+
+  // Si no eres admin, solo te dejo ver tu propio perfil
+  if ($rol != 'A' && $pkUsuario != $pkUsuarioLog) {
+      echo "<p>No tienes permiso para ver este perfil.</p>";
+      exit;
+  }
+
   //Mandas a llamar la clase de detalles en la variable $resultado
   //Revicen en mi clase usuario como esta la funcion de detalles
   $resultado = $clase->detalles($pkUsuario);
@@ -102,17 +111,17 @@ include('../includes/header.php');
             <dt class="font-medium text-gray-700">Rol:</dt>
             <?php
             if($fila['rol']=='A'){
-                $rol='ADMINISTRADOR';
+                $rol1='ADMINISTRADOR';
                 $colorR = 'text-purple-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
             }else if($fila['rol']=='B'){
-                $rol='BIBLIOTECARIO';
+                $rol1='BIBLIOTECARIO';
                 $colorR = 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
             }else{
-                $rol='LECTOR';
+                $rol1='LECTOR';
                 $colorR = 'text-pink-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
             }
             ?>
-            <dd class="col-span-2 text-gray-800 <?= $colorR ?>"><?= $rol?></dd>
+            <dd class="col-span-2 text-gray-800 <?= $colorR ?>"><?= $rol1?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
@@ -156,16 +165,34 @@ include('../includes/header.php');
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
             </div>
 
+            <!-- Enlaces -->
+<div class="flex items-center gap-6 mt-4">
+  <a href="lista_urls.php?pkLibro=<?= $fila['pkLibro'] ?>"
+     class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
+     Ver URLs
+  </a>
+
+  <a href="lista_copias.php?pkLibro=<?= $fila['pkLibro'] ?>"
+     class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
+     Ver Copias Físicas
+  </a>
+</div>
+
         </dl>
       </div>
-
+    
+      <!-- si el rol logeado es Admin o el pk es de la persona logueada -->
+    
       <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
-        <a href="editar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" 
-        class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
+        <?php if($rol == 'A' || $miPerfil){  ?>
+        <a href="editar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+          hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
           Editar
         </a>
-
+        <?php } ?>
+<!-- Solo un Admin puede activar y desactivar usuarios -->
+      <?php if($rol == 'A' && !$miPerfil){  ?>
         <!-- Copian de aquí -->
         <!-- Validar Estatus para mostrar Botón -->
         <?php
@@ -177,11 +204,13 @@ include('../includes/header.php');
         <?php
           }else{
         ?>
-          <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
+          <a href="../controladores/activar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class=" px-4 py-2.5 rounded-md text-white font-medium transition
+          bg-[#34B980] hover:bg-[#2EA66F] shadow-sm">
             Activar
           </a>
         <?php } ?>
         <!-- Hasta acá y reemplazan el botón de Dar de Baja -->
+      <?php } ?>
         
       </div>
     </div>

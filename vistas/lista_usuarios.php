@@ -24,6 +24,7 @@ include('../controladores/filtrar_usuarios.php');
         <h1 class="titulos">Usuarios</h1>
       </div>
       <div class="flex items-center">
+        <?php if($rol == 'A' && $estatusLog == 'A') ?>
         <a href="formulario_usuarios.php" 
           class="rounded-md text-white font-medium transition 
                  bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm
@@ -193,7 +194,8 @@ include('../controladores/filtrar_usuarios.php');
                <img src="../imagenes/btn Iconos/btnVer.png" class="w-4 h-4">
                <span class="text-sm">Ver Detalles</span>
             </a>
-
+              <!-- ¡Agregar! -->
+          <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
             <a href="editar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>"
                class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
                onclick="event.stopPropagation();">
@@ -216,6 +218,8 @@ include('../controladores/filtrar_usuarios.php');
                  <span class="text-sm">Activar</span>
               </a>
             <?php endif; ?>
+          <?php } ?>
+          <!-- !-! -->
           </div>
         </li>
 

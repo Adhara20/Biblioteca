@@ -40,10 +40,12 @@ include('../includes/header.php');
 
       <div class="flex items-center">
         <!-- !!!! Aquí le ponen el nombre de su formulario -->
-        <a href="formulario_libro.php" class="rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm px-4 py-2 w-full sm:w-40 text-center">
+         <?php if($rol=='A'){ ?>
+        <a href="formulario_libro.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#49B79A]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
           Agregar Libro
         </a>
+        <?php } ?>
       </div>
     </div>
     <hr class="linea-separadora-listas">
@@ -174,6 +176,8 @@ include('../includes/header.php');
            <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
            <span class="text-sm/6">Ver Detalles</span>
           </a>
+          <!-- ¡Agregar! -->
+          <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
           <!-- Editar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"
@@ -202,6 +206,8 @@ include('../includes/header.php');
            <span class="text-sm/6">Activar</span>
           </a>
         <?php endif; ?>
+        <?php } ?>
+        <!-- !-! -->
     </div>
     <!-- Contenido (Tarjeta)-->
     <a href="detalle_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 

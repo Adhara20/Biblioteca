@@ -14,8 +14,9 @@ if (mysqli_num_rows($resultado) > 0) {
     // Variables de sesión
     $_SESSION['pkUsuarioLog'] = $datos['pkUsuario'];
     $_SESSION['numCredencial'] = $datos['numCredencial'];
-    $_SESSION['nombre'] = $datos['nombre'];
+    $_SESSION['nombreLog'] = $datos['nombreCompleto'];
     $_SESSION['rol'] = $datos['rol']; 
+    $_SESSION['estatusLog'] = $datos['estatus'];
     
     header('Location: ../index.php');
     exit;
