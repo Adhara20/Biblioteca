@@ -12,7 +12,7 @@
             <?= htmlspecialchars($_GET['error']) ?>
         </div>
     <?php }?>
-    <form action="../controladores/insertar_estanterias.php" method="POST" enctype="multipart/form-data";>
+    <form action="../controladores/insertar_estanterias.php" method="POST" enctype="multipart/form-data">
         <h2>Registrar estanteria:</h2>
         <label>Pasillo:</label>
         <br>
@@ -29,7 +29,6 @@
         <label>Descripcion:</label>
         <br>
         <textarea name="descripcion"></textarea>
-        <br>
         <br>
         <input type="submit" value="Guardar">
     </form>

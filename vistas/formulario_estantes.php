@@ -19,7 +19,7 @@
 
     include('../clases/subcategoria.php');
     $subcategorias = new Subcategoria();
-    $subCategoriaRe = $subcategorias->listaActivo(); // Trae todas las categorías
+    $subCategoriaRe = $subcategorias->filtrar(); // Trae todas las categorías
     ?>
     <form action="../controladores/insertar_estantes.php" method="POST" enctype="multipart/form-data">
         <h2>Registrar estante:</h2>
@@ -60,5 +60,11 @@
         <input type="submit" value="Guardar">
 
     </form>
+    <br>
+        <form action="../controladores/buscar_estantes.php">
+        <h3>Buscar</h3>
+        <input type="text" name="buscador" required>
+        <button type="submit">Buscar</button>
+</form>
 </body>
 </html>

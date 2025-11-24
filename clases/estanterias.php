@@ -25,18 +25,38 @@ class Estanterias{
 		$consulta = "INSERT INTO estanteria (codigoEstanteria, pasillo, piso, cantNiveles, descripcion) VALUES ('{$codigoEstanteria}', '{$pasillo}', '{$piso}','{$niveles}','{$descripcion}')";
 		$respuesta = $this->conexion->query($consulta);
 		return $respuesta;
-	}	
-	function listaActivos(){
-		$consulta = "SELECT * FROM estanteria WHERE estatus='A'";
-		$respuesta = $this->conexion->query($consulta);
-
-		$estanteria = [];
-		if($respuesta){ 
-        while($fila = $respuesta->fetch_assoc()){
-            $estanteria[] = $fila;
-        }
-		}
-        return $estanteria;
 	}
+	function filtrar($buscar = '', $estatus = '') {
+    $consulta = "SELECT * FROM estanteria WHERE 1=1";
+
+    if (!empty($buscar)) {
+        $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+        $consulta .= " AND (pasillo LIKE '%$buscar%' OR piso LIKE '%$buscar%')";
+    }
+
+
+    if (!empty($estatus)) {
+        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+        $consulta .= " AND estatus = '$estatus'";
+    } else {
+        // Si no se elige estatus, por defecto muestra los activos
+        $consulta .= " AND estatus = 'A'";
+    }
+
+    $resultado = mysqli_query($this->conexion, $consulta);
+    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+}
+	// function listaActivos(){
+	// 	$consulta = "SELECT * FROM estanteria WHERE estatus='A'";
+	// 	$respuesta = $this->conexion->query($consulta);
+
+	// 	$estanteria = [];
+	// 	if($respuesta){ 
+    //     while($fila = $respuesta->fetch_assoc()){
+    //         $estanteria[] = $fila;
+    //     }
+	// 	}
+    //     return $estanteria;
+	// }
 } 
  ?>
