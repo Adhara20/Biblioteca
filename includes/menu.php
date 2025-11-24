@@ -4,6 +4,8 @@ if (!isset($_SESSION)) {
 }
 $pkUsuarioLog = $_SESSION['pkUsuarioLog'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
+$nombreLog = $_SESSION['nombreLog'] ?? null;
+$estatusLog = $_SESSION['estatusLog'] ?? null;
 // hacer una direccion universal para no tener problemas
 $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
 ?>
@@ -36,8 +38,8 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
 <!-- Puede ver Bibliotecario y Admin -->
     <?php if ($rol === 'A' || $rol === 'B'): ?>
       <a href="<?=$rutaBase?>vistas/lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Préstamos</a>
-      <a href="../vistas/lista_categoria.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Clasificaciones</a>
-      <a href="../vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
+      <a href="<?=$rutaBase?>vistas/lista_categoria.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Clasificaciones</a>
+      <a href="<?=$rutaBase?>vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
     <?php endif; ?>
 <!-- Puede ver Admin -->
     <?php if ($rol === 'A'): ?>
@@ -51,10 +53,9 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
           Gestión Bibliográfica ▼
         </button>
         <div class="hidden group-hover:flex lg:absolute lg:flex-col bg-white shadow-md border rounded-md mt-1 min-w-[180px]">
-          <a href="<?=$rutaBase?>lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
-          <a href="<?=$rutaBase?>lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
-          <a href="<?=$rutaBase?>lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
-          <a href="<?=$rutaBase?>lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
+          <a href="<?=$rutaBase?>vistas/lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
+          <a href="<?=$rutaBase?>vistas/lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
+          <a href="<?=$rutaBase?>vistas/lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
         </div>
       </div>
       <!-- Gestión Bibliográfica Movil -->
@@ -66,10 +67,9 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
           <span class="font-semibold">Gestión Bibliográfica</span>
           <button id="close-submenu" class="text-gray-700 text-xl">&times;</button>
         </div>
-        <a href="<?=$rutaBase?>lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
-        <a href="<?=$rutaBase?>lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
-        <a href="<?=$rutaBase?>lista_estanterias.php" class="px-4 py-2 hover:bg-gray-100">Estanterías</a>
-        <a href="<?=$rutaBase?>lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
+        <a href="<?=$rutaBase?>vistas/lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
+        <a href="<?=$rutaBase?>vistas/lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
+        <a href="<?=$rutaBase?>vistas/lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
       </div>
     <?php endif; ?>
 <!-- Puede ver Lector -->
@@ -77,8 +77,11 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
       <a href="<?=$rutaBase?>vistas/mis_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Préstamos</a>
       <a href="<?=$rutaBase?>vistas/mis_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Multas</a>
     <?php endif; ?>
+      <!-- Mandar el pk del Usuario Logeado para que se muestre ese perfil -->
+    <a href="<?=$rutaBase?>vistas/detalle_usuario.php?pkUsuario=<?=$_SESSION['pkUsuarioLog']?>" class="block py-2 text-gray-800 hover:text-[#4F0087]">
+      Mi Perfil
+    </a>
 
-    <a href="<?=$rutaBase?>vistas/perfil.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mi Perfil</a>
     <a href="<?=$rutaBase?>controladores/cerrar_sesion.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Salir</a>
   </div>
   <?php endif; ?>

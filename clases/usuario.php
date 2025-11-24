@@ -103,7 +103,7 @@ class Usuario {
     function login($numCredencial, $pass) {
         $numCredencial = $this->conexion->real_escape_string($numCredencial);
         $pass = $this->conexion->real_escape_string($pass);
-        $consulta = "SELECT pkUsuario, numCredencial, rol FROM usuario WHERE numCredencial = '{$numCredencial}' AND pass = '{$pass}' AND estatus = 'A'";
+        $consulta = "SELECT pkUsuario, numCredencial, rol, estatus, CONCAT(nombres, ' ', apaterno, ' ') AS nombreCompleto FROM usuario WHERE numCredencial = '{$numCredencial}' AND pass = '{$pass}' AND estatus = 'A'";
         return $this->conexion->query($consulta);
     }
     // filtrar y mostrar listas
