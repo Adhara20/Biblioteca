@@ -15,7 +15,7 @@ $subcategoria = new Subcategoria();
 
 $listaAutores = $autor->mostrar();
 $listaEditoriales = $editorial->listaEditoriales();
-$listaCategorias = $subcategoria->listaActivo();
+$listaCategorias = $subcategoria->mostrar();
 ?>
 
 <!-- MENSAJE DE ERROR -->
