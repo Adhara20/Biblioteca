@@ -43,7 +43,7 @@ $imgRuta = !empty($fila['portada'])
 include('../clases/subcategoria.php');
 
 $subcategoria = new Subcategoria();
-$listaCategorias = $subcategoria->listaActivo();
+$listaCategorias = $subcategoria->mostrar();
 ?>
 
 <!-- MENSAJE DE Exito -->
