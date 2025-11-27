@@ -254,7 +254,7 @@ if ($estatus != 'EnProceso') {
             <span class="text-sm">Editar</span>
         </a>
         <?php if($mostrarBoton): ?>
-        <a href="formulario_multa.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>"
+        <a href="formulario_multa.php?codigoPrestamo=<?= $fila['codigoPrestamo'] ?>"
             class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400">
             <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
             <span class="text-sm">Multar</span>
