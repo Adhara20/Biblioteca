@@ -4,7 +4,7 @@ class Prestamo{
         require_once('Conexion.php');
         $this->conexion = new Conexion();
     }
-    function guardar($folioContrato, $archivoContrato, $folio, $numCredS, $numCredA){
+    function guardar($fechaLimite, $folioContrato, $archivoContrato, $folio, $numCredS, $numCredA){
         $fkUsuarioAutoriza = $this->obtenerfkUsuarioA ($numCredA);
         $fkUsuarioSolicita = $this->obtenerfkUsuarioS ($numCredS);
         $fkCopiaF = $this ->obtenerfolio($folio);
@@ -21,7 +21,7 @@ class Prestamo{
         $codigoPrestamo = $this ->generarCodigo();
 
         $dias = 5;
-        $consulta = "INSERT INTO prestamo (codigoPrestamo, fechaRegistro, fechaLimite, folioContrato, archivoContrato, fkCopiaF, fkUsuarioSolicita, fkUsuarioAutoriza, estatusDevolucion) VALUES ('{$codigoPrestamo}', NOW(), DATE_ADD(NOW(), INTERVAL $dias DAY), '{$folioContrato}', '{$archivoContrato}', '{$fkCopiaF}', '{$fkUsuarioSolicita}', '{$fkUsuarioAutoriza}', 'ATiempo')";
+        $consulta = "INSERT INTO prestamo (codigoPrestamo, fechaRegistro, fechaLimite, folioContrato, archivoContrato, fkCopiaF, fkUsuarioSolicita, fkUsuarioAutoriza, estatusDevolucion) VALUES ('{$codigoPrestamo}', NOW(), '{$fechaLimite}', INTERVAL $dias DAY), '{$folioContrato}', '{$archivoContrato}', '{$fkCopiaF}', '{$fkUsuarioSolicita}', '{$fkUsuarioAutoriza}', 'ATiempo')";
         $respuesta = $this->conexion->query($consulta);
 
         if ($respuesta) {

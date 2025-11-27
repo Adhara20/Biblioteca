@@ -1,5 +1,5 @@
 <?php
-
+$fechaLimite = $_POST['fechaLimite'];
 $folioContrato = $_POST['folioContrato'];
 $archivoContrato = $_FILES['archivoContrato']['name'];
 $ruta = $_FILES['archivoContrato']['tmp_name'];
@@ -10,6 +10,7 @@ $numCredA = $_POST['numCredA'];
 
 include('../clases/prestamo.php');
 $clase = new Prestamo();
+                    // aquí tambien
 $resultado = $clase->guardar($folioContrato, $archivoContrato, $folio, $numCredS, $numCredA);
 
 
