@@ -15,6 +15,12 @@
     <?php include('../includes/notificacion.php'); ?>
     <form action="../controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
     
+    <!--  Fecha Límite -->
+     <div>
+      <label class="block text-sm font-medium text-gray-700">Fecha Limite</label>
+      <input type="date" name="fechaLimite" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+    </div>
     
     <!-- Folio Contracto -->
      <div>
