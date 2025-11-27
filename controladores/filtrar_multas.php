@@ -1,5 +1,5 @@
 <?php
-include_once('../clases/Multa.php');
+include_once('../clases/multa.php');
 $clase = new Multa();
 $clase->generarMulta();
 

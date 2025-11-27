@@ -16,7 +16,7 @@ include('../includes/header.php');
 <body>
 
 <?php 
-include('../clases/Multa.php');
+include('../clases/multa.php');
 include('../controladores/filtrar_prestamos.php');
 
 $clase = new Prestamo();
@@ -256,7 +256,7 @@ if ($estatus != 'EnProceso') {
         <?php if($mostrarBoton): ?>
         <a href="formulario_multa.php?codigoPrestamo=<?= $fila['codigoPrestamo'] ?>"
             class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400">
-            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
+            <img src="/Biblioteca/imagenes/btn Iconos/btnMultar.jfif" class="size-4">
             <span class="text-sm">Multar</span>
         </a>
         <?php endif; ?>

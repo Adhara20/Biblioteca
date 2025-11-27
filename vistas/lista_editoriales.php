@@ -9,7 +9,7 @@
 </head>
 
 <?php
-include('../clases/Editorial.php');
+include('../clases/editorial.php');
 
 $edi = new Editorial();
 

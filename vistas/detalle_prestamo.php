@@ -7,7 +7,7 @@ include('../includes/header.php');
 
   <!-- obtener datos de la copia -->
   <?php
-  include('../clases/Multa.php');
+  include('../clases/multa.php');
   $claseMulta = new Multa();
   include('../clases/prestamo.php');//Incluyes la clase
   $clase = new Prestamo();//creas instacia

@@ -40,7 +40,7 @@ if ($resultado && $resultado->num_rows > 0) {
 ?>
 
 <?php
-include('../clases/Nacionalidad.php');
+include('../clases/nacionalidad.php');
 
 $nacionalidad = new Nacionalidad();
 

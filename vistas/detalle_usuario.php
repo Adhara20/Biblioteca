@@ -93,7 +93,7 @@ include('../includes/header.php');
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
-            <dt class="font-medium text-gray-700">Fecha de Naciomiento:</dt>
+            <dt class="font-medium text-gray-700">Fecha de Nacimiento:</dt>
             <dd class="col-span-2 text-gray-800 font-medium"><?= $fila['fechaNac'] ?></dd>
           </div>
 
@@ -152,7 +152,7 @@ include('../includes/header.php');
 
 
             <div class="py-3 grid grid-cols-3 gap-4">
-                <dt class="font-medium text-gray-700">Usuario está:</dt>
+                <dt class="font-medium text-gray-700">Estatus usuario:</dt>
                 <?php
                 if($fila['estatus'] == 'A'){
                     $estatus ='ACTIVO';
