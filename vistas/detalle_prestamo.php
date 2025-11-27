@@ -7,6 +7,8 @@ include('../includes/header.php');
 
   <!-- obtener datos de la copia -->
   <?php
+  include('../clases/Multa.php');
+  $claseMulta = new Multa();
   include('../clases/prestamo.php');//Incluyes la clase
   $clase = new Prestamo();//creas instacia
   $pkPrestamo = $_GET['pkPrestamo'] ?? null;
@@ -15,15 +17,35 @@ include('../includes/header.php');
       echo "<p>No se especificó el préstamo.</p>";
       exit;
   }
+
+
   //Mandas a llamar la clase de detalles en la variable $resultado
   //Revicen en mi clase Libro como esta la funcion de detalles
   $resultado = $clase->detalles($pkPrestamo);
+  
 
   if ($resultado && $resultado->num_rows > 0) {
       $fila = $resultado->fetch_assoc();
   } else {
       echo "<p>No se encontró el préstamo.</p>";
       exit;
+  }
+  // Llamar la clase para validar que multas tiene el prestamo
+  $multas = $claseMulta->obtenerMultasPrestamo($pkPrestamo);
+
+  $botonMulta = true;
+
+  // no permitir si el prestamo NO está en proceso
+  if ($fila['estatus'] !== 'EnProceso') {
+      $botonMulta = false;
+  }
+
+  // no permitir si tiene multa de daño o perdido
+  foreach ($multas as $multa) {
+      if ($multa === "Daño" || $multa === "Perdido") {
+          $botonMulta = false;
+          break;
+      }
   }
   ?>
   <!--  Título principal -->
@@ -79,6 +101,11 @@ include('../includes/header.php');
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
+            <dt class="font-medium text-gray-700">Folio Copia:</dt>
+            <dd class="col-span-2 text-gray-800"><?= $fila['folioCopia'] ?></dd>
+          </div>
+
+          <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Usuario Solicitante:</dt>
             <dd class="col-span-2 text-gray-800"><?= $fila['numSolicitante'] ?></dd>
           </div>
@@ -121,13 +148,20 @@ include('../includes/header.php');
                 ?>
                 <dd class="col-span-2 <?= $colorDevolucion ?>"><?= $estatusDevolucion ?></dd>
             </div>
-
+      <!-- Solo admins/Blibliotecarios< -->
+       <?php if($rol != 'L'): ?>
       <!-- Botones de acción | Se queda igual | Reemplazar con nueva actualizacion... -->
       <div class="flex justify-end gap-3 mt-8">
         <a href="editar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>" 
         class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
           Editar
         </a>
+        <?php if($botonMulta): ?>
+        <a href="formulario_multa.php?codigoPrestamo=<?= $fila['codigoPrestamo'] ?>" 
+        class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
+          Multar
+        </a>
+        <?php endif; ?>
         <?php
           if($fila['estatus'] == 'EnProceso'){
         ?>
@@ -142,6 +176,8 @@ include('../includes/header.php');
         ?>
         
       </div>
+      <!-- >Solo admin/Bibliotecarios -->
+       <?php endif; ?>
     </div>
   </div>
        

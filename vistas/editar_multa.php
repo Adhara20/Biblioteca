@@ -30,12 +30,8 @@ if ($resultado && $resultado->num_rows > 0) {
     echo "<p>No se encontró la multa.</p>";
     exit;
 }
-
-// Listar préstamos activos
-$prestamos = $prestamo->verPrestamo(); // todos los prestamos disponibles
 ?>
 
-<!-- Mensaje de éxito/error -->
 <?php include('../includes/notificacion.php') ?>
 
 <div class="w-full flex flex-col items-start px-8 mt-8">
@@ -51,16 +47,16 @@ $prestamos = $prestamo->verPrestamo(); // todos los prestamos disponibles
   </h2>
 
   <form action="../controladores/actualizar_multa.php" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    
+
     <!-- PK -->
     <input type="hidden" name="pkMulta" value="<?= $fila['pkMulta'] ?>">
 
-    <!-- Código Multa -->
+    <!-- Código Multa (solo lectura) -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Código Multa</label>
-      <input type="text" name="codigoMulta" required
-        value="<?= $fila['codigoMulta'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <input type="text" name="codigoMulta" value="<?= $fila['codigoMulta'] ?>" 
+        readonly
+        class="w-full mt-1 p-2 border rounded-md bg-gray-100 cursor-not-allowed">
     </div>
 
     <!-- Tipo Multa -->
@@ -76,44 +72,36 @@ $prestamos = $prestamo->verPrestamo(); // todos los prestamos disponibles
     <!-- Monto -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Monto</label>
-      <input type="number" step="0.01" name="montoMulta" value="<?= $fila['montoMulta'] ?>"
+      <input type="number" step="0.01" min="0" max="9999.99" name="montoMulta" 
+        value="<?= $fila['montoMulta'] ?>"
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
 
-    <!-- Fecha Registro -->
+    <!-- Fecha Registro (solo lectura) -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Fecha Registro</label>
-      <input type="date" name="fechaRegistro" value="<?= $fila['fechaRegistro'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <input type="date" value="<?= $fila['fechaRegistro'] ?>" readonly
+        class="w-full mt-1 p-2 border rounded-md bg-gray-100 cursor-not-allowed">
     </div>
 
-    <!-- Fecha Pago -->
+    <!-- Préstamo (solo lectura) -->
+    
+    <input type="hidden" name="codigoPrestamo" value="<?= $fila['codigoPrestamo'] ?>">
+
+    
+
     <div>
-      <label class="block text-sm font-medium text-gray-700">Fecha Pago</label>
-      <input type="date" name="fechaPago" value="<?= $fila['fechaPago'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <label class="block text-sm font-medium text-gray-700">Préstamo Asociado</label>
+      <input type="text" value="<?= $fila['fkPrestamo'] ?> - <?= $fila['codigoPrestamo'] ?? '' ?>" 
+        readonly
+        class="w-full mt-1 p-2 border rounded-md bg-gray-100 cursor-not-allowed">
     </div>
-
-    <!-- Préstamo -->
-    <div class="md:col-span-2">
-      <label class="block text-sm font-medium text-gray-700">Préstamo</label>
-      <select name="fkPrestamo" required class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
-        <option value="">Seleccione un préstamo</option>
-        <?php foreach ($prestamos as $p): ?>
-          <option value="<?= $p['pkPrestamo'] ?>" <?= $p['pkPrestamo']==$fila['fkPrestamo'] ? 'selected' : '' ?>>
-            <?= $p['codigoPrestamo'] ?> (<?= $p['numSolicitante'] ?>)
-          </option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-
-    <!-- Estatus -->
-    <div class="md:col-span-2">
-      <label class="block text-sm font-medium text-gray-700">Estatus</label>
-      <select name="estatus" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
-        <option value="A" <?= $fila['estatus']=='A' ? 'selected' : '' ?>>Activo</option>
-        <option value="P" <?= $fila['estatus']=='P' ? 'selected' : '' ?>>Pendiente</option>
-      </select>
+  <!-- Credencial del UsuarioMultado -->
+    <div >
+      <label class="block text-sm font-medium text-gray-700">Usuario Asociado</label>
+      <input type="text" value="<?= $fila['numCredencial'] ?? '' ?>" 
+        readonly
+        class="w-full mt-1 p-2 border rounded-md bg-gray-100 cursor-not-allowed">
     </div>
 
     <!-- Botones -->

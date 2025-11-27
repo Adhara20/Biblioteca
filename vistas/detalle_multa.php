@@ -57,6 +57,11 @@ if ($fila['estatus'] === 'A') {
         </div>
 
         <div class="py-3 grid grid-cols-3 gap-4">
+          <dt class="font-medium text-gray-700">Usuario:</dt>
+          <dd class="col-span-2"><?= htmlspecialchars($fila['numCredencial']) ?></dd>
+        </div>
+
+        <div class="py-3 grid grid-cols-3 gap-4">
           <dt class="font-medium text-gray-700">Tipo:</dt>
           <dd class="col-span-2"><?= htmlspecialchars($fila['tipoMulta']) ?></dd>
         </div>
@@ -72,13 +77,13 @@ if ($fila['estatus'] === 'A') {
         </div>
 
         <div class="py-3 grid grid-cols-3 gap-4">
-          <dt class="font-medium text-gray-700">Pagada:</dt>
+          <dt class="font-medium text-gray-700">Pagada el:</dt>
           <dd class="col-span-2"><?= htmlspecialchars($fila['fechaPago'] ?? '—') ?></dd>
         </div>
 
         <div class="py-3 grid grid-cols-3 gap-4">
           <dt class="font-medium text-gray-700">Préstamo:</dt>
-          <dd class="col-span-2"><?= htmlspecialchars($fila['fkPrestamo']) ?></dd>
+          <dd class="col-span-2"><?= htmlspecialchars($fila['codigoPrestamo']) ?></dd>
         </div>
 
         <div class="py-3 grid grid-cols-3 gap-4">
@@ -88,26 +93,25 @@ if ($fila['estatus'] === 'A') {
 
       </dl>
     </div>
-
+<?php if($fila['estatus']== 'A' && $rol!='L'  && $estatusLog=='A'): ?>
     <!-- Botones de acción -->
     <div class="flex justify-end gap-3 mt-8">
       <a href="editar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
          class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
         Editar
       </a>
-
-      <?php if ($fila['estatus'] === 'A'): ?>
-        <a href="../controladores/desactivar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
+        <a href="../controladores/pagar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
            class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
           Marcar como Pagada
         </a>
-      <?php else: ?>
-        <a href="../controladores/activar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
+
+        <a href="../controladores/cancelar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
           class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
-          Marcar como Pendiente
+          Cancelar
         </a>
-      <?php endif; ?>
+ 
     </div>
+    <?php endif; ?>
   </div>
 </div>
 

@@ -32,3 +32,32 @@
   border-top: 3px solid #000000;
   margin: 0 auto 25px 0;
 }
+/* Aplica a todos los select */
+select {
+    border-radius: 12px;        /* Bordes redondeados */
+    padding: 0.5rem 1rem;       /* Espacio interno */
+    border: 1px solid #ccc;     /* Borde suave */
+    background-color: #fff;     /* Fondo blanco */
+    appearance: none;           /* Quita estilo nativo del navegador */
+    -webkit-appearance: none;   /* Safari/Chrome */
+    -moz-appearance: none;      /* Firefox */
+    font-size: 1rem;            /* Tamaño de letra */
+    cursor: pointer;            /* Mano al pasar */
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Opcional: efecto al enfocar */
+select:focus {
+    outline: none;
+    border-color: #4F0087;
+    box-shadow: 0 0 0 2px rgba(79, 0, 135, 0.2);
+}
+
+/* Flechita personalizada (si quieres reemplazar la nativa) */
+select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 20,0 10,10"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Para que el texto no choque con la flechita */
+}

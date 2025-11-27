@@ -12,7 +12,7 @@ class Autor{
 		return $respuesta;
 	}	
 	function mostrar(){
-		$consulta = "SELECT autor.nombreAutor, nacionalidad.nombreNaci FROM autor INNER JOIN nacionalidad ON autor.fkNacionalidad = nacionalidad.pkNacionalidad WHERE autor.estatus = 'A'";
+		$consulta = "SELECT a.*, n.* FROM autor a INNER JOIN nacionalidad n ON a.fkNacionalidad = n.pkNacionalidad WHERE a.estatus = 'A'";
 		$resultado = $this->conexion->query($consulta);
 		return $resultado;
 

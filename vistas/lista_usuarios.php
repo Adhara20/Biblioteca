@@ -25,7 +25,7 @@ include('../controladores/filtrar_usuarios.php');
       </div>
       <div class="flex items-center">
         <?php if($rol == 'A' && $estatusLog == 'A') ?>
-        <a href="formulario_usuarios.php" 
+        <a href="formulario_usuario.php" 
           class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           Agregar Usuario
         </a>

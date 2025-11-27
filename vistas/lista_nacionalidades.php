@@ -35,18 +35,20 @@ include('../includes/header.php');
 
 <!-- Título + Botón agregar -->
 <div class="px-10 mb-6">
-    <div class="flex items-center justify-between">
-        <div>
+        <div class="flex items-center justify-between">
             <h1 class="titulos">Nacionalidades</h1>
+
+            <a href="formulario_nacionalidad.php" 
+   class="rounded-md text-white font-medium transition 
+          bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
+          shadow-sm px-4 py-2 text-center whitespace-nowrap
+          sm:min-w-[11rem] md:min-w-[12rem]">
+   Agregar Nacionalidad
+</a>
+
         </div>
-        <div class="flex items-center">
-            <a href="formulario_nacionalidad.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
-                Agregar Nacionalidad
-            </a>
-        </div>
+        <hr class="linea-separadora-listas">
     </div>
-    <hr class="linea-separadora-listas">
-</div>
 
 <?php include('../includes/notificacion.php'); ?>
 

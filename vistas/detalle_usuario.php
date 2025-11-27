@@ -48,6 +48,18 @@ include('../includes/header.php');
       <?php include('../includes/notificacion.php'); ?>
     </div>
   </div>
+  <?php
+            if($fila['rol']=='A'){
+                $rol1='ADMINISTRADOR';
+                $colorR = 'text-purple-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+            }else if($fila['rol']=='B'){
+                $rol1='BIBLIOTECARIO';
+                $colorR = 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+            }else{
+                $rol1='LECTOR';
+                $colorR = 'text-pink-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+            }
+            ?>
 
   <!--  Contenedor principal: Contenido -->
    <!-- <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 border border-gray-300 mb-12 mx-auto flex flex-col md:flex-row gap-8"> -->
@@ -72,22 +84,22 @@ include('../includes/header.php');
           <!--  Estos son los datos-->
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Número de Credencial:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['numCredencial'] ?></dd>
+            <dd class="col-span-2 <?= $colorR ?> font-medium"><?= $fila['numCredencial'] ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">CURP:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['curp'] ?></dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $fila['curp'] ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Fecha de Naciomiento:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['fechaNac'] ?></dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $fila['fechaNac'] ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Edad:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $clase->obtenerEdad($fila["fechaNac"]) ?> años</dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $clase->obtenerEdad($fila["fechaNac"]) ?> años</dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
@@ -99,34 +111,22 @@ include('../includes/header.php');
                     $genero='Masculino / Hombre';
                 }
             ?>
-            <dd class="col-span-2 text-gray-800"><?= $genero ?></dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $genero ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Correo:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['correo'] ?></dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $fila['correo'] ?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Rol:</dt>
-            <?php
-            if($fila['rol']=='A'){
-                $rol1='ADMINISTRADOR';
-                $colorR = 'text-purple-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-            }else if($fila['rol']=='B'){
-                $rol1='BIBLIOTECARIO';
-                $colorR = 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-            }else{
-                $rol1='LECTOR';
-                $colorR = 'text-pink-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-            }
-            ?>
             <dd class="col-span-2 text-gray-800 <?= $colorR ?>"><?= $rol1?></dd>
           </div>
 
           <div class="py-3 grid grid-cols-3 gap-4">
             <dt class="font-medium text-gray-700">Fecha de Registro:</dt>
-            <dd class="col-span-2 text-gray-800"><?= $fila['fechaRegistro'] ?></dd>
+            <dd class="col-span-2 text-gray-800 font-medium"><?= $fila['fechaRegistro'] ?></dd>
           </div>
 
           <!-- Como todos tiene  estatus prestamista, 
@@ -165,10 +165,7 @@ include('../includes/header.php');
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
             </div>
 
-            <div class="py-3 grid grid-cols-3 gap-4">
-              <dt class="font-medium text-gray-700">Fecha de Registro:</dt>
-              <dd class="col-span-2 text-gray-800"><?= $fila['fechaRegistro'] ?></dd>
-            </div>
+            
 
         </dl>
       </div>

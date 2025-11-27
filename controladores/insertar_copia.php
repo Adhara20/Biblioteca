@@ -1,6 +1,7 @@
 <?php
 $isbn = $_POST['isbn'];
-$observaciones = $_POST['observaciones'];
+$observaciones = empty($_POST['observaciones']) ? null : $_POST['observaciones'];
+// $observaciones = $_POST['observaciones'];
 include('../clases/copia.php');
 
 

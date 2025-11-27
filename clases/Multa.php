@@ -22,101 +22,254 @@ class Multa {
     function listaMultas() {
         return $this->listar();
     }
+//Bibliotecario y Admin
+    function filtrar($buscar = '', $estatus = '', $tipo = '') {
+    $consulta = "SELECT m.*, 
+                        CONCAT(u.nombres, ' ', u.apaterno, ' ', u.amaterno) AS nombreUsuario,
+                        p.codigoPrestamo
+                 FROM multa m
+                 INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
+                 INNER JOIN usuario u ON p.fkUsuarioSolicita = u.pkUsuario
+                 WHERE 1 = 1";
 
-    // Filtrar multas según criterios
-    function filtrar($buscar = '', $tipo = '', $estatus = '') {
-        $consulta = "SELECT m.*, p.codigoPrestamo, p.fechaRegistro AS fechaPrestamo
-                     FROM multa m
-                     INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
-                     WHERE 1=1";
-
-        if ($buscar !== '') {
-            $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-            $consulta .= " AND (m.codigoMulta LIKE '%$buscar%' OR p.codigoPrestamo LIKE '%$buscar%')";
-        }
-
-        if ($tipo !== '') {
-            $tipo = mysqli_real_escape_string($this->conexion, $tipo);
-            $consulta .= " AND m.tipoMulta = '$tipo'";
-        }
-
-        if ($estatus !== '') {
-            $estatus = mysqli_real_escape_string($this->conexion, $estatus);
-            $consulta .= " AND m.estatus = '$estatus'";
-        }
-
-        $consulta .= " ORDER BY m.pkMulta DESC";
-
-        $resultado = $this->conexion->query($consulta);
-        return $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
+    if (!empty($buscar)) {
+        $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+        $consulta .= " AND (u.nombres LIKE '%$buscar%'
+                        OR u.apaterno LIKE '%$buscar%'
+                        OR p.codigoPrestamo LIKE '%$buscar%'
+                        OR m.tipoMulta LIKE '%$buscar%')";
     }
+
+    if (!empty($estatus)) {
+        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+        $consulta .= " AND m.estatus = '$estatus'";
+    }
+
+    if (!empty($tipo)) {
+        $tipo = mysqli_real_escape_string($this->conexion, $tipo);
+        $consulta .= " AND m.tipoMulta = '$tipo'";
+    }
+
+    $resultado = mysqli_query($this->conexion, $consulta);
+    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+}
+
+
+
+
+    // Filtrar mis Multas si soy lector
+    function filtrarPorUsuario($pkUsuario, $buscar = '', $estatus = '', $tipo = '') {
+    $pkUsuario = intval($pkUsuario);
+
+    $consulta = "SELECT m.*, 
+                        p.codigoPrestamo
+                 FROM multa m
+                 INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
+                 WHERE p.fkUsuarioSolicita = $pkUsuario";
+
+    if (!empty($buscar)) {
+        $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+        $consulta .= " AND (p.codigoPrestamo LIKE '%$buscar%'
+                        OR m.tipoMulta LIKE '%$buscar%')";
+    }
+
+    if (!empty($estatus)) {
+        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+        $consulta .= " AND m.estatus = '$estatus'";
+    }
+
+    if (!empty($tipo)) {
+        $tipo = mysqli_real_escape_string($this->conexion, $tipo);
+        $consulta .= " AND m.tipoMulta = '$tipo'";
+    }
+
+    $resultado = mysqli_query($this->conexion, $consulta);
+    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+}
+
+
+
 
     // Detalles de una multa
-    function detalles($pkMulta) {
-        $pkMulta = intval($pkMulta);
-        $consulta = "SELECT m.*, p.codigoPrestamo, p.fechaRegistro AS fechaPrestamo
-                     FROM multa m
-                     INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
-                     WHERE m.pkMulta = $pkMulta
-                     LIMIT 1";
+function detalles($pkMulta) {
+    $pkMulta = intval($pkMulta);
 
-        $resultado = $this->conexion->query($consulta);
-        return $resultado;
+    $consulta = "
+        SELECT 
+            m.*,
+            p.codigoPrestamo,
+            p.fkUsuarioSolicita,
+            CONCAT(u.nombres, ' ', u.apaterno) AS nombreUsuario,
+            u.numCredencial
+        FROM multa m
+        INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
+        INNER JOIN usuario u ON p.fkUsuarioSolicita = u.pkUsuario
+        WHERE m.pkMulta = {$pkMulta}
+        LIMIT 1
+    ";
+
+    return $this->conexion->query($consulta);
+}
+
+
+
+    function actualizar($pkMulta, $tipoMulta, $montoMulta, $codigoPrestamo) {
+
+    // Buscar id del préstamo por código
+    $fkPrestamo = $this->obtenerPkPrestamoPorCodigo($codigoPrestamo);
+
+    if ($fkPrestamo === null) {
+        return false; // Prestamo no encontrado
     }
 
-    // Actualizar multa
-    function actualizar($pkMulta, $codigoMulta, $tipoMulta, $montoMulta, $fechaPago, $fkPrestamo, $estatus) {
-        $pkMulta = intval($pkMulta);
-        $fkPrestamo = intval($fkPrestamo);
-        $codigoMulta = mysqli_real_escape_string($this->conexion, strtoupper($codigoMulta));
-        $tipoMulta = mysqli_real_escape_string($this->conexion, $tipoMulta);
-        $montoMulta = floatval($montoMulta);
-        $fechaPago = $fechaPago ? "'$fechaPago'" : "NULL";
-        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+    $pkMulta    = intval($pkMulta);
+    $tipoMulta  = mysqli_real_escape_string($this->conexion, $tipoMulta);
+    $montoMulta = floatval($montoMulta);
 
-        $consulta = "UPDATE multa SET 
-                        codigoMulta = '$codigoMulta',
-                        tipoMulta = '$tipoMulta',
-                        montoMulta = $montoMulta,
-                        fechaPago = $fechaPago,
-                        fkPrestamo = $fkPrestamo,
-                        estatus = '$estatus'
-                     WHERE pkMulta = $pkMulta";
+    $consulta = "
+        UPDATE multa SET 
+            tipoMulta = '$tipoMulta',
+            montoMulta = $montoMulta,
+            fkPrestamo = $fkPrestamo
+        WHERE pkMulta = $pkMulta
+    ";
 
-        return $this->conexion->query($consulta);
-    }
+    return $this->conexion->query($consulta);
+}
+
+
 
     // Activar multa
-    function activar($pkMulta) {
+    function cancelar($pkMulta) {
         $pkMulta = intval($pkMulta);
-        $consulta = "UPDATE multa SET estatus = 'A' WHERE pkMulta = $pkMulta";
+        $consulta = "UPDATE multa SET estatus = 'C' WHERE pkMulta = $pkMulta";
         return $this->conexion->query($consulta);
     }
 
     // Desactivar multa
-    function desactivar($pkMulta) {
-        $pkMulta = intval($pkMulta);
-        $consulta = "UPDATE multa SET estatus = 'P' WHERE pkMulta = $pkMulta";
-        return $this->conexion->query($consulta);
-    }
-    // Insertar nueva multa
-function insertar($tipoMulta, $montoMulta, $fechaRegistro, $fechaPago, $fkPrestamo) {
+    function pagar($pkMulta) {
+    $pkMulta = intval($pkMulta);
 
-    $tipoMulta = mysqli_real_escape_string($this->conexion, $tipoMulta);
-    $montoMulta = floatval($montoMulta);
-    $fkPrestamo = intval($fkPrestamo);
+    // Guardar fecha actual
+    $fechaPago = date("Y-m-d H:i:s");
 
-    // Fecha de pago puede ser NULL
-    $fechaPagoSQL = ($fechaPago != "" && $fechaPago != null) ? "'$fechaPago'" : "NULL";
-
-    // Generar código de multa (algo como M4592)
-    $codigoMulta = "M" . rand(1000, 9999);
-
-    $consulta = "INSERT INTO multa (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fechaPago, fkPrestamo, estatus)
-                 VALUES ('$codigoMulta', '$tipoMulta', $montoMulta, '$fechaRegistro', $fechaPagoSQL, $fkPrestamo, 'A')";
+    $consulta = "
+        UPDATE multa 
+        SET estatus = 'P',
+            fechaPago = '$fechaPago'
+        WHERE pkMulta = $pkMulta
+    ";
 
     return $this->conexion->query($consulta);
 }
+
+    // Insertar nueva multa
+function insertar($tipoMulta, $montoMulta, $fechaRegistro, $codigoPrestamo) {
+    $codigoMulta = $this->generarCodigoMulta();
+    // Convertir código a su pk
+    $fkPrestamo = $this->obtenerPkPrestamoPorCodigo($codigoPrestamo);
+
+    if ($fkPrestamo === null) {
+        return false; // Prestamo no encontrado
+    }
+
+    $tipoMulta = mysqli_real_escape_string($this->conexion, $tipoMulta);
+    $montoMulta = floatval($montoMulta);
+
+    $consulta = "INSERT INTO multa 
+                (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fkPrestamo, estatus)
+                 VALUES 
+                ('$codigoMulta', '$tipoMulta', $montoMulta, '$fechaRegistro', $fkPrestamo, 'A')";
+
+    return $this->conexion->query($consulta);
+}
+
+// Generar codigo-número
+    function generarCodigoMulta() {
+    // Prefijo: Es la parte que se mantendra igual en todos los numCredenciales
+    $prefijo = "M-";
+    // Se consulta el ultimo número que se registro, LIKE(busca los registros que se paresca al dato siguiente. $prefijo%(%se usa para indicar que solo busque registros que inicien con lo que se indica, en este caso OW-)
+    //ORDER BY numCredencial DESC LIMIT 1: busca el ultimo registro, o sea el más alto, y con LIMIT 1 se indica que solo se quiere ese
+    $consulta = "SELECT codigoMulta FROM multa WHERE codigoMulta LIKE '{$prefijo}%' ORDER BY codigoMulta DESC LIMIT 1";
+    $resultado = $this->conexion->query($consulta);
+    if ($fila = $resultado->fetch_assoc()) {
+        // Se usa para extraer, por ejemplo: de OW-000012, "000012" y convertirlo a numero
+        $ultimoNumero = intval(substr($fila['codigoMulta'], strlen($prefijo)));
+        $nuevoNumero = $ultimoNumero + 1;//Al ultimo número se le aumenta 1 para que se cree el nuevo numero que ira despues del prefijo
+    } else {
+        //Si no hay registros, pues se empieza con 1
+        $nuevoNumero = 1;
+    }
+    // Como se ocupan x cantidad de digitos, pues con esto llena lo que sobre con 0
+    $codigoMulta = $prefijo . str_pad($nuevoNumero, 8, "0", STR_PAD_LEFT);
+    return $codigoMulta;
+    }
+
+function obtenerPkPrestamoPorCodigo($codigoPrestamo) {
+
+    $codigoPrestamo = mysqli_real_escape_string($this->conexion, $codigoPrestamo);
+
+    $consulta = "SELECT pkPrestamo 
+                 FROM prestamo 
+                 WHERE codigoPrestamo = '$codigoPrestamo' 
+                 LIMIT 1";
+
+    $resultado = $this->conexion->query($consulta);
+
+    if ($fila = $resultado->fetch_assoc()) {
+        return $fila['pkPrestamo'];
+    }
+
+    return null;  // No existe ese código
+} 
+
+// Generar multas automaticas por RETRASO
+    function generarMulta() {
+    $hoy = date('Y-m-d');
+
+    $consultaPrestamos = "SELECT pkPrestamo
+                          FROM prestamo
+                          WHERE estatus = 'EnProceso'
+                            AND fechaLimite < '$hoy'";
+    $resultadoPrestamos = $this->conexion->query($consultaPrestamos);
+
+    if ($resultadoPrestamos && $resultadoPrestamos->num_rows > 0) {
+        while ($prestamo = $resultadoPrestamos->fetch_assoc()) {
+            $pkPrestamo = $prestamo['pkPrestamo'];
+
+            $consultaExiste = "SELECT 1 
+                               FROM multa 
+                               WHERE fkPrestamo = $pkPrestamo 
+                                 AND tipoMulta IN ('Retraso','Perdido')";
+            $resExistente = $this->conexion->query($consultaExiste);
+
+            if ($resExistente && $resExistente->num_rows === 0) {
+                $codigo = 'R-' . $pkPrestamo . '-' . date('Ymd');
+                $insertar = "INSERT INTO multa (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fkPrestamo, estatus)
+                             VALUES ('$codigo', 'Retraso', 0, '$hoy', $pkPrestamo, 'A')";
+                $this->conexion->query($insertar);
+            }
+        }
+    }
+}
+
+
+    function obtenerMultasPrestamo($pkPrestamo) {
+    $consulta = "SELECT tipoMulta FROM multa WHERE fkPrestamo = $pkPrestamo AND estatus = 'A'";
+    $resultado = $this->conexion->query($consulta);
+
+    $multas = [];
+    if ($resultado) {
+        while ($fila = $resultado->fetch_assoc()) {
+            $multas[] = $fila['tipoMulta'];
+        }
+    }
+
+    return $multas;
+}
+
+
+
 
 }
 ?>
