@@ -11,7 +11,7 @@ $numCredA = $_POST['numCredA'];
 include('../clases/prestamo.php');
 $clase = new Prestamo();
                     // aquí tambien
-$resultado = $clase->guardar($folioContrato, $archivoContrato, $folio, $numCredS, $numCredA);
+$resultado = $clase->guardar($fechaLimite, $folioContrato, $archivoContrato, $folio, $numCredS, $numCredA);
 
 
 if ($resultado) {
