@@ -19,7 +19,6 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
     </div>
 
     <?php if (!$rol): ?>
-      <!-- Botón de Iniciar Sesión (solo visible sin iniciar Sesión) -->
       <a href="<?=$rutaBase?>vistas/login.php" class="bg-white text-[#4F0087] px-4 py-2 rounded-lg font-semibold hover:bg-[#E5E0F2] transition">
         Iniciar sesión
       </a>
@@ -29,28 +28,52 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
   </div>
 
   <?php if ($rol): ?>
-<!-- Menú principal de Opciones (solo visible al iniciar Sesión)-->
   <div id="menu" class="hidden flex-col absolute right-0 bg-white shadow-lg lg:static lg:flex lg:flex-row 
                        lg:justify-end lg:items-center lg:space-x-6 px-6 py-2">
 
     <a href="<?=$rutaBase?>index.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Inicio</a>
     <a href="<?=$rutaBase?>vistas/lista_libros.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Libros</a>
-<!-- Puede ver Bibliotecario y Admin -->
+
     <?php if ($rol === 'A' || $rol === 'B'): ?>
       <a href="<?=$rutaBase?>vistas/lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Préstamos</a>
-      <a href="<?=$rutaBase?>vistas/lista_categoria.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Clasificaciones</a>
+
+      <!-- Clasificaciones PC -->
+      <div class="relative group hidden lg:block">
+        <button class="flex block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:text-center">
+          Clasicicaciones <img src="<?=$rutaBase?>imagenes/btn Iconos/abajoFlecha.png" class="size-3 mt-2 ml-1">
+        </button>
+        <div class="hidden group-hover:flex lg:absolute lg:flex-col bg-white shadow-md border rounded-md mt-1 min-w-[180px]">
+          <a href="<?=$rutaBase?>vistas/lista_categoria.php" class="px-4 py-2 hover:bg-gray-100">Categorías</a>
+          <a href="<?=$rutaBase?>vistas/lista_subcategoria.php" class="px-4 py-2 hover:bg-gray-100">Subcategorías</a>
+        </div>
+      </div>
+
+      <!-- Clasificaciones Móvil -->
+      <button id="btn-submenu-clas" class="flex block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:hidden">
+        Clasicicaciones <img src="<?=$rutaBase?>imagenes/btn Iconos/drchFlecha.png" class="size-3 mt-2 ml-1">
+      </button>
+      <div id="offcanvas-clas" class="fixed top-0 right-[-100%] h-full w-64 bg-white shadow-lg transition-all flex flex-col z-50 lg:hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+          <span class="font-semibold">Clasicicaciones</span>
+          <button id="close-clas" class="text-gray-700 text-xl">&times;</button>
+        </div>
+        <a href="<?=$rutaBase?>vistas/lista_categoria.php" class="px-4 py-2 hover:bg-gray-100">Categorías</a>
+        <a href="<?=$rutaBase?>vistas/lista_subcategoria.php" class="px-4 py-2 hover:bg-gray-100">Subcategorías</a>
+      </div>
+
       <a href="<?=$rutaBase?>vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
+      <a href="<?=$rutaBase?>vistas/lista_copias.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Ejemplares</a>
     <?php endif; ?>
-<!-- Puede ver Admin -->
+
     <?php if ($rol === 'A'): ?>
       <a href="<?=$rutaBase?>vistas/lista_usuarios.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Usuarios</a>
     <?php endif; ?>
-<!-- Puede ver Bibliotecario y Admin -->
+
     <?php if ($rol === 'A' || $rol === 'B'): ?>
-      <!-- Gestión Bibliográfica Compu -->
+      <!-- Gestión Bibliográfica PC -->
       <div class="relative group hidden lg:block">
-        <button class="block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:text-center">
-          Gestión Bibliográfica ▼
+        <button class="flex block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:text-center">
+          Gestión Bibliográfica <img src="<?=$rutaBase?>imagenes/btn Iconos/abajoFlecha.png" class="size-3 mt-2 ml-1">
         </button>
         <div class="hidden group-hover:flex lg:absolute lg:flex-col bg-white shadow-md border rounded-md mt-1 min-w-[180px]">
           <a href="<?=$rutaBase?>vistas/lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
@@ -58,26 +81,27 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
           <a href="<?=$rutaBase?>vistas/lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
         </div>
       </div>
-      <!-- Gestión Bibliográfica Movil -->
-      <button id="btn-submenu" class="block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:hidden">
-        Gestión Bibliográfica →
+
+      <!-- Gestión Bibliográfica Móvil -->
+      <button id="btn-submenu-ges" class="flex block py-2 text-gray-800 hover:text-[#4F0087] w-full text-left lg:hidden">
+        Gestión Bibliográfica <img src="<?=$rutaBase?>imagenes/btn Iconos/drchFlecha.png" class="size-3 mt-2 ml-1">
       </button>
-      <div id="offcanvas-submenu" class="fixed top-0 right-[-100%] h-full w-64 bg-white shadow-lg transition-all flex flex-col z-50 lg:hidden">
+      <div id="offcanvas-ges" class="fixed top-0 right-[-100%] h-full w-64 bg-white shadow-lg transition-all flex flex-col z-50 lg:hidden">
         <div class="flex justify-between items-center p-4 border-b">
           <span class="font-semibold">Gestión Bibliográfica</span>
-          <button id="close-submenu" class="text-gray-700 text-xl">&times;</button>
+          <button id="close-ges" class="text-gray-700 text-xl">&times;</button>
         </div>
         <a href="<?=$rutaBase?>vistas/lista_autor.php" class="px-4 py-2 hover:bg-gray-100">Autores</a>
         <a href="<?=$rutaBase?>vistas/lista_editoriales.php" class="px-4 py-2 hover:bg-gray-100">Editoriales</a>
         <a href="<?=$rutaBase?>vistas/lista_nacionalidades.php" class="px-4 py-2 hover:bg-gray-100">Nacionalidades</a>
       </div>
     <?php endif; ?>
-<!-- Puede ver Lector -->
+
     <?php if ($rol === 'L'): ?>
-      <a href="<?=$rutaBase?>vistas/mis_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Préstamos</a>
-      <a href="<?=$rutaBase?>vistas/mis_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Multas</a>
+      <a href="<?=$rutaBase?>vistas/lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Préstamos</a>
+      <a href="<?=$rutaBase?>vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Mis Multas</a>
     <?php endif; ?>
-      <!-- Mandar el pk del Usuario Logeado para que se muestre ese perfil -->
+
     <a href="<?=$rutaBase?>vistas/detalle_usuario.php?pkUsuario=<?=$_SESSION['pkUsuarioLog']?>" class="block py-2 text-gray-800 hover:text-[#4F0087]">
       Mi Perfil
     </a>
@@ -86,9 +110,9 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
   </div>
   <?php endif; ?>
 </nav>
-<!-- Scrip para hacer funcionar el Menú de Opciones -->
+
+<!-- Scripts -->
 <script>
-// Menú principal mobile
 const hamburger = document.getElementById('hamburger');
 const menu = document.getElementById('menu');
 hamburger?.addEventListener('click', () => {
@@ -96,33 +120,30 @@ hamburger?.addEventListener('click', () => {
   menu.classList.toggle('flex');
 });
 
-// Submenú mobile off-canvas
-const btnSubmenu = document.getElementById('btn-submenu');
-const offcanvasSubmenu = document.getElementById('offcanvas-submenu');
-const closeSubmenu = document.getElementById('close-submenu');
+/* ─────────────── CLASIFICACIONES ─────────────── */
+const btnClas = document.getElementById('btn-submenu-clas');
+const offClas = document.getElementById('offcanvas-clas');
+const closeClas = document.getElementById('close-clas');
 
-btnSubmenu?.addEventListener('click', () => {
-  offcanvasSubmenu.style.right = '0';
-});
+btnClas?.addEventListener('click', () => { offClas.style.right = '0'; });
+closeClas?.addEventListener('click', () => { offClas.style.right = '-100%'; });
 
-closeSubmenu?.addEventListener('click', () => {
-  offcanvasSubmenu.style.right = '-100%';
-});
+/* ─────────────── GESTIÓN BIBLIOGRÁFICA ─────────────── */
+const btnGes = document.getElementById('btn-submenu-ges');
+const offGes = document.getElementById('offcanvas-ges');
+const closeGes = document.getElementById('close-ges');
 
-// Clic afuera para cerrar off-canvas
+btnGes?.addEventListener('click', () => { offGes.style.right = '0'; });
+closeGes?.addEventListener('click', () => { offGes.style.right = '-100%'; });
+
+// Cerrar si se hace clic fuera
 document.addEventListener('click', (e) => {
   if (window.innerWidth < 1024) {
-    if (!offcanvasSubmenu.contains(e.target) && !btnSubmenu.contains(e.target)) {
-      offcanvasSubmenu.style.right = '-100%';
-    }
+    if (!offClas.contains(e.target) && !btnClas.contains(e.target)) offClas.style.right = '-100%';
+    if (!offGes.contains(e.target) && !btnGes.contains(e.target)) offGes.style.right = '-100%';
   }
 });
 </script>
-<!-- <main class="bg-gray-100 min-h-screen flex flex-col items-start justify-start pt-36 px-8"> -->
-  <!-- <main class="bg-gray-100 min-h-screen pt-36 px-8"> -->
+
 <main class="bg-gray-100 flex flex-col min-h-screen pt-36">
   <div class="flex-1">
-  
-
-
-

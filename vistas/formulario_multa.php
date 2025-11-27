@@ -7,11 +7,12 @@
 <?php 
 
 $form = $_SESSION['form_multa'] ?? [];
+$codigoPrestamo = $_GET['codigoPrestamo'] ?? null;
 ?>
 
-<div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 lg:p-10 border border-gray-300 mx-auto mb-10">
+<div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 lg:p-10 border border-gray-300 mx-auto">
 
-    <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
+    <h2 class="text-2xl font-semibold text-center text-[#4F0087]">
         Registrar Multa
     </h2>
 
@@ -23,42 +24,40 @@ $form = $_SESSION['form_multa'] ?? [];
             <select name="tipoMulta" required
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
                 <option value="">Seleccione un tipo</option>
-                <option value="Retraso" <?= ($form['tipoMulta'] ?? '') === 'Retraso' ? 'selected':'' ?>>Retraso</option>
                 <option value="Daño"    <?= ($form['tipoMulta'] ?? '') === 'Daño' ? 'selected':'' ?>>Daño</option>
                 <option value="Perdido" <?= ($form['tipoMulta'] ?? '') === 'Perdido' ? 'selected':'' ?>>Perdido</option>
             </select>
         </div>
 
         <!-- Monto -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700">Monto</label>
-            <input type="number" step="0.01" name="montoMulta" required
-                value="<?= $form['montoMulta'] ?? '' ?>"
-                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
-        </div>
+<div>
+    <label class="block text-sm font-medium text-gray-700 w-1/2">Monto</label>
+
+    <div class="relative">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
+
+        <input type="number" min="0" max="9999.99" step="0.01" pattern="^\d+(\.\d{1,2})?$" name="montoMulta" placeholder="00.00" required
+            value="<?= $form['montoMulta'] ?? '' ?>"
+            class="w-full pl-8 mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+    </div>
+</div>
+
 
         <!-- Fecha Registro -->
         <div>
             <label class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
             <input type="date" name="fechaRegistro" required
-                value="<?= $form['fechaRegistro'] ?? '' ?>"
-                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+                value="<?= date('Y-m-d') ?>" readonly
+         class="w-full mt-1 p-2 border rounded-md bg-gray-200 text-gray-600">
         </div>
 
-        <!-- Fecha Pago -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700">Fecha de Pago</label>
-            <input type="date" name="fechaPago"
-                value="<?= $form['fechaPago'] ?? '' ?>"
-                class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
-        </div>
 
         <!-- Préstamo -->
-        <div class="md:col-span-2">
+        <div  class="block gap-4">
             <label class="block text-sm font-medium text-gray-700">Préstamo Relacionado</label>
-            <input type="text" name="fkPrestamo" required
-                placeholder="Escribe el número del préstamo existente"
-                value="<?= $form['fkPrestamo'] ?? '' ?>"
+            <input type="text" name="codigoPrestamo" readonly
+                placeholder="Código del Prestamo: CP-000000"
+                value="<?= $codigoPrestamo ?>"
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
         </div>
 

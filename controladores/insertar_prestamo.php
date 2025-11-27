@@ -1,6 +1,5 @@
 <?php
 
-$fechaLimite = $_POST['fechaLimite'];
 $folioContrato = $_POST['folioContrato'];
 $archivoContrato = $_FILES['archivoContrato']['name'];
 $ruta = $_FILES['archivoContrato']['tmp_name'];

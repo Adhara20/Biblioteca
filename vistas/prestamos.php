@@ -16,11 +16,9 @@ include('../includes/header.php');
 <body>
 
 <?php 
-include('../clases/Multa.php');
 include('../controladores/filtrar_prestamos.php');
 
 $clase = new Prestamo();
-$claseMulta = new Multa();
 
 // FILTROS
 $buscar = $_GET['buscar'] ?? '';
@@ -61,13 +59,6 @@ if ($rol === 'L') {
     }
 }
 
-// $fkUsuarioPres = null;
-
-// if (!empty($resultado)) {
-//     // obtiene SOLO el primer registro
-//     $primerRegistro = $resultado[0];
-//     $fkUsuarioPres = $primerRegistro['numSolicitante'];
-// }
 
 
 include('../includes/menu.php');
@@ -77,18 +68,16 @@ include('../includes/menu.php');
   <!-- Copian todo este Div y lo reemplazan por su div de Titulo y Linea separadora(es lo mismo pero con el boton acomodado) -->
   <div class="px-10 mb-6">
         <div class="flex items-center justify-between">
-            
-            <?php if ($rol== 'L') { ?>
-                <h1 class="titulos">Mis Prestamos</h1>
-            <?php } else { ?>
-                <h1 class="titulos">Prestamos</h1>
-            <?php } ?>
-        <?php if($rol == 'B' || $rol == 'A'): ?>
-            <a href="formulario_prestamo.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D] shadow-sm px-4 py-2 text-center whitespace-nowrap
-            sm:min-w-[11rem] md:min-w-[12rem]">
-                Agregar Préstamo
-            </a>
-        <?php endif; ?>
+            <h1 class="titulos">Prestamos</h1>
+
+            <a href="formulario_prestamo.php" 
+   class="rounded-md text-white font-medium transition 
+          bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
+          shadow-sm px-4 py-2 text-center whitespace-nowrap
+          sm:min-w-[11rem] md:min-w-[12rem]">
+   Agregar Préstamo
+</a>
+
         </div>
         <hr class="linea-separadora-listas">
     </div>
@@ -186,25 +175,6 @@ $fkUsuarioAutoriza = htmlspecialchars($fila['numAutorizante']);
 $estatus = htmlspecialchars($fila['estatus']);
 $estatusDevolucion = htmlspecialchars($fila['estatusDevolucion']);
 
-// Mandar a llamar la funcion para ver si un prestamo tiene mulyas y cuales
-$multas = $claseMulta->obtenerMultasPrestamo($fila['pkPrestamo']);
-// mostrar el boton de Multar
-$mostrarBoton = true;
-
-// prestamo cancelado o completado
-if ($estatus != 'EnProceso') {
-    $mostrarBoton = false;
-} else {
-    // detectar el tipo de multas activas
-    $tieneDaño = in_array('Daño', $multas);
-    $tienePerdido = in_array('Perdido', $multas);
-// Validar para mostrar el boto
-    if ($tieneDaño || $tienePerdido) {
-        $mostrarBoton = false;
-    }
-}
-
-
 // copien esto y pegenlo tal cual ->
 
     if ($fila['estatus'] == 'EnProceso') {
@@ -246,20 +216,12 @@ if ($estatus != 'EnProceso') {
             <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
             <span class="text-sm">Ver Detalles</span>
         </a>
-<!-- Solo Admin/Bibliotecarios -->
-    <?php if($rol == 'A' || $rol == 'B'){ ?>
+
         <a href="editar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>"
             class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400">
             <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
             <span class="text-sm">Editar</span>
         </a>
-        <?php if($mostrarBoton): ?>
-        <a href="formulario_multa.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>"
-            class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400">
-            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
-            <span class="text-sm">Multar</span>
-        </a>
-        <?php endif; ?>
 
         <?php if ($estatus === "En Proceso"): ?>
             <a href="../controladores/completar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>&accion=completar"
@@ -275,8 +237,6 @@ if ($estatus != 'EnProceso') {
                 <span class="text-sm">Cancelar</span>
             </a>
         <?php endif; ?>
-        <!-- Solo Admin/Bibliotecarii -->
-    <?php } ?>
     </div>
 
     <!-- TARJETA -->

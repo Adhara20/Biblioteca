@@ -9,25 +9,46 @@
 </head>
 
 <?php
+include('../clases/Multa.php');
 
+include('../controladores/filtrar_multas.php');
+
+
+if ($rol === 'L') {
+
+    // si NO hay filtros
+    if ($buscar === '' && $tipo === '' && $estatus === '') {
+        $resultado = $clase->verMultaUsuario($pkUsuarioLog);
+    } 
+    // si SÍ hay filtros
+    else {
+        $resultado = $clase->filtrarUsuario(
+            $pkUsuarioLog,
+            $buscar,
+            $estatus,
+            $tipo
+        );
+    }
+
+} else {
+
+    // admin o bibliotecario = normal
+    if ($buscar === '' && $tipo === '' && $estatus === '') {
+        $resultado = $clase->listaMultas();
+    } else {
+        $resultado = $clase->filtrar(
+            $buscar,
+            $estatus,
+            $tipo
+        );
+    }
+}
 
 include('../includes/header.php');
 ?>
 
 <body>
-  <?php include('../includes/menu.php'); 
-  include('../clases/Multa.php');
-  
-include('../controladores/filtrar_multas.php');
-
-
-if ($rol !== 'L' && $estatusLog=='A' ) {
-        $resultado = $clase->filtrar( $buscar, $estatus, $tipo);
-        
-} else {
-        $resultado = $clase->filtrarPorUsuario( $pkUsuarioLog, $buscar, $estatus, $tipo );
-}
-  ?>
+  <?php include('../includes/menu.php'); ?>
 
   <div class="px-10 mb-6">
     <div class="flex items-center justify-between">
@@ -35,11 +56,9 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
         <h1 class="titulos">Multas</h1>
       </div>
       <div class="flex items-center">
-        <?php if($rol!='L' && $estatusLog == 'A'){ ?>
         <a href="formulario_multa.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           Agregar Multa
         </a>
-        <?php } ?>
       </div>
     </div>
     <hr class="linea-separadora-listas">
@@ -74,7 +93,6 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
       <option value="">Estatus</option>
       <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Pendiente</option>
       <option value="P" <?= ($estatus === 'P') ? 'selected' : '' ?>>Pagada</option>
-      <option value="C" <?= ($estatus === 'C') ? 'selected' : '' ?>>Cancelada</option>
     </select>
 
     <button type="submit" class="btn-filtro shrink-0">Buscar</button>
@@ -102,7 +120,6 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
           <option value="">Estatus</option>
           <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Pendiente</option>
           <option value="P" <?= ($estatus === 'P') ? 'selected' : '' ?>>Pagada</option>
-          <option value="C" <?= ($estatus === 'C') ? 'selected' : '' ?>>Cancelada</option>
         </select>
 
         <button type="submit" class="btn-filtro">Aplicar filtros</button>
@@ -119,17 +136,13 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
         $monto = htmlspecialchars($fila['montoMulta']);
         $fechaRegistro = htmlspecialchars($fila['fechaRegistro']);
         $fechaPago = htmlspecialchars($fila['fechaPago'] ?? '—');
-        $estatusMulta = htmlspecialchars($fila['estatus']);
 
-        if ($estatusMulta === 'A') {
+        if ($fila['estatus'] === 'A') {
             $estatusTexto = 'PENDIENTE';
-            $colorEstatus = 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-        } else if ($estatusMulta === 'C') {
-            $estatusTexto = 'CANCELADA';
             $colorEstatus = 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-        }else{
-          $estatusTexto = 'PAGADA';
-          $colorEstatus = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+        } else {
+            $estatusTexto = 'PAGADA';
+            $colorEstatus = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         }
       ?>
         <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px] border-[3px] border-[<?= $colorEstatus ?>]">
@@ -148,7 +161,6 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
               <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
               <span class="text-sm/6">Ver Detalles</span>
             </a>
-            <?php if ($rol != 'L' && $estatusLog == 'A' && $estatusMulta == 'A'): ?>
             <a href="editar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
                class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
                onclick="event.stopPropagation();">
@@ -156,19 +168,20 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
               <span class="text-sm/6">Editar</span>
             </a>
 
-              <a href="../controladores/pagar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+            <?php if ($fila['estatus'] === 'A'): ?>
+              <a href="../controladores/desactivar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
                  onclick="event.stopPropagation();">
                 <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
                 <span class="text-sm/6">Marcar como Pagada</span>
               </a>
-              <a href="../controladores/cancelar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
+            <?php else: ?>
+              <a href="../controladores/activar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>"
                  class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
                  onclick="event.stopPropagation();">
                 <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
-                <span class="text-sm/6">Cancelar</span>
+                <span class="text-sm/6">Marcar como Pendiente</span>
               </a>
-              
             <?php endif; ?>
           </div>
 

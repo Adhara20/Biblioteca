@@ -4,7 +4,7 @@ class Prestamo{
         require_once('Conexion.php');
         $this->conexion = new Conexion();
     }
-    function guardar($fechaLimite, $folioContrato, $archivoContrato, $folio, $numCredS, $numCredA){
+    function guardar($folioContrato, $archivoContrato, $folio, $numCredS, $numCredA){
         $fkUsuarioAutoriza = $this->obtenerfkUsuarioA ($numCredA);
         $fkUsuarioSolicita = $this->obtenerfkUsuarioS ($numCredS);
         $fkCopiaF = $this ->obtenerfolio($folio);
@@ -20,7 +20,8 @@ class Prestamo{
         }
         $codigoPrestamo = $this ->generarCodigo();
 
-        $consulta = "INSERT INTO prestamo (codigoPrestamo, fechaRegistro, fechaLimite, folioContrato, archivoContrato, fkCopiaF, fkUsuarioSolicita, fkUsuarioAutoriza, estatusDevolucion) VALUES ('{$codigoPrestamo}', NOW(),'{$fechaLimite}', '{$folioContrato}', '{$archivoContrato}', '{$fkCopiaF}', '{$fkUsuarioSolicita}', '{$fkUsuarioAutoriza}', 'ATiempo')";
+        $dias = 5;
+        $consulta = "INSERT INTO prestamo (codigoPrestamo, fechaRegistro, fechaLimite, folioContrato, archivoContrato, fkCopiaF, fkUsuarioSolicita, fkUsuarioAutoriza, estatusDevolucion) VALUES ('{$codigoPrestamo}', NOW(), DATE_ADD(NOW(), INTERVAL $dias DAY), '{$folioContrato}', '{$archivoContrato}', '{$fkCopiaF}', '{$fkUsuarioSolicita}', '{$fkUsuarioAutoriza}', 'ATiempo')";
         $respuesta = $this->conexion->query($consulta);
 
         if ($respuesta) {
@@ -135,6 +136,19 @@ class Prestamo{
 
     function completar($pkPrestamo) {
 
+    // Obtener fkCopiaF
+    $consultaPrestamo = "
+        SELECT fkCopiaF, fechaLimite
+        FROM prestamo
+        WHERE pkPrestamo = '{$pkPrestamo}'
+    ";
+    $resultado = $this->conexion->query($consultaPrestamo);
+    $fila = $resultado->fetch_assoc();
+
+    $fkCopiaF = $fila['fkCopiaF'];
+    $fechaLimite = $fila['fechaLimite'];
+
+    // Registrar fecha de entrega
     $consultaEntrega = "
         UPDATE prestamo 
         SET fechaEntrega = NOW()
@@ -142,36 +156,41 @@ class Prestamo{
     ";
     $this->conexion->query($consultaEntrega);
 
-    $consultaFechas = "
-        SELECT fechaLimite, fechaEntrega
-        FROM prestamo
+    // Obtener la fecha de entrega ya guardada
+    $consultaFechaEntrega = "
+        SELECT fechaEntrega 
+        FROM prestamo 
         WHERE pkPrestamo = '{$pkPrestamo}'
     ";
-    $resultado = $this->conexion->query($consultaFechas);
-    $fila = $resultado->fetch_assoc();
+    $r2 = $this->conexion->query($consultaFechaEntrega);
+    $f2 = $r2->fetch_assoc();
+    $fechaEntrega = $f2['fechaEntrega'];
 
-    $fechaLimite = $fila['fechaLimite'];
-    $fechaEntrega = $fila['fechaEntrega'];
-
+    // Determinar estatus devolucion
     if ($fechaEntrega > $fechaLimite) {
         $estatusDevolucion = 'Vencido';
     } else {
         $estatusDevolucion = 'ATiempo';
     }
 
+    // Actualizar prestamo
     $consultafin = "
         UPDATE prestamo 
         SET estatus = 'Completado',
-        estatusDevolucion = '{$estatusDevolucion}'
+            estatusDevolucion = '{$estatusDevolucion}'
         WHERE pkPrestamo = '{$pkPrestamo}'
     ";
-    return $this->conexion->query($consultafin);
+    $this->conexion->query($consultafin);
 
-        $consultapain = "UPDATE copiaF
-         SET disponibilidad = 'Disponible' 
-         WHERE pkCopiaF = '{$fkCopiaF}'";
-         return $this->conexion->query($consultapain);
+    // Actualizar la disponibilidad de la copia
+    $consultapain = "
+        UPDATE copiaF
+        SET disponibilidad = 'Disponible'
+        WHERE pkCopiaF = '{$fkCopiaF}'
+    ";
+    return $this->conexion->query($consultapain);
 }
+
 
 
     function actualizar($pkPrestamo,$fechaLimite,$folioContrato,$archivoContrato,$folio,$numCredS,$numCredA) {
@@ -221,6 +240,54 @@ class Prestamo{
     }
 
     function filtrar($buscar = '', $estatus = '', $estatusDevolucion = '', $fechaRegistro = '') {
+       $consulta = "SELECT 
+                       p.pkPrestamo,   
+                       p.codigoPrestamo,
+                       p.fechaRegistro,
+                       p.fechaLimite,
+                       p.fechaEntrega,
+                       p.folioContrato,
+                       p.archivoContrato,
+                       l.isbn AS isbnCopia,
+                       us.numCredencial AS numSolicitante,
+                       ua.numCredencial AS numAutorizante,
+                       p.estatus,
+                       p.estatusDevolucion
+                   FROM prestamo p
+                   INNER JOIN copiaF c ON p.fkCopiaF = c.pkCopiaF
+                   INNER JOIN libro l ON c.fkLibro = l.pkLibro
+                   INNER JOIN usuario us ON p.fkUsuarioSolicita = us.pkUsuario
+                   INNER JOIN usuario ua ON p.fkUsuarioAutoriza = ua.pkUsuario
+                   WHERE 1=1";
+       // Busqueda por usuario, código o folio
+       if (!empty($buscar)) {
+           $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+           $consulta .= " AND (
+               us.numCredencial LIKE '%$buscar%' 
+               OR p.codigoPrestamo LIKE '%$buscar%' 
+               OR p.folioContrato LIKE '%$buscar%'
+           )";
+       }
+       // Estatus
+       if ($estatus !== '') {
+           $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+           $consulta .= " AND p.estatus = '$estatus'";
+       }
+       // Estatus Devolución
+       if ($estatusDevolucion !== '') {
+           $estatusDevolucion = mysqli_real_escape_string($this->conexion, $estatusDevolucion);
+           $consulta .= " AND p.estatusDevolucion = '$estatusDevolucion'";
+       }
+       // Filtrar por fecha exacta
+       if (!empty($fechaRegistro)) {
+           $fechaRegistro = mysqli_real_escape_string($this->conexion, $fechaRegistro);
+           $consulta .= " AND p.fechaRegistro = '$fechaRegistro'";
+       }
+       $consulta .= " ORDER BY p.codigoPrestamo ASC";
+       $resultado = mysqli_query($this->conexion, $consulta);
+       return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    }
+       function filtrarUsuario($pkUsuario, $buscar = '', $estatus = '', $estatusDevolucion = '', $fechaRegistro = '') {
 
     $consulta = "SELECT 
                     p.pkPrestamo,   
@@ -240,14 +307,13 @@ class Prestamo{
                 INNER JOIN libro l ON c.fkLibro = l.pkLibro
                 INNER JOIN usuario us ON p.fkUsuarioSolicita = us.pkUsuario
                 INNER JOIN usuario ua ON p.fkUsuarioAutoriza = ua.pkUsuario
-                WHERE 1=1";
+                WHERE p.fkUsuarioSolicita = '{$pkUsuario}'";
 
     // Busqueda por usuario, código o folio
     if (!empty($buscar)) {
         $buscar = mysqli_real_escape_string($this->conexion, $buscar);
         $consulta .= " AND (
-            us.numCredencial LIKE '%$buscar%' 
-            OR p.codigoPrestamo LIKE '%$buscar%' 
+            p.codigoPrestamo LIKE '%$buscar%' 
             OR p.folioContrato LIKE '%$buscar%'
         )";
     }
@@ -264,7 +330,7 @@ class Prestamo{
         $consulta .= " AND p.estatusDevolucion = '$estatusDevolucion'";
     }
 
-    // Filtrar por fecha exacta
+    // Fecha
     if (!empty($fechaRegistro)) {
         $fechaRegistro = mysqli_real_escape_string($this->conexion, $fechaRegistro);
         $consulta .= " AND p.fechaRegistro = '$fechaRegistro'";
@@ -275,5 +341,35 @@ class Prestamo{
     $resultado = mysqli_query($this->conexion, $consulta);
     return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
 }
+
+
+    function verPrestamoUsuario($pkUsuario) {
+
+    $consulta = "SELECT 
+                    p.pkPrestamo,   
+                    p.codigoPrestamo,
+                    p.fechaRegistro,
+                    p.fechaLimite,
+                    p.fechaEntrega,
+                    p.folioContrato,
+                    p.archivoContrato,
+                    l.isbn AS isbnCopia,
+                    us.numCredencial AS numSolicitante,
+                    ua.numCredencial AS numAutorizante,
+                    p.estatus,
+                    p.estatusDevolucion
+                FROM prestamo p
+                INNER JOIN copiaF c ON p.fkCopiaF = c.pkCopiaF
+                INNER JOIN libro l ON c.fkLibro = l.pkLibro
+                INNER JOIN usuario us ON p.fkUsuarioSolicita = us.pkUsuario
+                INNER JOIN usuario ua ON p.fkUsuarioAutoriza = ua.pkUsuario
+                WHERE p.fkUsuarioSolicita = '$pkUsuario'
+                ORDER BY p.codigoPrestamo ASC";
+
+    $resultado = $this->conexion->query($consulta);
+    return $resultado->fetch_all(MYSQLI_ASSOC);
+}
+
+
 }
 ?>

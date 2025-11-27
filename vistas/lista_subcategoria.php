@@ -109,6 +109,7 @@ include('../includes/header.php');
 		// Traducir Estatus
         if ($fila["estatus"] === 'A') {
         $estatus = 'Activo';
+        $color = '';
         } else{
             $estatus = 'Inactivo';
         }
