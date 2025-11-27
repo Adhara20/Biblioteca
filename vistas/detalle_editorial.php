@@ -91,24 +91,33 @@ if($fila['estatus'] == 'A'){
     </div>
 
     <!-- Botones de acción -->
-    <div class="flex justify-end gap-3 mt-8">
-      <a href="editar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" 
-         class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
-        Editar
-      </a>
+    <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
+      <div class="flex justify-end gap-3 mt-8">
+        
+        <a href="editar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" 
+        class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+          hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
+          Editar
+        </a>
 
-      <?php if($fila['estatus'] == 'A'): ?>
-        <a href="../controladores/desactivar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" 
-           class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
-          Dar de baja
-        </a>
-      <?php else: ?>
-        <a href="../controladores/activar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" 
-          class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
-          Activar
-        </a>
-      <?php endif; ?>
-    </div>
+      <?php
+          if($fila['estatus'] == 'A'){
+        ?>      
+                                                                                              <!-- class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+                                                                                              hover:bg-[#5780B5] hover:text-blue-200  shadow-sm"> -->
+          <a href="../controladores/desactivar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
+            Desactivar
+          </a>
+        <?php
+          }else{
+        ?>
+       <a href="../controladores/activar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" class=" px-4 py-2.5 rounded-md text-white font-medium transition
+          bg-[#34B980] hover:bg-[#c0eed9] hover:text-[#34B980] border hover:border-[#34B980] shadow-sm">
+            Activar
+          </a>
+        <?php } ?>
+      </div>
+      <?php } ?>
 
   </div>
 </div>

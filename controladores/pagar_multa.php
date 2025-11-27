@@ -1,7 +1,7 @@
 <?php
 $pkMulta = $_GET['pkMulta'];
 
-include('../clases/Multa.php');
+include('../clases/multa.php');
 $clase = new Multa();
 
 $resultado = $clase->pagar($pkMulta);

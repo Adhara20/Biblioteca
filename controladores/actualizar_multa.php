@@ -5,7 +5,7 @@ $tipoMulta     = $_POST['tipoMulta'] ?? '';
 $montoMulta    = $_POST['montoMulta'] ?? null;
 $codigoPrestamo    = $_POST['codigoPrestamo'] ?? null;
 
-include('../clases/Multa.php');
+include('../clases/multa.php');
 $multa = new Multa();
 
 // --- Validaciones ---

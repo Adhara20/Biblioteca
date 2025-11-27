@@ -9,7 +9,7 @@
 </head>
 
 <?php
-include('../clases/Multa.php');
+include('../clases/multa.php');
 
 include('../controladores/filtrar_multas.php');
 

@@ -19,7 +19,7 @@ include('../clases/autor.php');
 include('../controladores/filtrar_autores.php'); // ← Aquí se definen $resultado
 
 // --- CATEGORÍAS ---
-include('../clases/Nacionalidad.php'); // si no estaba incluido
+include('../clases/nacionalidad.php'); // si no estaba incluido
 $cat = new Nacionalidad;
 $cats = $cat->listaNacionalidades();
 

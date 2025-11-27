@@ -1,7 +1,7 @@
 <?php
 $pkEditorial = $_GET['pkEditorial'];
 
-include('../clases/Editorial.php');
+include('../clases/editorial.php');
 $clase = new Editorial();
 
 $resultado = $clase->desactivar($pkEditorial);

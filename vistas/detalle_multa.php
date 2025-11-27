@@ -1,6 +1,6 @@
 <?php 
 include('../includes/header.php');
-include('../clases/Multa.php');
+include('../clases/multa.php');
 
 $clase = new Multa();
 $pk = $_GET['pkMulta'] ?? null;
@@ -97,7 +97,8 @@ if ($fila['estatus'] === 'A') {
     <!-- Botones de acción -->
     <div class="flex justify-end gap-3 mt-8">
       <a href="editar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
-         class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
+         class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+          hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
         Editar
       </a>
         <a href="../controladores/pagar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 

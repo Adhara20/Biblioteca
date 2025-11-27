@@ -11,8 +11,8 @@
 <?php include('../includes/menu.php'); ?>
 
 <?php
-include('../clases/Multa.php');
-include('../clases/Prestamo.php');
+include('../clases/multa.php');
+include('../clases/prestamo.php');
 
 $clase = new Multa();
 $prestamo = new Prestamo();
