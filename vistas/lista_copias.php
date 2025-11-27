@@ -69,7 +69,7 @@ include('../includes/header.php');
     </select>
 
     <select name="subcategoria" class="select-filtro">
-      <option value="">Todas las categorías</option>
+      <option value="">Todas las categorías </option>
       <?php foreach ($resultadoSub as $fila): ?>
         <option value="<?= htmlspecialchars($fila['pkSubCategoria']) ?>" 
           <?= (isset($_GET['subcategoria']) && $_GET['subcategoria'] == $fila['pkSubCategoria']) ? 'selected' : '' ?>>
