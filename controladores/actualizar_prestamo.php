@@ -10,9 +10,16 @@ $numCredA = $_POST['numCredA'];
 include('../clases/prestamo.php');
 $prestamo = new Prestamo();
 
-if (!empty($_FILES['archivoContrato']['tmp_name'])) {
-    $ruta = "../imagenes/archivos/" . basename($_FILES['archivoContrato']['name']);
-    move_uploaded_file($_FILES['archivoContrato']['tmp_name'], $ruta);
+// AAAAAAAAAAA
+$archivoActual = $_POST['archivoActual'];
+
+if (!isset($_FILES['archivoContrato']) || $_FILES['archivoContrato']['error'] !== 0) {
+    $archivoContrato = $archivoActual;
+} else {
+    $archivoNuevo = $_FILES['archivoContrato']['name'];
+    $tmp = $_FILES['archivoContrato']['tmp_name'];
+    move_uploaded_file($tmp, '../imagenes/archivos/' . $archivoNuevo);
+    $archivoContrato = $archivoNuevo;
 }
 
 // Ejecutar actualización

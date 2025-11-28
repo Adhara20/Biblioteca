@@ -193,6 +193,13 @@ class Usuario {
     return $this->conexion->query($consulta);
 }
 
+function mostrar(){
+    $consulta = "SELECT pkUsuario, numCredencial FROM usuario WHERE estatus = 'A'";
+    $resultado = $this->conexion->query($consulta);
+    return $resultado;
+}
+
+
 
 
 }

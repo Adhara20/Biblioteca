@@ -7,7 +7,20 @@
 </head>
 <?php include('../includes/header.php'); ?>
 <body class="bg-gray-100 text-gray-900">
-    <?php include('../includes/menu.php'); ?>
+
+<?php include('../includes/menu.php'); ?>
+
+<?php
+include('../clases/copia.php');
+include('../clases/usuario.php');
+
+$copia = new Copia();
+$usuario = new Usuario();
+
+$listaCopias = $copia->mostrar();
+$listaUsuario = $usuario->mostrar();
+?>
+
 <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 lg:p-12 border border-gray-300 mx-auto mb-10">
     <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
     Formulario Prestamo
@@ -17,35 +30,56 @@
     
     <!--  Fecha Límite -->
      <div>
-      <label class="block text-sm font-medium text-gray-700">Fecha Limite</label>
+      <label class="block text-sm font-medium text-gray-700">Fecha Limite <span class="text-red-500 text-2xl">*</span></label>
       <input type="date" name="fechaLimite" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
     
     <!-- Folio Contracto -->
      <div>
-      <label class="block text-sm font-medium text-gray-700">Folio Contracto</label>
+      <label class="block text-sm font-medium text-gray-700">Folio Contrato <span class="text-red-500 text-2xl">*</span></label>
       <input type="text" name="folioContrato" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
     <!-- Contracto -->
      <div>
-      <label class="block text-sm font-medium text-gray-700">Contracto</label>
+      <label class="block text-sm font-medium text-gray-700">Contracto <span class="text-red-500 text-2xl">*</span></label>
       <input type="file" name="archivoContrato" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
     <!-- Folio Copia -->
-     <div>
+    <div>
       <label class="block text-sm font-medium text-gray-700">Folio Copia</label>
-      <input type="text" name="folio" required
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <select name="folio" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+
+        <option value="">Seleccione una Copia</option>
+
+        <?php foreach ($listaCopias as $fila): ?>
+            <option value="<?= $fila['pkCopiaF'] ?>">
+              <?= $fila['folio'] ?>
+            </option>
+        <?php endforeach; ?>
+      </select>
     </div>
-    <!-- Usuario Solicitante -->
-     <div>
+
+          <!-- Usuario solicitante -->
+        <div>
       <label class="block text-sm font-medium text-gray-700">Usuario Solicitante</label>
-      <input type="text" name="numCredS" required
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <select name="numCredS" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+
+        <option value="">Seleccione un Usuario</option>
+
+        <?php foreach ($listaUsuario as $fila): ?>
+            <option value="<?= $fila['numCredencial'] ?>">
+              <?= $fila['numCredencial'] ?>
+            </option>
+        <?php endforeach; ?>
+
+      </select>
     </div>
+        
     <!-- Este es automatico-->
      <div>
       <label class="block text-sm font-medium text-gray-700">Usuario Autorizante</label>
