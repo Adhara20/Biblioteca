@@ -69,7 +69,7 @@ include('../includes/header.php');
     </select>
 
     <select name="subcategoria" class="select-filtro">
-      <option value="">Todas las categorías </option>
+      <option value="">Todas las categorías</option>
       <?php foreach ($resultadoSub as $fila): ?>
         <option value="<?= htmlspecialchars($fila['pkSubCategoria']) ?>" 
           <?= (isset($_GET['subcategoria']) && $_GET['subcategoria'] == $fila['pkSubCategoria']) ? 'selected' : '' ?>>
@@ -158,10 +158,19 @@ $img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro 
            <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
            <span class="text-sm/6">Ver Detalles</span>
           </a>
+
+          <!-- Prestar -->
+           <a href="formulario_prestamo.php?folio=<?= $fila['folio'] ?>"
+          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
+          onclick="event.stopPropagation();">
+           <img src="/Biblioteca/imagenes/btn Iconos/btnPrestar.png" class="size-4">
+           <span class="text-sm/6">Prestar</span>
+          </a>
+
           <!-- Editar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
+          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-blue-400"
           onclick="event.stopPropagation();">
            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
            <span class="text-sm/6">Editar</span>

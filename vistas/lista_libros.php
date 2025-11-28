@@ -176,6 +176,15 @@ include('../includes/header.php');
            <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
            <span class="text-sm/6">Ver Detalles</span>
           </a>
+
+          <!-- Agregar Copia -->
+           <a href="formulario_copia.php?isbn=<?= $fila['isbn'] ?>"
+          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
+          onclick="event.stopPropagation();">
+           <img src="/Biblioteca/imagenes/btn Iconos/btnAddCopia.png" class="size-4">
+           <span class="text-sm/6">Agregar Copia</span>
+          </a>
+
           <!-- ¡Agregar! -->
           <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
           <!-- Editar -->
