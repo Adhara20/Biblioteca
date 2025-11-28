@@ -13,6 +13,7 @@ include('../includes/header.php');
 include('../clases/usuario.php');
 // Controlador (ajusta a filtrar_usuarios si lo separas)
 include('../controladores/filtrar_usuarios.php');
+include('../includes/multasRetraso.php');
 ?>
 
 <body>

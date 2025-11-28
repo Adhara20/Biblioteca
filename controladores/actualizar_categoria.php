@@ -5,7 +5,7 @@ $nombreCategoria = $_POST['nombreCategoria'];
 
 $iconoCategoriaActual = $_POST['iconoCategoriaActual'];
 
-include('../clases/Categoria.php');
+include('../clases/categoria.php');
 $categoria = new Categoria();
 
 // // Validar ISBN único

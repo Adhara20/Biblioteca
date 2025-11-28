@@ -223,8 +223,38 @@ function obtenerPkPrestamoPorCodigo($codigoPrestamo) {
     return null;  // No existe ese código
 } 
 
+// Evitamos ejecutar muchas consultas cada que entramos a ciertas pantallas
+    public function generarMultasAutomaticas(){
+        // Obtener la fecha actual
+        $hoy = date('Y-m-d');
+        // Revisa la ultima revision
+        $consulta = "SELECT valor FROM configuracion WHERE clave = 'ultima_revision_multas'";
+        // Guarda resultado de la consulta
+        $resultado = $this->conexion->query($consulta);
+        // Desglosa el arreglo
+        $fila = $resultado->fetch_assoc();
+        // Obtener el ultimo valor guardado(es una fecha)
+        $ultimaRevision = $fila['valor'];
+
+        // Si ya se ejecuto ese dia, ahi la dejamos
+        if ($ultimaRevision == $hoy) {
+            return;
+        }
+
+        // Sino, generame una multa por retraso muajaja
+        $this->generarMultasRetraso(); // <-- Esta es tu función que genera multas por retraso
+
+        // Actualizar la fecha en el campo valor para validar al dia siguinet(en realidad, cuando alguien entre al sistema)
+        $consultaConfi = "UPDATE configuracion 
+                      SET valor = '$hoy' 
+                      WHERE clave = 'ultima_revision_multas'";
+        $this->conexion->query($consultaConfi);
+    }
+
+
 // Generar multas automaticas por RETRASO
-    function generarMulta() {
+    function generarMultasRetraso() {
+    $codigoMulta = $this->generarCodigoMulta();
     $hoy = date('Y-m-d');
 
     $consultaPrestamos = "SELECT pkPrestamo
@@ -244,9 +274,9 @@ function obtenerPkPrestamoPorCodigo($codigoPrestamo) {
             $resExistente = $this->conexion->query($consultaExiste);
 
             if ($resExistente && $resExistente->num_rows === 0) {
-                $codigo = 'R-' . $pkPrestamo . '-' . date('Ymd');
+                
                 $insertar = "INSERT INTO multa (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fkPrestamo, estatus)
-                             VALUES ('$codigo', 'Retraso', 0, '$hoy', $pkPrestamo, 'A')";
+                             VALUES ('$codigoMulta', 'Retraso', 0, '$hoy', $pkPrestamo, 'A')";
                 $this->conexion->query($insertar);
             }
         }

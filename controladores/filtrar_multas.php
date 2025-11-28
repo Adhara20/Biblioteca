@@ -1,7 +1,7 @@
 <?php
 include_once('../clases/multa.php');
 $clase = new Multa();
-$clase->generarMulta();
+$clase->generarMultasAutomaticas();
 
 $buscar  = $_GET['buscar'] ?? '';
 $estatus = $_GET['estatus'] ?? '';

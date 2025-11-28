@@ -21,6 +21,7 @@ include('../controladores/filtrar_prestamos.php');
 
 $clase = new Prestamo();
 $claseMulta = new Multa();
+$claseMulta->generarMultasAutomaticas();
 
 // FILTROS
 $buscar = $_GET['buscar'] ?? '';

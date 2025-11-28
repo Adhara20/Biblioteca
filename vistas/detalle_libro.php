@@ -162,15 +162,16 @@ include('../includes/header.php');
           hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
           Editar
         </a>
-        <!-- !!!!!! -->
-        <!-- Copian de aquí: -->
-        <!-- Validar Estatus para mostrar Botón -->
-         <!-- !!!!! Peguén esto y remplacen el if del boton -->
+
+        <a href="formulario_copia.php?isbn=<?= $fila['isbn'] ?>" 
+        class="px-4 py-2.5 rounded-md font-medium transition border border-yellow-400 text-yellow-400 bg-yellow-100 
+          hover:bg-yellow-400 hover:text-yellow-100 shadow-sm">
+          Agregar Copia
+        </a>
+
         <?php
           if($fila['estatus'] == 'A'){
-        ?>      
-                                                                                              <!-- class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
-                                                                                              hover:bg-[#5780B5] hover:text-blue-200  shadow-sm"> -->
+        ?>                                                                                        
           <a href="../controladores/desactivar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
             Desactivar
           </a>
