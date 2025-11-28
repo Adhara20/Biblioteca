@@ -219,13 +219,24 @@ if ($estatus != 'EnProceso') {
     }
 
     //estatus 2
+    $hoy = date('Y-m-d');
 
-    if ($fila['estatusDevolucion'] == 'ATiempo') {
-        $estatusDevolucion = 'A Tiempo';
-        $colorDevolucion = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
-    } elseif ($fila['estatusDevolucion'] == 'Vencido') {
+if($fila['estatus'] == 'EnProceso'){
+    if ($hoy > $fechaLimite) {
         $estatusDevolucion = 'Vencido';
         $colorDevolucion = 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    } elseif ($hoy <= $fechaLimite) {
+        $estatusDevolucion = 'A Tiempo';
+        $colorDevolucion = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+    }
+    }else{
+        if($fila['estatusDevolucion'] == 'ATiempo'){
+                    $estatusDevolucion ='A Tiempo';
+                    $colorDevolucion= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }else if($fila['estatusDevolucion'] == 'Vencido'){
+                    $estatusDevolucion ='Vencido';
+                    $colorDevolucion= 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                }
     }
 ?>
 

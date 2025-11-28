@@ -138,13 +138,25 @@ include('../includes/header.php');
           <div class="py-3 grid grid-cols-3 gap-4">
                 <dt class="font-medium text-gray-700">Estatus De Devolucion:</dt>
                 <?php
-                if($fila['estatusDevolucion'] == 'ATiempo'){
+                $hoy = date('Y-m-d');
+
+                if($fila['estatus'] == 'EnProceso'){
+                    if ($hoy > $fila['fechaLimite']) {
+                        $estatusDevolucion = 'Vencido';
+                        $colorDevolucion = 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                    } elseif ($hoy <= $fila['fechaLimite']) {
+                        $estatusDevolucion = 'A Tiempo';
+                        $colorDevolucion = 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                    }
+                    }else{
+        if($fila['estatusDevolucion'] == 'ATiempo'){
                     $estatusDevolucion ='A Tiempo';
                     $colorDevolucion= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
                 }else if($fila['estatusDevolucion'] == 'Vencido'){
                     $estatusDevolucion ='Vencido';
                     $colorDevolucion= 'text-amber-600 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
                 }
+    }
                 ?>
                 <dd class="col-span-2 <?= $colorDevolucion ?>"><?= $estatusDevolucion ?></dd>
             </div>

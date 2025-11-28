@@ -160,6 +160,12 @@ class Copia
         return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
     }
 
+    function mostrar(){
+    $consulta = "SELECT pkCopiaF, folio FROM copiaf WHERE estatus = 'A'";
+    $resultado = $this->conexion->query($consulta);
+    return $resultado;
+}
+// ends here
 }
 
 ?>

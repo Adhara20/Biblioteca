@@ -23,7 +23,6 @@ if (!$pkPrestamo) {
     exit;
 }
 
-// Usas tu función "detalles" como pediste
 $resultado = $clase->detalles($pkPrestamo);
 
 if ($resultado && $resultado->num_rows > 0) {
@@ -33,9 +32,23 @@ if ($resultado && $resultado->num_rows > 0) {
     exit;
 }
 
+// Mostrar Imagen (usa placeholder si no hay)
+  $imgRuta = !empty($fila['archivoContrato'])
+      ? "../imagenes/archivos/{$fila['archivoContrato']}"
+      : "../imagenes/archivos/placeholder.png";
+
+include('../clases/copia.php');
+$claseCopia = new Copia();
+$listaCopias = $claseCopia->mostrar();
+
+include('../clases/usuario.php');
+$claseUsuario = new Usuario();
+$listaUsuario = $claseUsuario->mostrar();
+
+
 ?>
 
-<!-- MENSAJE DE Exito -->
+<!-- MENSAJE DE Exito y error-->
 <?php include('../includes/notificacion.php') ?>
 
 
@@ -59,6 +72,7 @@ if ($resultado && $resultado->num_rows > 0) {
 
     <!-- PK -->
     <input type="hidden" name="pkPrestamo" value="<?= $fila['pkPrestamo'] ?>">
+    <input type="hidden" name="archivoActual" value="<?= $fila['archivoContrato'] ?>">
 
     <!-- Fecha Limite -->
     <div>
@@ -68,27 +82,43 @@ if ($resultado && $resultado->num_rows > 0) {
     </div>
     <!-- Folio Contracto -->
      <div>
-      <label class="block text-sm font-medium text-gray-700">Folio Contracto</label>
+      <label class="block text-sm font-medium text-gray-700">Folio Contracto </label>
       <input type="text" name="folioContrato" required value="<?= $fila['folioContrato'] ?>"
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
-    <!-- Contracto -->
-     <div>
-      <label class="block text-sm font-medium text-gray-700">Contracto</label>
-      <input type="file" name="archivoContrato" required value="<?= $fila['archivoContrato'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
-    </div>
     <!-- Folio Copia -->
-     <div>
+    <div>
       <label class="block text-sm font-medium text-gray-700">Folio Copia</label>
-      <input type="text" name="folio" required value="<?= $fila['folioCopia'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <select name="folio" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+
+        <option value="">Seleccione una Copia</option>
+
+        <?php foreach ($listaCopias as $filaC): ?>
+            <option value="<?= $filaC['pkCopiaF'] ?>"
+              <?= (isset($fila['fkCopiaF']) && $fila['fkCopiaF'] == $filaC['pkCopiaF']) ? 'selected' : '' ?>>
+              <?= $filaC['folio'] ?>
+            </option>
+        <?php endforeach; ?>
+      </select>
     </div>
-    <!-- Usuario Solicitante -->
-     <div>
+    <!-- Usuario solicitante -->
+        <div>
       <label class="block text-sm font-medium text-gray-700">Usuario Solicitante</label>
-      <input type="text" name="numCredS" required value="<?= $fila['numSolicitante'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+      <select name="numCredS" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+
+        <option value="">Seleccione un Usuario</option>
+
+        <?php foreach ($listaUsuario as $filaU): ?>
+            <option value="<?= $filaU['numCredencial'] ?>"
+              <?= ($fila['numSolicitante'] == $filaU['numCredencial']) ? 'selected' : '' ?>>
+              <?= $filaU['numCredencial'] ?>
+            </option>
+
+        <?php endforeach; ?>
+
+      </select>
     </div>
     <!-- Este es automatico-->
      <div>
@@ -99,6 +129,20 @@ if ($resultado && $resultado->num_rows > 0) {
            readonly>
     </div>
 
+    <!-- Contracto -->
+     <div>
+      <label class="block text-sm font-medium text-gray-700">Contrato (Opcional)</label>
+      <input type="file" name="archivoContrato" 
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+    </div>
+    <!-- Contenedor de la imagen -->
+     <div>
+      <label class="block text-sm font-medium text-gray-700">Contrato Actual</label>
+            <div class="w-32 h-32  overflow-hidden border-4 shadow-lg">
+              
+                <img src="<?= $imgRuta ?>" alt="Foto de perfil" class="w-full h-full object-cover">
+            </div>
+      </div>
     <!-- BOTONES -->
     <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
       <a href="detalle_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>"

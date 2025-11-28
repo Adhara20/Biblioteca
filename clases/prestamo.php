@@ -48,16 +48,17 @@ class Prestamo{
         return null;
     }
 
-    function obtenerfolio($folio) {
+    function obtenerfolio($pkCopiaF) {
+    $consulta = "SELECT pkCopiaF FROM copiaf WHERE pkCopiaF = '{$pkCopiaF}' LIMIT 1";
+    $resultado = $this->conexion->query($consulta);
 
-        $consulta = "SELECT pkCopiaF FROM copiaf WHERE folio = '{$folio}' LIMIT 1";
-        $resultado = $this->conexion->query($consulta);
-        if ($fila = $resultado->fetch_assoc()) {
-            return $fila['pkCopiaF'];
-        }// validar que exista el libro -_-
-        throw new Exception("El folio '{$folio}' no existe en la tabla copiaF.");
-        return null;
+    if ($fila = $resultado->fetch_assoc()) {
+        return $fila['pkCopiaF'];
     }
+
+    throw new Exception("La copia con ID '{$pkCopiaF}' no existe en copiaf.");
+}
+
 
     function verPrestamo() {
         $consulta = "
@@ -86,33 +87,36 @@ class Prestamo{
     }
 
     function detalles($pkPrestamo) {
-        $consulta = "
-            SELECT 
-                p.pkPrestamo,
-                p.codigoPrestamo,
-                p.fechaRegistro,
-                p.fechaLimite,
-                p.fechaEntrega,
-                p.folioContrato,
-                p.archivoContrato,
-                l.isbn AS isbnCopia,  -- ISBN del libro asociado a la copia
-                c.folio AS folioCopia, -- FOLIO de la copia física
-                us.numCredencial AS numSolicitante,  -- Usuario que solicita
-                ua.numCredencial AS numAutorizante,  -- Usuario que autoriza
-                p.estatus,
-                p.estatusDevolucion
-            FROM prestamo p
-            INNER JOIN copiaF c ON p.fkCopiaF = c.pkCopiaF
-            INNER JOIN libro l ON c.fkLibro = l.pkLibro
-            INNER JOIN usuario us ON p.fkUsuarioSolicita = us.pkUsuario
-            INNER JOIN usuario ua ON p.fkUsuarioAutoriza = ua.pkUsuario
-            WHERE p.pkPrestamo = '{$pkPrestamo}'
-            ORDER BY p.codigoPrestamo ASC";
-            
-        $resultado = $this->conexion->query($consulta);
-        return $resultado;
+    $consulta = "
+        SELECT 
+            p.pkPrestamo,
+            p.codigoPrestamo,
+            p.fechaRegistro,
+            p.fechaLimite,
+            p.fechaEntrega,
+            p.folioContrato,
+            p.archivoContrato,
+            p.fkCopiaF,
+            p.fkUsuarioSolicita,
+            p.fkUsuarioAutoriza,
+            l.isbn AS isbnCopia,
+            c.folio AS folioCopia,
+            us.numCredencial AS numSolicitante,
+            ua.numCredencial AS numAutorizante,
 
-    }
+            p.estatus,
+            p.estatusDevolucion
+        FROM prestamo p
+        INNER JOIN copiaF c ON p.fkCopiaF = c.pkCopiaF
+        INNER JOIN libro l ON c.fkLibro = l.pkLibro
+        INNER JOIN usuario us ON p.fkUsuarioSolicita = us.pkUsuario
+        INNER JOIN usuario ua ON p.fkUsuarioAutoriza = ua.pkUsuario
+        WHERE p.pkPrestamo = '{$pkPrestamo}'
+        LIMIT 1
+    ";
+
+    return $this->conexion->query($consulta);
+}
 
     function cancelar($pkPrestamo) {
     $consultaPrestamo = "SELECT fkCopiaF FROM prestamo WHERE pkPrestamo = '{$pkPrestamo}'";
