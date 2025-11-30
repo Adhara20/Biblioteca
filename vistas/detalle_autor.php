@@ -26,10 +26,10 @@ include('../includes/header.php');
       exit;
   }
 
-//   // Mostrar Imagen (usa placeholder si no hay)
-//   $imgRuta = !empty($fila['iconoSubCategoria'])
-//       ? "../imagenes/subcategorias/{$fila['iconoSubCategoria']}"
-//       : "../imagenes/subcategorias/placeholder.png";
+  // Mostrar Imagen (usa placeholder si no hay)
+  $imgRuta = !empty($fila['iconoAutor'])
+      ? "../imagenes/autores/{$fila['iconoAutor']}"
+      : "../imagenes/autores/placeholder.png";
   ?>
   <!--  Título principal -->
   <div class="w-full flex flex-col items-start px-8 mt-8">
@@ -43,8 +43,13 @@ include('../includes/header.php');
    <!-- <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 border border-gray-300 mb-12 mx-auto flex flex-col md:flex-row gap-8"> -->
   <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 border border-gray-300 mb-12 mx-auto flex flex-col md:flex-row-reverse gap-8">
 
-
-
+    <div class="flex-shrink-0 w-full md:w-1/3 flex justify-center items-start">
+      <img 
+        src="<?= $imgRuta ?>" 
+        alt="Icono de <?= htmlspecialchars($fila['iconoAutor']) ?>" 
+        class="rounded-xl shadow-md border border-gray-200 object-cover w-64 h-96 bg-gray-50"
+      >
+    </div>
 
     <!--  Datos del libro. (Aqui lo cambian por los datos de lo que les tocó) -->
     <div class="flex-1">

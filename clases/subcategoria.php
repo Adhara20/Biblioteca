@@ -1,6 +1,8 @@
 <?php
 class Subcategoria{
 	//metodo constructor
+    // private $conexion;
+
 	function __construct(){
 		//se requiere una vez el archivo de conexion
 		require_once('conexion.php');

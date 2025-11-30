@@ -2,7 +2,7 @@
 <?php include('../includes/header.php'); ?>
 <body class="bg-gray-100 text-gray-900">
 <?php include('../includes/menu.php'); ?>
-
+<?php include('../includes/notificacion.php'); ?>
     <!-- Recivir el mensaje de error o de que se registro desde inserta -->
     <?php if (isset($_GET['error'])){ ?>
         <div style="color: red; font-weight: bold;">
@@ -19,6 +19,8 @@ $resultado = $clase->listaNacionalidades();
   <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
     Formulario Autor
   </h2>
+<?php include('../includes/notificacion.php'); ?>
+
   <form action="../controladores/insertar_autor.php" method="POST" enctype="multipart/form-data" 
         class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
@@ -28,6 +30,12 @@ $resultado = $clase->listaNacionalidades();
       <input type="text" name="nombreAutor" placeholder="Nombre autor" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_autor']['nombreAutor'] ?? '' ?>">
+    </div>
+
+        <div>
+      <label class="block text-sm font-medium text-gray-700">Foto Autor:</label>
+      <input type="file" name="iconoAutor"
+        class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
     </div>
 
            <div>

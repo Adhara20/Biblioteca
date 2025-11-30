@@ -1,10 +1,10 @@
 <?php
 session_start(); // Iniciar sesión
-$nombreSubCategoria = $_POST['nombreSubCategoria'];
+$nombreSubCategoria = strtoupper($_POST['nombreSubCategoria']);
 // $iconoSubCategoria = $_FILES['IconoSubCategoria']['name']; 
 // $ruta = $_FILES['IconoSubCategoria']['tmp_name'];
 // move_uploaded_file($ruta, '../imagenes/subcategorias/'.$iconoSubCategoria);
-$abreviatura = $_POST['abreviatura'];
+$abreviatura = strtoupper($_POST['abreviatura']);
 $fkCategoria = $_POST['fkCategoria'];
 $_SESSION['form_subcategoria'] = [
     'nombreSubCategoria' => $_POST['nombreSubCategoria'],
@@ -21,6 +21,7 @@ if (!isset($_FILES['iconoSubCategoria']) || $_FILES['iconoSubCategoria']['error'
 $iconoSubCategoria = $_FILES['iconoSubCategoria']['name'];
 $iconoSubCategoriaTmp    = $_FILES['iconoSubCategoria']['tmp_name'];
 $ruta   = '../imagenes/subcategorias/' . $iconoSubCategoria;
+move_uploaded_file($iconoSubCategoriaTmp, $ruta);
 include('../clases/subcategoria.php');
 $clase = new Subcategoria();
 $resultado = $clase->guardar($nombreSubCategoria, $iconoSubCategoria, $abreviatura, $fkCategoria);

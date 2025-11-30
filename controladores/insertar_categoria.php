@@ -1,6 +1,6 @@
 <?php
 session_start(); // Iniciar sesión
-$nombreCategoria = $_POST['nombreCategoria'];
+$nombreCategoria = strtoupper($_POST['nombreCategoria']);
 // $iconoCategoria = $_FILES['IconoCategoria']['name']; 
 // $ruta = $_FILES['IconoCategoria']['tmp_name'];
 // move_uploaded_file($ruta, '../imagenes/categorias/'.$iconoCategoria);
@@ -17,14 +17,15 @@ if (!isset($_FILES['iconoCategoria']) || $_FILES['iconoCategoria']['error'] !== 
 $iconoCategoria = $_FILES['iconoCategoria']['name'];
 $iconoCategoriaTmp    = $_FILES['iconoCategoria']['tmp_name'];
 $ruta   = '../imagenes/categorias/' . $iconoCategoria;
+move_uploaded_file($iconoCategoriaTmp, $ruta);
 include('../clases/categoria.php');
 $clase = new Categoria();
 $resultado = $clase->guardar($nombreCategoria, $iconoCategoria);
 if ($resultado) {
-        header("Location: ../vistas/lista_categoria.php?success=Categoria registrada correctamente");
+        header("Location: ../vistas/lista_categoria.php?success=Categoría registrada correctamente");
         exit;
     } else {
-        header("Location: ../vistas/formulario_categoria.php?error=Error al registrar Categoria");
+        header("Location: ../vistas/formulario_categoria.php?error=Error al registrar categoría");
         exit;
     }
 ?>

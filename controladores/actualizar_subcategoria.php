@@ -1,10 +1,10 @@
 <?php
 $pkSubCategoria = $_POST['pkSubCategoria'];
-$nombreSubCategoria = $_POST['nombreSubCategoria'];
+$nombreSubCategoria = strtoupper($_POST['nombreSubCategoria']);
  // <- Nombre consistente
 
 $iconoSubCategoriaActual = $_POST['iconoSubCategoriaActual'];
-$abreviatura = $_POST['abreviatura'];
+$abreviatura = strtoupper($_POST['abreviatura']);
 $fkCategoria = $_POST['fkCategoria'];
 
 
@@ -44,9 +44,9 @@ $resultado = $subcategoria->actualizar(
 );
 
 if ($resultado) {
-    header("Location: ../vistas/detalle_subcategoria.php?pkSubCategoria=$pkSubCategoria&success=SubCategoria actualizado correctamente");
+    header("Location: ../vistas/detalle_subcategoria.php?pkSubCategoria=$pkSubCategoria&success=Subcategoría actualizada correctamente");
 } else {
-    header("Location: ../vistas/editar_subcategoria.php?pkSubCategoria=$pkSubCategoria&error=Error al actualizar");
+    header("Location: ../vistas/editar_subcategoria.php?pkSubCategoria=$pkSubCategoria&error=Error al actualizar subcategoría");
 }
 
 exit;

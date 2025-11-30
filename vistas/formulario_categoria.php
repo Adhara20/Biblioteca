@@ -10,24 +10,24 @@
             <?= htmlspecialchars($_GET['error']) ?>
         </div>
     <?php }?>
-<?php include('../includes/notificacion.php'); ?>
 
 <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 lg:p-12 border border-gray-300 mx-auto mb-10">
   <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
-    Formulario Categoria
+    Formulario Categoría
   </h2>
+<?php include('../includes/notificacion.php'); ?>
   <form action="../controladores/insertar_categoria.php" method="POST" enctype="multipart/form-data" 
         class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nombre categoria:</label>
+      <label class="block text-sm font-medium text-gray-700">Nombre categoría:</label>
       <input type="text" name="nombreCategoria" placeholder="Nombre categoria" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_categoria']['nombreCategoria'] ?? '' ?>">
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoria:</label>
+      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría:</label>
       <input type="file" name="iconoCategoria"
         class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
 

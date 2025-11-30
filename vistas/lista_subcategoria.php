@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SubCategorias</title>
+  <title>Subcategorías</title>
   <link rel="stylesheet" href="../css/listas.css">
   <link rel="stylesheet" href="../css/filtros.css">
 </head>
@@ -51,10 +51,11 @@ include('../includes/header.php');
           <span>Filtros</span>
         </button>
     </div>
+<?php include('../includes/notificacion.php'); ?>
 
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_subcategoria.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
-    <input type="text" name="buscar" class="input-busqueda"
+    <input type="text" name="buscar" class="input-busqueda uppercase"
            placeholder="Buscar por nombre o abreviatura..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
@@ -109,9 +110,10 @@ include('../includes/header.php');
 		// Traducir Estatus
         if ($fila["estatus"] === 'A') {
         $estatus = 'Activo';
-        $color = '';
+        $colorEstatus= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         } else{
             $estatus = 'Inactivo';
+            $colorEstatus= 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         }
 		// Fin 
       
@@ -182,11 +184,10 @@ include('../includes/header.php');
 
         <!-- Info -->
         <div class="flex flex-col gap-1 flex-1 mr-8">
-          <p class="text-sm text-gray-600"><strong>Nombre:</strong> <?= $nombre ?></p>
+          <h2 class="text-lg font-bold text-purple-900"><?= $nombre ?></h2>
           <p class="text-sm text-gray-600"><strong>Abreviatura:</strong> <?= $abreviatura ?></p>
-          <p class="text-sm text-gray-600"><strong>Categoria:</strong> <?= $categoria ?></p>
-          <p class="text-sm text-gray-600"><strong>Estatus:</strong> <?= $estatus ?></p>
-
+          <p class="text-sm text-gray-600"><strong>Categoría:</strong> <?= $categoria ?></p>
+          <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>
 
 
@@ -194,7 +195,7 @@ include('../includes/header.php');
         </div>
       <?php endforeach; ?>
     <?php else: ?>
-      <p class="no-resultados">No se encontraron subcategorias con esos filtros.</p>
+      <p class="no-resultados">No se encontraron subcategorías con esos filtros.</p>
     <?php endif; ?>
   </section>
 

@@ -52,14 +52,15 @@ include('../includes/header.php');
           <span>Filtros</span>
         </button>
     </div>
+<?php include('../includes/notificacion.php'); ?>
 
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_autor.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
-    <input type="text" name="buscar" class="input-busqueda"
+    <input type="text" name="buscar" class="input-busqueda uppercase"
            placeholder="Buscar por nombre..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
-    <select name="nacionalidad" class="select-filtro">
+    <select name="nacionalidad" class="select-filtro ">
       <option value="">Todas las Nacionalidades</option>
       <?php foreach ($cats as $filaCat): ?>
         <option value="<?= htmlspecialchars($filaCat['pkNacionalidad']) ?>"
@@ -108,10 +109,13 @@ include('../includes/header.php');
 		// Traducir Estatus
         if ($fila["estatus"] === 'A') {
         $estatus = 'Activo';
+        $colorEstatus= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         } else{
             $estatus = 'Inactivo';
+        $colorEstatus= 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         }
 		// Fin 
+        $img = htmlspecialchars($fila['iconoAutor'] ?? '');
         $nacionalidad = htmlspecialchars($fila['nombreNaci']);
       ?>
     <div class="relative overflow-visible bg-white rounded-xl shadow p-4 flex items-center gap-4 hover:shadow-md transition group w-full max-w-[520px]">
@@ -167,12 +171,18 @@ include('../includes/header.php');
     <a href="detalle_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 
        class="flex items-center gap-4 w-full">
 
+        <img 
+            src="<?= !empty($img) ? '../imagenes/autores/' . $img : '../imagenes/autores/placeholder.png'; ?>" 
+            alt="Categoria de <?= $nombre ?>" 
+            class="w-24 h-32 object-cover rounded-lg flex-shrink-0"
+        >
+
         <!-- Info -->
         <div class="flex flex-col gap-1 flex-1 mr-8">
-          <p class="text-sm text-gray-600"><strong>Nombre:</strong> <?= $nombre ?></p>
+          <h2 class="text-lg font-bold text-purple-900"><?= $nombre ?></h2>
+          <p class="text-sm text-gray-600"><?= $nombre ?></p>
           <p class="text-sm text-gray-600"><strong>Nacionalidad:</strong> <?= $nacionalidad ?></p>
-          <p class="text-sm text-gray-600"><strong>Estatus:</strong> <?= $estatus ?></p>
-
+          <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>
 
 
