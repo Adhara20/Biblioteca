@@ -6,13 +6,14 @@ class Autor{
 		require_once('conexion.php');
 		$this->conexion = new Conexion();
 	}
-	function guardar($nombreAutor, $fkNacionalidad){
-		$consulta = "INSERT INTO autor (nombreAutor, fkNacionalidad) VALUES ('{$nombreAutor}', '{$fkNacionalidad}')";
+	function guardar($nombreAutor, $iconoAutor, $fkNacionalidad){
+		$consulta = "INSERT INTO autor (nombreAutor, iconoAutor, fkNacionalidad) VALUES ('{$nombreAutor}', '{$iconoAutor}', '{$fkNacionalidad}')";
 		$respuesta = $this->conexion->query($consulta);
 		return $respuesta;
 	}	
 	function mostrar(){
-		$consulta = "SELECT a.*, n.* FROM autor a INNER JOIN nacionalidad n ON a.fkNacionalidad = n.pkNacionalidad WHERE a.estatus = 'A'";
+		// $consulta = "SELECT a.*, n.* FROM autor a INNER JOIN nacionalidad n ON a.fkNacionalidad = n.pkNacionalidad WHERE a.estatus = 'A'";
+		$consulta = "SELECT autor.pkAutor, autor.nombreAutor, autor.iconoAutor, nacionalidad.nombreNaci FROM autor INNER JOIN nacionalidad ON autor.fkNacionalidad = nacionalidad.pkNacionalidad WHERE autor.estatus = 'A'";
 		$resultado = $this->conexion->query($consulta);
 		return $resultado;
 
@@ -72,9 +73,10 @@ function desactivar($pkAutor) {
     $respuesta = $this->conexion->query($consulta);
     return $respuesta;
 }
-	    function actualizar($pkAutor, $nombreAutor, $fkNacionalidad) {
+	    function actualizar($pkAutor, $nombreAutor, $iconoAutor, $fkNacionalidad) {
     $consulta = "UPDATE autor SET 
         nombreAutor = '{$nombreAutor}',
+        iconoAutor = '{$iconoAutor}',
         fkNacionalidad = {$fkNacionalidad}
         WHERE pkAutor = '{$pkAutor}'";
     $resultado = $this->conexion->query($consulta);

@@ -34,7 +34,7 @@ include('../includes/header.php');
   <!--  Título principal -->
   <div class="w-full flex flex-col items-start px-8 mt-8">
     <div class="w-full max-w-4xl mx-auto">
-      <h1 class="titulos">Detalles de la SubCategoria</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
+      <h1 class="titulos">Detalles de la Subcategoría</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
       <hr class="linea-separadora mb-6">
     </div>
   </div>
@@ -75,7 +75,7 @@ include('../includes/header.php');
           </div>
 
             <div class="py-3 grid grid-cols-3 gap-4">
-            <dt class="font-medium text-gray-700">Categoria:</dt>
+            <dt class="font-medium text-gray-700">Categoría:</dt>
             <dd class="col-span-2 text-gray-800"><?= $fila['nombreCategoria'] ?></dd>
           </div>
           <!-- !!!!! -->

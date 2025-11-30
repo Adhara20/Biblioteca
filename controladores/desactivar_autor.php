@@ -9,7 +9,7 @@
         header('Location: ../vistas/lista_autor.php?success=Autor desactivado con éxito');
         exit;
     }else{
-        header('Location: ../vistas/lista_autor.php?error=Error al desactivar Autor');
+        header('Location: ../vistas/lista_autor.php?error=Error al desactivar autor');
         exit;
     }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Categoria</title>
+  <title>Editar Categoría</title>
 </head>
 
 <?php include('../includes/header.php'); ?>
@@ -40,24 +40,19 @@ $imgRuta = !empty($fila['iconoCategoria'])
 ?>
 
 
-
-<!-- MENSAJE DE Exito -->
-<?php include('../includes/notificacion.php') ?>
-
-
 <!-- TÍTULO -->
 <div class="w-full flex flex-col items-start px-8 mt-8">
   <div class="w-full max-w-4xl mx-auto">
-      <h1 class="titulos">Editar Categoria</h1>
+      <h1 class="titulos">Editar Categoría</h1>
       <hr class="linea-separadora mb-6">
   </div>
+<?php include('../includes/notificacion.php') ?>
 </div>
-
 <!-- CONTENEDOR PRINCIPAL -->
 <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 lg:p-12 border border-gray-300 mx-auto mb-10">
 
   <h2 class="text-2xl font-semibold text-center text-[#4F0087] mb-6">
-      Formulario Categoria
+      Formulario Categoría
   </h2>
 
   <form action="../controladores/actualizar_categoria.php" method="POST" enctype="multipart/form-data" 

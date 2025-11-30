@@ -6,10 +6,10 @@
 
     $resultado = $clase->activar($pkAutor);
     if($resultado){
-        header('Location: ../vistas/lista_autor.php?success=Autor activado al Exito');
+        header('Location: ../vistas/lista_autor.php?success=Autor activado con éxito');
         exit;
     }else{
-        header('Location: ../vistas/lista_autor.php?error=Error al activar Autor');
+        header('Location: ../vistas/lista_autor.php?error=Error al activar autor');
         exit;
     }
 

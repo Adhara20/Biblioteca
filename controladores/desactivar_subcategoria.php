@@ -6,10 +6,10 @@
 
     $resultado = $clase->desactivar($pkSubCategoria);
     if($resultado){
-        header('Location: ../vistas/lista_subcategoria.php?success=Categoría desactivada con éxito');
+        header('Location: ../vistas/lista_subcategoria.php?success=Subategoría desactivada con éxito');
         exit;
     }else{
-        header('Location: ../vistas/lista_subcategoria.php?error=Error al desactivar categoria');
+        header('Location: ../vistas/lista_subcategoria.php?error=Error al desactivar subcategoría');
         exit;
     }
 

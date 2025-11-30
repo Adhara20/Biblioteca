@@ -23,7 +23,6 @@ include('../includes/header.php');
 
 <body>
   <?php include('../includes/menu.php'); ?>
-
   <div class="px-10 mb-6">
         <div class="flex items-center justify-between">
             <h1 class="titulos">Categorías</h1>
@@ -49,10 +48,11 @@ include('../includes/header.php');
           <span>Filtros</span>
         </button>
     </div>
+<?php include('../includes/notificacion.php'); ?>
 
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_categoria.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
-    <input type="text" name="buscar" class="input-busqueda"
+    <input type="text" name="buscar" class="input-busqueda uppercase"
            placeholder="Buscar por nombre"
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
@@ -74,7 +74,7 @@ include('../includes/header.php');
 
       <form method="GET" action="lista_categoria.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
-               placeholder="Buscar por título, autor o ISBN..."
+               placeholder="Buscar por nombre..."
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
 
@@ -97,8 +97,10 @@ include('../includes/header.php');
 		// Traducir Estatus
         if ($fila["estatus"] === 'A') {
         $estatus = 'Activo';
+        $colorEstatus= 'text-green-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         } else{
             $estatus = 'Inactivo';
+        $colorEstatus= 'text-red-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
         }
 		// Fin 
       
@@ -159,17 +161,17 @@ include('../includes/header.php');
        class="flex items-center gap-4 w-full">
 
         <!-- Portada (Sino tiene imagen, quient esto)--> 
-        <img 
+       <img 
             src="<?= !empty($img) ? '../imagenes/categorias/' . $img : '../imagenes/categorias/placeholder.png'; ?>" 
             alt="Categoria de <?= $nombre ?>" 
             class="w-24 h-32 object-cover rounded-lg flex-shrink-0"
         >
 
+
         <!-- Info -->
         <div class="flex flex-col gap-1 flex-1 mr-8">
-          <p class="text-sm text-gray-600"><strong>Nombre:</strong> <?= $nombre ?></p>
-          <p class="text-sm text-gray-600"><strong>Estatus:</strong> <?= $estatus ?></p>
-
+          <h2 class="text-lg font-bold text-purple-900"><?= $nombre ?></h2>
+          <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>
 
 
@@ -177,7 +179,7 @@ include('../includes/header.php');
         </div>
       <?php endforeach; ?>
     <?php else: ?>
-      <p class="no-resultados">No se encontraron categorias con esos filtros.</p>
+      <p class="no-resultados">No se encontraron categorías con esos filtros.</p>
     <?php endif; ?>
   </section>
 

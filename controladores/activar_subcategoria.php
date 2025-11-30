@@ -6,10 +6,10 @@
 
     $resultado = $clase->activar($pkSubCategoria);
     if($resultado){
-        header('Location: ../vistas/lista_subcategoria.php?success=Categoria activado Exito');
+        header('Location: ../vistas/lista_subcategoria.php?success=Subategoría activada con éxito');
         exit;
     }else{
-        header('Location: ../vistas/lista_subcategoria.php?error=Error al activar Categoria');
+        header('Location: ../vistas/lista_subcategoria.php?error=Error al activar subcategoría');
         exit;
     }
 

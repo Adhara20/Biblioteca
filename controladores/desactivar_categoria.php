@@ -9,7 +9,7 @@
         header('Location: ../vistas/lista_categoria.php?success=Categoría desactivada con éxito');
         exit;
     }else{
-        header('Location: ../vistas/lista_categoria.php?error=Error al desactivar categoria');
+        header('Location: ../vistas/lista_categoria.php?error=Error al desactivar categoría');
         exit;
     }
 

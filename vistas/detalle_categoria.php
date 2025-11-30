@@ -34,7 +34,7 @@ include('../includes/header.php');
   <!--  Título principal -->
   <div class="w-full flex flex-col items-start px-8 mt-8">
     <div class="w-full max-w-4xl mx-auto">
-      <h1 class="titulos">Detalles de la categoria</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
+      <h1 class="titulos">Detalles de la categoría</h1><!--Nomas le cambian por lo que vayan a mostrar--> 
       <hr class="linea-separadora mb-6">
     </div>
   </div>

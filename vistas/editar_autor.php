@@ -34,9 +34,9 @@ if ($resultado && $resultado->num_rows > 0) {
 }
 
 // Determinar imagen actual
-// $imgRuta = !empty($fila['iconoSubCategoria']) 
-//     ? "../imagenes/subcategorias/" . $fila['iconoSubCategoria']
-//     : "../imagenes/subcategorias/placeholder.png";
+$imgRuta = !empty($fila['iconoAutor']) 
+    ? "../imagenes/autores/" . $fila['iconoAutor']
+    : "../imagenes/auteros/placeholder.png";
 ?>
 
 <?php
@@ -50,7 +50,6 @@ $listaNacionalidades = $nacionalidad->listaNacionalidades();
 
 <!-- MENSAJE DE Exito -->
 <?php include('../includes/notificacion.php') ?>
-
 
 <!-- TÍTULO -->
 <div class="w-full flex flex-col items-start px-8 mt-8">
@@ -72,7 +71,7 @@ $listaNacionalidades = $nacionalidad->listaNacionalidades();
 
     <!-- PK -->
     <input type="hidden" name="pkAutor" value="<?= $fila['pkAutor'] ?>">
-
+<input type="hidden" name="iconoAutorActual" value="<?= $fila['iconoAutor'] ?>">
     <div>
       <label class="block text-sm font-medium text-gray-700">Nombre</label>
       <input type="text" name="nombreAutor" required
@@ -94,7 +93,16 @@ $listaNacionalidades = $nacionalidad->listaNacionalidades();
         <?php } ?>
       </select>
     </div>
-  
+
+  <div>
+      <label class="block text-sm font-medium text-gray-700">Foto actual</label>
+
+      <img src="<?= $imgRuta ?>" class="w-40 h-56 object-cover border rounded-md shadow mt-2">
+
+      <label class="block text-sm font-medium text-gray-700 mt-3">Subir nueva Foto (opcional)</label>
+      <input type="file" name="iconoAutor" class="w-full mt-1 p-2 border rounded-md bg-white">
+    </div>
+
     <!-- BOTONES -->
     <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
       <a href="detalle_autor.php?pkAutor=<?= $fila['pkAutor'] ?>"
