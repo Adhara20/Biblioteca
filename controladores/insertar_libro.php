@@ -7,7 +7,7 @@ $titulo          = strtoupper($_POST['titulo']);
 $edicion         = strtoupper($_POST['edicion']);
 $numPaginas      = $_POST['numPaginas'];
 $anioPublicacion  = $_POST['anioPublicacion'];
-$idioma          = strtoupper($_POST['idioma']);
+$fkIdioma         = $_POST['fkIdioma'];
 $sinopsis        = $_POST['sinopsis'];
 $fkAutor         = $_POST['fkAutor'];
 $fkEditorial     = $_POST['fkEditorial'];
@@ -20,7 +20,7 @@ $_SESSION['form_libro'] = [
     'edicion' => $_POST['edicion'],
     'numPaginas' => $_POST['numPaginas'],
     'anioPublicacion' => $_POST['anioPublicacion'],
-    'idioma' => $_POST['idioma'],
+    'fkIdioma' => $_POST['fkIdioma'],
     'sinopsis' => $_POST['sinopsis'],
     'fkAutor' => $_POST['fkAutor'],
     'fkEditorial' => $_POST['fkEditorial'],
@@ -62,7 +62,7 @@ $resultado = $clase->guardar(
     $edicion,
     $numPaginas,
     $anioPublicacion,
-    $idioma,
+    $fkIdioma,
     $sinopsis,
     $fkAutor,
     $fkEditorial,

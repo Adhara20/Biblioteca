@@ -164,25 +164,55 @@ function detalles($pkMulta) {
 }
 
     // Insertar nueva multa
-function insertar($tipoMulta, $montoMulta, $fechaRegistro, $codigoPrestamo) {
-    $codigoMulta = $this->generarCodigoMulta();
-    // Convertir código a su pk
-    $fkPrestamo = $this->obtenerPkPrestamoPorCodigo($codigoPrestamo);
+    function insertar($tipoMulta, $montoMulta, $fechaRegistro, $codigoPrestamo) {
 
-    if ($fkPrestamo === null) {
-        return false; // Prestamo no encontrado
+        $codigoMulta = $this->generarCodigoMulta();
+
+        // Convertir codigo a pkPrestamo
+        $fkPrestamo = $this->obtenerPkPrestamoPorCodigo($codigoPrestamo);
+
+        if ($fkPrestamo === null) {
+            return false; // Prestamo no encontrado
+        }
+
+        // 
+        $tipoMulta = mysqli_real_escape_string($this->conexion, $tipoMulta);
+        // Convertir a tipo flotante
+        $montoMulta = floatval($montoMulta);
+
+        // Insertar multa
+        $consulta = "INSERT INTO multa (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fkPrestamo, estatus)
+            VALUES ('$codigoMulta', '$tipoMulta', $montoMulta, '$fechaRegistro', $fkPrestamo, 'A')";
+
+        $insertado = $this->conexion->query($consulta);
+
+        // Ver si se intertó
+        if (!$insertado) {
+            return false; 
+        }
+
+        // Si es Daño Grave o Perdido, entonces marcar copia como Inactiva
+        if ($tipoMulta == 'Perdido' || $tipoMulta == 'Daño Grave') {
+
+            // Obtener fkCopiaF
+            $buscarCopia = "SELECT fkCopiaF FROM prestamo WHERE pkPrestamo = '{$fkPrestamo}' LIMIT 1";
+
+            $resultadoBusqueda = $this->conexion->query($buscarCopia);
+
+            if ($resultadoBusqueda && $resultadoBusqueda->num_rows > 0) {
+
+                $fila = $resultadoBusqueda->fetch_assoc();
+                $fkCopiaF = $fila['fkCopiaF'];
+
+                // Desactivar la copia
+                $actualizar = "UPDATE copiaF SET estatus = 'I' WHERE pkCopiaF = '$fkCopiaF'";
+
+                $this->conexion->query($actualizar);
+            }
+        }
+        return true;
     }
 
-    $tipoMulta = mysqli_real_escape_string($this->conexion, $tipoMulta);
-    $montoMulta = floatval($montoMulta);
-
-    $consulta = "INSERT INTO multa 
-                (codigoMulta, tipoMulta, montoMulta, fechaRegistro, fkPrestamo, estatus)
-                 VALUES 
-                ('$codigoMulta', '$tipoMulta', $montoMulta, '$fechaRegistro', $fkPrestamo, 'A')";
-
-    return $this->conexion->query($consulta);
-}
 
 // Generar codigo-número
     function generarCodigoMulta() {

@@ -5,7 +5,7 @@ $titulo = strtoupper($_POST['titulo']);
 $edicion = strtoupper($_POST['edicion']);
 $numPaginas = $_POST['numPaginas'];
 $anioPublicacion = $_POST['anioPublicacion'];
-$idioma = strtoupper($_POST['idioma']);
+$fkIdioma = $_POST['fkIdioma'];
 $sinopsis = $_POST['sinopsis'];
 $fkAutor = $_POST['fkAutor'];
 $fkEditorial = $_POST['fkEditorial'];
@@ -47,7 +47,7 @@ $resultado = $libro->actualizar(
     $edicion,
     $numPaginas,
     $anioPublicacion,
-    $idioma,
+    $fkIdioma,
     $sinopsis,
     $fkAutor,
     $fkEditorial,

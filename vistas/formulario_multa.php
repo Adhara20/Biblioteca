@@ -8,6 +8,7 @@
 
 $form = $_SESSION['form_multa'] ?? [];
 $codigoPrestamo = $_GET['codigoPrestamo'] ?? null;
+$fkPrestamo = $_GET['fkPrestamo'] ?? null;
 ?>
 
 <div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-8 lg:p-10 border border-gray-300 mx-auto">
@@ -24,21 +25,32 @@ $codigoPrestamo = $_GET['codigoPrestamo'] ?? null;
             <select name="tipoMulta" required
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
                 <option value="">Seleccione un tipo</option>
-                <option value="Daño"    <?= ($form['tipoMulta'] ?? '') === 'Daño' ? 'selected':'' ?>>Daño</option>
+                <option value="Daño Menor"    <?= ($form['tipoMulta'] ?? '') === 'Daño Menor' ? 'selected':'' ?>>Daño Menor</option>
+                <option value="Daño Grave"    <?= ($form['tipoMulta'] ?? '') === 'Daño Grave' ? 'selected':'' ?>>Daño Grave</option>
                 <option value="Perdido" <?= ($form['tipoMulta'] ?? '') === 'Perdido' ? 'selected':'' ?>>Perdido</option>
             </select>
         </div>
 
         <!-- Monto -->
 <div>
-    <label class="block text-sm font-medium text-gray-700 w-1/2">Monto</label>
+    <label class="block text-sm font-medium text-gray-700 w-1/2">Monto ($0.00 a $9,999.99)</label>
 
     <div class="relative">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>
 
-        <input type="number" min="0" max="9999.99" step="0.01" pattern="^\d+(\.\d{1,2})?$" name="montoMulta" placeholder="00.00" required
+        <input 
+        id ="monto"
+            type="number" 
+            min="0" 
+            max="9999" 
+            step="0.01"
+            pattern="^\d{1,4}(\.\d{1,2})?$"
+            name="montoMulta" 
+            placeholder="00.00" 
+            required
             value="<?= $form['montoMulta'] ?? '' ?>"
             class="w-full pl-8 mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+
     </div>
 </div>
 
@@ -61,6 +73,12 @@ $codigoPrestamo = $_GET['codigoPrestamo'] ?? null;
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
         </div>
 
+        <!-- Observaciones de la copiaF -->
+        <div class="block w-full md:col-span-2">
+            <label class="flex text-sm font-medium text-gray-700">Observaciones</label>
+            <textarea name="observaciones" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]"></textarea>
+        </div>
+
         <!-- Botones -->
         <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
 
@@ -79,6 +97,10 @@ $codigoPrestamo = $_GET['codigoPrestamo'] ?? null;
     </form>
 
 </div>
+<script>
+document.getElementById('monto').addEventListener('input', function () {
+    if (this.value > 9999.99) this.value = 9999.99;});
+</script>
 
 <?php include('../includes/footer.php'); ?>
 </body>

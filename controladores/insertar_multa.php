@@ -7,6 +7,7 @@ $tipoMulta      = $_POST['tipoMulta'];
 $montoMulta = round(floatval($_POST['montoMulta']), 2);
 $fechaRegistro  = $_POST['fechaRegistro'];
 $codigoPrestamo = $_POST['codigoPrestamo']; // ← ESTE es el correcto
+$observaciones = $_POST['observaciones'] ?? null;
 
 // Guardar datos en sesión por si ocurre un error
 $_SESSION['form_multa'] = [
@@ -16,12 +17,24 @@ $_SESSION['form_multa'] = [
 ];
 
 include('../clases/multa.php');
+include('../clases/prestamo.php');
 $clase = new Multa();
+$clasePrestamo = new Prestamo();
 
 // Intentar insertar (la clase convierte código → pk)
 $resultado = $clase->insertar($tipoMulta, $montoMulta, $fechaRegistro, $codigoPrestamo);
 
 if ($resultado) {
+    $rPrestamo = $clasePrestamo->anadirObservaciones($codigoPrestamo, $observaciones);
+    if($rPrestamo === 'copiaNoEncontrada'){
+        header("Location: ../vistas/formulario_multa.php?error=No se encontró la copia para guardar observaciones.");
+        exit;
+    }
+    
+    if(!$rPrestamo){
+        header("Location: ../vistas/formulario_multa.php?error=Error al guardar observaciones en la copia.");
+        exit;
+    }
 
     // Limpiar los datos del formulario
     unset($_SESSION['form_multa']);
@@ -31,7 +44,6 @@ if ($resultado) {
     exit;
 
 } else {
-
     // Redirigir con mensaje de error genérico
     // (si quieres, te puedo armar un mensaje más específico)
     header("Location: ../vistas/formulario_multa.php?error=No se pudo registrar la multa. Verifique el código del préstamo.");

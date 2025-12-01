@@ -64,7 +64,8 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
     <select name="tipo" class="select-filtro">
       <option value="">Tipo</option>
       <option value="Retraso" <?= ($tipo === 'Retraso') ? 'selected' : '' ?>>Retraso</option>
-      <option value="Daño" <?= ($tipo === 'Daño') ? 'selected' : '' ?>>Daño</option>
+      <option value="Daño Menor" <?= ($tipo === 'Daño Menor') ? 'selected' : '' ?>>Daño Menor</option>
+      <option value="Daño Grave" <?= ($tipo === 'Daño Grave') ? 'selected' : '' ?>>Daño Grave</option>
       <option value="Perdido" <?= ($tipo === 'Perdido') ? 'selected' : '' ?>>Perdido</option>
     </select>
 
@@ -92,8 +93,9 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
         <select name="tipo" class="select-filtro">
           <option value="">Tipo</option>
           <option value="Retraso" <?= ($tipo === 'Retraso') ? 'selected' : '' ?>>Retraso</option>
-      <option value="Daño" <?= ($tipo === 'Daño') ? 'selected' : '' ?>>Daño</option>
-      <option value="Perdido" <?= ($tipo === 'Perdido') ? 'selected' : '' ?>>Perdido</option>
+          <option value="Daño Menor" <?= ($tipo === 'Daño Menor') ? 'selected' : '' ?>>Daño Menor</option>
+          <option value="Daño Grave" <?= ($tipo === 'Daño Grave') ? 'selected' : '' ?>>Daño Grave</option>
+          <option value="Perdido" <?= ($tipo === 'Perdido') ? 'selected' : '' ?>>Perdido</option>
         </select>
 
         <select name="estatus" class="select-filtro">
@@ -118,6 +120,7 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
         $fechaRegistro = htmlspecialchars($fila['fechaRegistro']);
         $fechaPago = htmlspecialchars($fila['fechaPago'] ?? '—');
         $estatusMulta = htmlspecialchars($fila['estatus']);
+        $codigoPrestamo = htmlspecialchars($fila['codigoPrestamo']);
 
         if ($estatusMulta === 'A') {
             $estatusTexto = 'PENDIENTE';
@@ -173,6 +176,7 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
           <a href="detalle_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" class="flex flex-col gap-1 w-full">
             <h2 class="text-lg font-bold text-purple-900">Multa #<?= $codigo ?></h2>
             <p class="text-sm text-gray-700"><strong>Tipo:</strong> <?= $tipo ?></p>
+            <p class="text-sm text-gray-700"><strong>Prestamo:</strong> <?= $codigoPrestamo ?></p>
             <p class="text-sm text-gray-700"><strong>Monto:</strong> $<?= $monto ?></p>
             <p class="text-sm text-gray-600"><strong>Registrada:</strong> <?= $fechaRegistro ?></p>
             <p class="text-sm text-gray-600"><strong>Pagada:</strong> <?= $fechaPago ?></p>

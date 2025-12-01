@@ -57,9 +57,7 @@ class Copia
 
     function lista()
     {
-        $consulta = "
-            SELECT 
-                c.*,
+        $consulta = "SELECT c.*,
                 l.isbn,
                 l.titulo,
                 s.nombreSubCategoria
@@ -75,9 +73,7 @@ class Copia
     }
 
     function detalles($pkCopiaF) {
-        $consulta = "
-            SELECT 
-                c.*, 
+        $consulta = "SELECT c.*, 
                 sb.nombreSubCategoria,
                 l.isbn, l.titulo, l.portada
             FROM copiaF c
@@ -113,10 +109,8 @@ class Copia
     }
 
     $consulta = "UPDATE copiaF 
-                SET fkLibro = '{$fkLibro}',
-                observaciones = '{$observaciones}' 
-                WHERE pkCopiaF = '{$pkCopiaF}'
-    ";
+                 SET fkLibro = '{$fkLibro}', observaciones = CONCAT(IFNULL(observaciones, ''), '. ', '{$observaciones}')
+                 WHERE pkCopiaF = '{$pkCopiaF}'";
 
     return $this->conexion->query($consulta);
     return $resultado;
@@ -124,18 +118,14 @@ class Copia
 
     function filtrar($buscar = '', $subcategoria = '', $estatus = '') 
     {
-        $consulta = "
-            SELECT 
-                c.*, 
+        $consulta = "SELECT c.*, 
                 sb.nombreSubCategoria,
                 l.isbn, 
                 l.titulo, 
                 l.portada
             FROM copiaF c
             INNER JOIN libro l ON c.fkLibro = l.pkLibro
-            INNER JOIN subCategoria sb ON l.fkSubCategoria = sb.pkSubCategoria
-            WHERE 1=1
-        ";
+            INNER JOIN subCategoria sb ON l.fkSubCategoria = sb.pkSubCategoria";
 
         if (!empty($buscar)) {
             $buscar = mysqli_real_escape_string($this->conexion, $buscar);
@@ -161,7 +151,7 @@ class Copia
     }
 
     function mostrar(){
-    $consulta = "SELECT pkCopiaF, folio FROM copiaf WHERE estatus = 'A'";
+    $consulta = "SELECT pkCopiaF, folio FROM copiaf WHERE estatus = 'A' && disponibilidad = 'Disponible'";
     $resultado = $this->conexion->query($consulta);
     return $resultado;
 }

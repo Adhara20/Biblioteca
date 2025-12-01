@@ -16,6 +16,7 @@
 // --- Clases ---
 include('../clases/libro.php');
 include('../clases/categoria.php');
+include('../clases/idioma.php');
 
 // --- CONTROLADOR DE FILTRADO (Tambien Muestra) ---
 include('../controladores/filtrar_libros.php'); // ← Aquí se define $resultado
@@ -23,6 +24,8 @@ include('../controladores/filtrar_libros.php'); // ← Aquí se define $resultad
 // --- CATEGORIAS ---
 $cat = new Categoria;
 $cats = $cat->mostrar();
+$clasIdioma = new Idioma;
+$idiomas = $clasIdioma->mostrar();
 
 include('../includes/header.php');
 ?>
@@ -40,7 +43,7 @@ include('../includes/header.php');
 
       <div class="flex items-center">
         <!-- !!!! Aquí le ponen el nombre de su formulario -->
-         <?php if($rol=='A'){ ?>
+         <?php if($rol=='A' && $estatusLog == 'A'){ ?>
         <a href="formulario_libro.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
           Agregar Libro
@@ -74,11 +77,21 @@ include('../includes/header.php');
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>" >
 
     <select name="categoria" class="select-filtro">
-      <option value="">Todas las categorías</option>
+      <option value="">Categorías</option>
       <?php foreach ($cats as $filaCat): ?>
         <option value="<?= htmlspecialchars($filaCat['pkCategoria']) ?>"
           <?= (isset($_GET['categoria']) && $_GET['categoria'] == $filaCat['pkCategoria']) ? 'selected' : '' ?>>
           <?= htmlspecialchars($filaCat['nombreCategoria']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+        <!-- Idioma -->
+    <select name="idioma" class="select-filtro">
+      <option value="">Idiomas</option>
+      <?php foreach ($idiomas as $filaIdioma): ?>
+        <option value="<?= htmlspecialchars($filaIdioma['pkIdioma']) ?>"
+          <?= (isset($_GET['idioma']) && $_GET['idioma'] == $filaIdioma['pkIdioma']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($filaIdioma['idioma']) ?>
         </option>
       <?php endforeach; ?>
     </select>
@@ -104,11 +117,21 @@ include('../includes/header.php');
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
         <select name="categoria" class="select-filtro">
-          <option value="">Todas las categorías</option>
+          <option value="">Categorías</option>
           <?php foreach ($cats as $filaCat): ?>
             <option value="<?= htmlspecialchars($filaCat['pkCategoria']) ?>"
               <?= (isset($_GET['categoria']) && $_GET['categoria'] == $filaCat['pkCategoria']) ? 'selected' : '' ?>>
               <?= htmlspecialchars($filaCat['nombreCategoria']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+
+        <select name="idioma" class="select-filtro">
+          <option value="">Idiomas</option>
+          <?php foreach ($idiomas as $filaIdioma): ?>
+            <option value="<?= htmlspecialchars($filaIdioma['pkIdioma']) ?>"
+              <?= (isset($_GET['idioma']) && $_GET['idioma'] == $filaIdioma['pkIdioma']) ? 'selected' : '' ?>>
+              <?= htmlspecialchars($filaIdioma['idioma']) ?>
             </option>
           <?php endforeach; ?>
         </select>
@@ -177,14 +200,6 @@ include('../includes/header.php');
            <span class="text-sm/6">Ver Detalles</span>
           </a>
 
-          <!-- Agregar Copia -->
-           <a href="formulario_copia.php?isbn=<?= $fila['isbn'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
-          onclick="event.stopPropagation();">
-           <img src="/Biblioteca/imagenes/btn Iconos/btnAddCopia.png" class="size-4">
-           <span class="text-sm/6">Agregar Copia</span>
-          </a>
-
           <!-- ¡Agregar! -->
           <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
           <!-- Editar -->
@@ -195,6 +210,15 @@ include('../includes/header.php');
            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
            <span class="text-sm/6">Editar</span>
           </a>
+
+          <!-- Agregar Copia -->
+           <a href="formulario_copia.php?isbn=<?= $fila['isbn'] ?>"
+          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
+          onclick="event.stopPropagation();">
+           <img src="/Biblioteca/imagenes/btn Iconos/btnAddCopia.png" class="size-4">
+           <span class="text-sm/6">Agregar Copia</span>
+          </a>
+          
         <!-- Desactivar(si el registro está Activo) -->
         <?php if (($fila['estatus'] ?? '') === 'A'): ?>
           <!-- Desactivar -->

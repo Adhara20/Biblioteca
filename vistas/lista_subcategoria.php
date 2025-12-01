@@ -29,15 +29,13 @@ include('../includes/header.php');
   <div class="px-10 mb-6">
         <div class="flex items-center justify-between">
             <h1 class="titulos">Subcategorías</h1>
-
-            <a href="formulario_subcategoria.php" 
-   class="rounded-md text-white font-medium transition 
-          bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
-          shadow-sm px-4 py-2 text-center whitespace-nowrap
-          sm:min-w-[11rem] md:min-w-[12rem]">
-   Agregar Subcategoría
-</a>
-
+        <?php if($rol == 'A' && $estatusLogo == ''): ?>
+            <a href="formulario_subcategoria.php" class="rounded-md text-white font-medium transition 
+              bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
+                shadow-sm px-4 py-2 text-center whitespace-nowrap sm:min-w-[11rem] md:min-w-[12rem]">
+              Agregar Subcategoría
+            </a>
+        <?php endif; ?>
         </div>
         <hr class="linea-separadora-listas">
     </div>

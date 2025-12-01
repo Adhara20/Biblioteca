@@ -8,14 +8,17 @@ include('../clases/libro.php');
 include('../clases/autor.php');
 include('../clases/editorial.php');
 include('../clases/subcategoria.php');
+include('../clases/idioma.php');
 
 $autor = new Autor();
 $editorial = new Editorial();
 $subcategoria = new Subcategoria();
+$idioma = new Idioma();
 
 $listaAutores = $autor->mostrar();
 $listaEditoriales = $editorial->listaEditoriales();
 $listaCategorias = $subcategoria->mostrar();
+$listaIdiomas = $idioma->mostrar();
 ?>
 
 <!-- MENSAJE DE ERROR -->
@@ -113,9 +116,16 @@ $listaCategorias = $subcategoria->mostrar();
     <!-- IDIOMA -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Idioma</label>
-      <input type="text" name="idioma" placeholder="Español, Inglés…" required
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
-        value="<?= $_SESSION['form_libro']['idioma'] ?? '' ?>">
+      <select name="fkIdioma" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+        <option value="">Seleccione el Idioma</option>
+        <?php foreach ($listaIdiomas as $fila): ?>
+            <option value="<?= $fila['pkIdioma'] ?>"
+              <?= (isset($_SESSION['form_libro']['fkIdioma']) && $_SESSION['form_libro']['fkIdioma'] == $fila['pkIdioma']) ? 'selected' : '' ?>>
+              <?= $fila['idioma'] ?>
+            </option>
+        <?php endforeach; ?>
+      </select>
     </div>
 
     <!-- SUBCATEGORIA -->
