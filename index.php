@@ -12,6 +12,13 @@
     <h2 class="text-3xl font-semibold text-[#4F0087] mb-4">Bienvenido a Owl Book</h2>
     <p class="text-gray-600">Por favor, inicia sesión para continuar.</p>
   <?php endif; ?>
+  <?php if($rol != 'L' && $estatusLog == 'A'): 
+    include('/Biblioteca/index/indexSupremo.php');
+  else:
+    include('/Biblioteca/index/indexLector.php');
+  endif;
+    ?>
+
 </main>
 
 <?php include('includes/footer.php'); ?>
