@@ -6,6 +6,35 @@ class Usuario {
         require_once("conexion.php");
         $this->conexion = new Conexion();
     }
+    public function contarMultasPendiente($pkUsuario){
+        $consulta = "SELECT COUNT(*) AS total 
+                     FROM multa m 
+                     INNER JOIN prestamo p ON m.fkPrestamo = p.pkPrestamo
+                     WHERE p.fkUsuarioSolicita = {$pkUsuario} AND m.estatus = 'A'";
+
+        $resultado = $this->conexion->query($consulta);
+        $fila = $resultado->fetch_assoc();
+        return (int)$fila['total'];
+    }
+
+
+    // Atualizar el estatusPrestamista
+    public function actualizarEstatusPrestamista($pkUsuario){
+        $multasPendientes = $this->contarMultasPendiente($pkUsuario);
+
+        if ($multasPendientes >= 3) {
+            $estatus = 'V'; // Vetado
+        } else {
+            $estatus = 'A'; // Activo
+        }
+
+        $consulta = "UPDATE usuario 
+                     SET estatusPrestamista = '{$estatus}'
+                     WHERE pkUsuario = {$pkUsuario}";
+
+        return $this->conexion->query($consulta);
+    }
+
 
     // Registrar
     function guardar( $nombres, $apaterno, $amaterno, $curp, $fechaNac, $sexo, $pass, $correo, $fotoNombre, $rol) {

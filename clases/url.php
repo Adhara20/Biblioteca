@@ -8,17 +8,17 @@ class URL {
     }
 
     // Guardar nueva URL
-    function guardar($url, $fkLibro = null) {
+    function guardar($url, $fkLibro) {
         // Si fkLibro es vacío, poner NULL
-        $fkLibroVal = !empty($fkLibro) ? "'$fkLibro'" : "NULL";
-        $consulta = "INSERT INTO url (url, fkLibro, estatus) VALUES ('$url', $fkLibroVal, 'A')";
+        // $fkLibroVal = !empty($fkLibro) ? "'$fkLibro'" : "NULL";
+        $consulta = "INSERT INTO url (url, fkLibro) VALUES ('{$url}', '{$fkLibro}')";
         return $this->conexion->query($consulta);
     }
 
     // Obtener lista de URLs
     function listaURLs() {
         $consulta = "
-            SELECT u.pkURL, u.url, u.estatus, l.titulo AS nombreLibro
+            SELECT u.pkURL, u.url, u.estatus, l.titulo 
             FROM url u
             LEFT JOIN libro l ON u.fkLibro = l.pkLibro
             ORDER BY u.pkURL DESC
@@ -28,7 +28,7 @@ class URL {
         $urls = [];
         if ($resultado) {
             while ($fila = $resultado->fetch_assoc()) {
-                if (empty($fila['nombreLibro'])) $fila['nombreLibro'] = "Sin libro";
+                if (empty($fila['titulo'])) $fila['titulo'] = "Sin libro";
                 $urls[] = $fila;
             }
         }
@@ -58,5 +58,55 @@ class URL {
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
+
+    // Filtar URLS de un libro
+    function filtrarPorLibro($pkLibro, $buscar = '', $estatus = '') {
+    $pkLibro = intval($pkLibro);
+
+    $consulta = "SELECT * FROM url WHERE fkLibro = $pkLibro";
+
+    if (!empty($buscar)) {
+        $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+        $consulta .= " AND (url LIKE '%$buscar%' OR titulo LIKE '%$buscar%')";
+    }
+
+    if (!empty($estatus)) {
+        $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+        $consulta .= " AND estatus = '$estatus'";
+    }
+
+
+    $resultado = mysqli_query($this->conexion, $consulta);
+    return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+    }
+
+    // Filtrar general
+    function filtrar($buscar = '', $estatus = '', $libro = '') {
+        $consulta = "SELECT u.*, l.titulo
+                     FROM url u
+                     INNER JOIN libro l ON u.fkLibro = l.pkLibro
+                     WHERE 1 = 1";
+
+        if (!empty($buscar)) {
+            $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+            $consulta .= " AND (u.url LIKE '%$buscar%'
+                            OR l.titulo LIKE '%$buscar%')";
+        }
+
+        if (!empty($estatus)) {
+            $estatus = mysqli_real_escape_string($this->conexion, $estatus);
+            $consulta .= " AND u.estatus = '$estatus'";
+        }
+
+        if (!empty($tipo)) {
+            $tipo = mysqli_real_escape_string($this->conexion, $tipo);
+            $consulta .= " AND u.tipo = '$tipo'";
+        }
+
+        $resultado = mysqli_query($this->conexion, $consulta);
+        return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
+        }
+
+
 }
 ?>

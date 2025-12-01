@@ -4,6 +4,7 @@ class Prestamo{
         require_once('Conexion.php');
         $this->conexion = new Conexion();
     }
+
     function guardar($fechaLimite, $folioContrato, $archivoContrato, $folio, $numCredS, $numCredA){
         $fkUsuarioAutoriza = $this->obtenerfkUsuarioA ($numCredA);
         $fkUsuarioSolicita = $this->obtenerfkUsuarioS ($numCredS);
@@ -20,7 +21,7 @@ class Prestamo{
         }
         $codigoPrestamo = $this ->generarCodigo();
 
-        $dias = 5;
+        // $dias = 5;
         $consulta = "INSERT INTO prestamo (codigoPrestamo, fechaRegistro, fechaLimite, folioContrato, archivoContrato, fkCopiaF, fkUsuarioSolicita, fkUsuarioAutoriza, estatusDevolucion) VALUES ('{$codigoPrestamo}', NOW(), '{$fechaLimite}', '{$folioContrato}', '{$archivoContrato}', '{$fkCopiaF}', '{$fkUsuarioSolicita}', '{$fkUsuarioAutoriza}', 'ATiempo')";
         $respuesta = $this->conexion->query($consulta);
 
@@ -57,7 +58,7 @@ class Prestamo{
     }
 
     throw new Exception("La copia con ID '{$pkCopiaF}' no existe en copiaf.");
-}
+    }
 
 
     function verPrestamo() {
@@ -139,61 +140,107 @@ class Prestamo{
     }
 
     function completar($pkPrestamo) {
-
-    // Obtener fkCopiaF
-    $consultaPrestamo = "
-        SELECT fkCopiaF, fechaLimite
-        FROM prestamo
-        WHERE pkPrestamo = '{$pkPrestamo}'
-    ";
-    $resultado = $this->conexion->query($consultaPrestamo);
-    $fila = $resultado->fetch_assoc();
-
-    $fkCopiaF = $fila['fkCopiaF'];
-    $fechaLimite = $fila['fechaLimite'];
-
-    // Registrar fecha de entrega
-    $consultaEntrega = "
-        UPDATE prestamo 
-        SET fechaEntrega = NOW()
-        WHERE pkPrestamo = '{$pkPrestamo}'
-    ";
-    $this->conexion->query($consultaEntrega);
-
-    // Obtener la fecha de entrega ya guardada
-    $consultaFechaEntrega = "
-        SELECT fechaEntrega 
-        FROM prestamo 
-        WHERE pkPrestamo = '{$pkPrestamo}'
-    ";
-    $r2 = $this->conexion->query($consultaFechaEntrega);
-    $f2 = $r2->fetch_assoc();
-    $fechaEntrega = $f2['fechaEntrega'];
-
-    // Determinar estatus devolucion
-    if ($fechaEntrega > $fechaLimite) {
-        $estatusDevolucion = 'Vencido';
-    } else {
-        $estatusDevolucion = 'ATiempo';
+        
+        // 1. Obtener usuario del préstamo
+        $consultaUsuario = "
+            SELECT fkUsuarioSolicita 
+            FROM prestamo
+            WHERE pkPrestamo = '{$pkPrestamo}'";
+        $rUsuario = $this->conexion->query($consultaUsuario);
+        $fUsuario = $rUsuario->fetch_assoc();
+        $fkUsuarioSolicita = $fUsuario['fkUsuarioSolicita'];
+        
+        // 2. Revisar multas pendientes ANTES de permitir completar
+        $multasPendientes = $this->contarMultasPendientes($fkUsuarioSolicita);
+        
+        if ($multasPendientes > 0) {
+            return 'MultasPendientes';  // ❌ NO permitimos completar
+        }
+    
+        // 3. Obtener datos del préstamo
+        $consultaPrestamo = "
+            SELECT fkCopiaF, fechaLimite
+            FROM prestamo
+            WHERE pkPrestamo = '{$pkPrestamo}'
+        ";
+        $resultado = $this->conexion->query($consultaPrestamo);
+        $fila = $resultado->fetch_assoc();
+    
+        $fkCopiaF = $fila['fkCopiaF'];
+        $fechaLimite = $fila['fechaLimite'];
+    
+        // 4. Registrar fecha de entrega
+        $consultaEntrega = "
+            UPDATE prestamo 
+            SET fechaEntrega = NOW()
+            WHERE pkPrestamo = '{$pkPrestamo}'
+        ";
+        $this->conexion->query($consultaEntrega);
+    
+        // 5. Obtener fechaEntrega recién guardada
+        $consultaFechaEntrega = "
+            SELECT fechaEntrega 
+            FROM prestamo 
+            WHERE pkPrestamo = '{$pkPrestamo}'
+        ";
+        $r2 = $this->conexion->query($consultaFechaEntrega);
+        $f2 = $r2->fetch_assoc();
+        $fechaEntrega = $f2['fechaEntrega'];
+    
+        // 6. Determinar estatus devolucion
+        if ($fechaEntrega > $fechaLimite) {
+            $estatusDevolucion = 'Vencido';
+        } else {
+            $estatusDevolucion = 'ATiempo';
+        }
+    
+        // 7. Actualizar préstamo como completado
+        $consultafin = "
+            UPDATE prestamo 
+            SET estatus = 'Completado',
+                estatusDevolucion = '{$estatusDevolucion}'
+            WHERE pkPrestamo = '{$pkPrestamo}'
+        ";
+        $this->conexion->query($consultafin);
+    
+        // 8. Poner copia disponible
+        $consultapain = "
+            UPDATE copiaF
+            SET disponibilidad = 'Disponible'
+            WHERE pkCopiaF = '{$fkCopiaF}'
+        ";
+    
+        return $this->conexion->query($consultapain);
     }
 
-    // Actualizar prestamo
-    $consultafin = "
-        UPDATE prestamo 
-        SET estatus = 'Completado',
-            estatusDevolucion = '{$estatusDevolucion}'
-        WHERE pkPrestamo = '{$pkPrestamo}'
-    ";
-    $this->conexion->query($consultafin);
 
-    // Actualizar la disponibilidad de la copia
-    $consultapain = "
-        UPDATE copiaF
-        SET disponibilidad = 'Disponible'
-        WHERE pkCopiaF = '{$fkCopiaF}'
-    ";
-    return $this->conexion->query($consultapain);
-}
+    // Añadir Observaciones a las copias fisicas despues de multarlas
+    function anadirObservaciones($codigoPrestamo, $observaciones){
+     // Obtener fkCopiaF
+     $fkCopiaF = $this->obtenerCopia($codigoPrestamo);
+
+     if (!$fkCopiaF) {
+         return 'copiaNoEncontrada';
+     }
+
+     // Actualizar observaciones
+     $consulta = "
+         UPDATE copiaF 
+         SET observaciones = CONCAT(IFNULL(observaciones, ''), '. ', '{$observaciones}')
+         WHERE pkCopiaF = '{$fkCopiaF}'";
+
+     return $this->conexion->query($consulta);
+    }
+
+
+    function obtenerCopia($codigoPrestamo){
+        $consulta = "SELECT pkPrestamo, fkCopiaF FROM prestamo WHERE codigoPrestamo= '{$codigoPrestamo}' LIMIT 1";
+        $resultado = $this->conexion->query($consulta);
+        if ($fila = $resultado->fetch_assoc()) {
+            return $fila['fkCopiaF']; 
+        }
+        return null;
+    }
 
 
 
@@ -373,6 +420,22 @@ class Prestamo{
     $resultado = $this->conexion->query($consulta);
     return $resultado->fetch_all(MYSQLI_ASSOC);
 }
+
+    // Funcion para verirficar cuantas multas pendientes tiene el usuario
+    function contarMultasPendientes($fkUsuarioSolicita) {
+       $consulta = "SELECT COUNT(*) AS total
+                    FROM multa
+                    WHERE fkPrestamo IN (
+                    SELECT pkPrestamo
+                    FROM prestamo
+                    WHERE fkUsuarioSolicita = '{$fkUsuarioSolicita}')
+                    AND estatus = 'A'
+                    AND tipoMulta IN ('Daño Menor', 'Daño Grave', 'Perdido')";
+       
+       $resultado = $this->conexion->query($consulta);
+       $fila = $resultado->fetch_assoc();
+       return $fila['total'] ?? 0;
+    }
 
 
 }

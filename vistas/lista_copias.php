@@ -31,11 +31,7 @@ include('../includes/header.php');
       </div>
 
       <div class="flex items-center">
-        <!-- !!!! Aquí le ponen el nombre de su formulario -->
-        <a href="formulario_copia.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
-          <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
-          Agregar Copias
-        </a>
+        
       </div>
     </div>
     <hr class="linea-separadora-listas">
@@ -158,15 +154,8 @@ $img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro 
            <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
            <span class="text-sm/6">Ver Detalles</span>
           </a>
-
-          <!-- Prestar -->
-           <a href="formulario_prestamo.php?folio=<?= $fila['folio'] ?>"
-          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
-          onclick="event.stopPropagation();">
-           <img src="/Biblioteca/imagenes/btn Iconos/btnPrestar.png" class="size-4">
-           <span class="text-sm/6">Prestar</span>
-          </a>
-
+          <!-- validar rol de usuario -->
+      <?php if($rol != 'L' && $estatusLog == 'A'): ?>
           <!-- Editar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>"
@@ -175,6 +164,15 @@ $img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro 
            <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
            <span class="text-sm/6">Editar</span>
           </a>
+
+          <!-- Prestar -->
+           <a href="formulario_prestamo.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>&folio=<?= urlencode($fila['folio']) ?>"
+          class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-yellow-600"
+          onclick="event.stopPropagation();">
+           <img src="/Biblioteca/imagenes/btn Iconos/btnPrestar.png" class="size-4">
+           <span class="text-sm/6">Prestar</span>
+          </a>
+
         <!-- Desactivar(si el registro está Activo) -->
         <?php if (($fila['estatus'] ?? '') === 'A'): ?>
           <!-- Desactivar -->
@@ -194,7 +192,10 @@ $img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro 
            <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
            <span class="text-sm/6">Activar</span>
           </a>
+          <!-- Fin validad estatus registro -->
         <?php endif; ?>
+        <!-- Fin valirdar usuario -->
+      <?php endif; ?>
     </div>
     <!-- Contenido (Tarjeta)-->
     <a href="detalle_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>" 
@@ -209,9 +210,10 @@ $img = htmlspecialchars($fila['portada'] ?? null); // Trae la portada del libro 
 
         <!-- Info -->
         <div class="flex flex-col gap-1 flex-1 mr-8">
+            <h2 class="text-lg font-bold text-purple-900"><?= $titulo ?></h2>
+            <p class="text-sm text-gray-600"><strong>Folio:</strong> <span class="text-blue-600 font-medium"><?= $folio ?></span></p>
             <p class="text-sm text-gray-600"><strong>ISBN:</strong> <?= $isbn ?></p>
-            <p class="text-sm text-gray-600"><strong>Folio:</strong> <?= $folio ?></p>
-            <p class="text-sm text-gray-600"><strong>Título:</strong> <?= $titulo ?></p>
+            <!-- <p class="text-sm text-gray-600"><strong>Título:</strong> <?= $titulo ?></p> -->
             <p class="text-sm text-gray-600"><strong>Subcategoría:</strong> <?= $nombreSubCategoria ?></p>
             <p class="text-sm <?= $colorEstatus ?>"><?= $estatus ?></p>
         </div>

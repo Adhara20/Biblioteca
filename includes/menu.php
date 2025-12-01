@@ -33,9 +33,14 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
 
     <a href="<?=$rutaBase?>index.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Inicio</a>
     <a href="<?=$rutaBase?>vistas/lista_libros.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Libros</a>
-
+  <?php if($rol): ?>
+    <a href="<?=$rutaBase?>vistas/lista_urls.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Urls</a>
+    <a href="<?=$rutaBase?>vistas/lista_copias.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Copias Físicas</a>
+  <?php endif; ?>
     <?php if ($rol != 'L' && $estatusLog == 'A'): ?>
       <a href="<?=$rutaBase?>vistas/lista_prestamos.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Préstamos</a>
+      <a href="<?=$rutaBase?>vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
+      <a href="<?=$rutaBase?>vistas/lista_usuarios.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Usuarios</a>
 
       <!-- Clasificaciones PC -->
       <div class="relative group hidden lg:block">
@@ -61,12 +66,6 @@ $rutaBase = (strpos($_SERVER['PHP_SELF'], '/vistas/') !== false) ? '../' : '';
         <a href="<?=$rutaBase?>vistas/lista_subcategoria.php" class="px-4 py-2 hover:bg-gray-100">Subcategorías</a>
       </div>
 
-      <a href="<?=$rutaBase?>vistas/lista_multas.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Multas</a>
-      <a href="<?=$rutaBase?>vistas/lista_copias.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Ejemplares</a>
-    <?php endif; ?>
-
-    <?php if ($rol !== 'L' && $estatusLog == 'A'): ?>
-      <a href="<?=$rutaBase?>vistas/lista_usuarios.php" class="block py-2 text-gray-800 hover:text-[#4F0087]">Usuarios</a>
     <?php endif; ?>
 
     <?php if ($rol != 'L' && $estatusLog == 'A'): ?>

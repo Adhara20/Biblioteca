@@ -170,7 +170,7 @@ include('../includes/header.php');
           Editar
         </a>
         <?php if($botonMulta): ?>
-        <a href="formulario_multa.php?codigoPrestamo=<?= $fila['codigoPrestamo'] ?>" 
+        <a href="formulario_prestamo.php?codigoPrestamo=<?= $fila['codigoPrestamo'] ?>" 
         class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
           Multar
         </a>

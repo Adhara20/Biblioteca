@@ -39,21 +39,22 @@ $imgRuta = !empty($fila['portada'])
     : "../imagenes/portadas/placeholder.png";
 ?>
 
-<?php
+<?php 
 include('../clases/autor.php');
 include('../clases/editorial.php');
 include('../clases/subcategoria.php');
+include('../clases/idioma.php');
 
 $autor = new Autor();
 $editorial = new Editorial();
 $subcategoria = new Subcategoria();
+$idioma = new Idioma();
 
 $listaAutores = $autor->mostrar();
 $listaEditoriales = $editorial->listaEditoriales();
 $listaCategorias = $subcategoria->mostrar();
+$listaIdiomas = $idioma->mostrar();
 ?>
-
-
 
 <!-- TÍTULO -->
 <div class="w-full flex flex-col items-start px-8 mt-8">
@@ -157,9 +158,16 @@ $listaCategorias = $subcategoria->mostrar();
     <!-- IDIOMA -->
     <div>
       <label class="block text-sm font-medium text-gray-700">Idioma</label>
-      <input type="text" name="idioma" required
-        value="<?= $fila['idioma'] ?>"
-        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
+      <select name="fkIdioma" required
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
+        <option value="">Seleccione un Idioma</option>
+        <?php foreach ($listaIdiomas as $filaIdioma) { ?>
+          <option value="<?= $filaIdioma['pkIdioma'] ?>"
+            <?= $filaIdioma['pkIdioma'] == $fila['fkIdioma'] ? 'selected' : '' ?>>
+            <?= $filaIdioma['idioma'] ?>
+          </option>
+        <?php } ?>
+      </select>
     </div>
 
     <!-- SUBCATEGORÍA -->

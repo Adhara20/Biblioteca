@@ -19,6 +19,11 @@ $usuario = new Usuario();
 
 $listaCopias = $copia->mostrar();
 $listaUsuario = $usuario->mostrar();
+
+// Recibir el folio de la copia para prestarlo
+// $folioInterno = $_GET['pkCopiaF'] ?? null;
+$fkCopiaF = $_GET['pkCopiaF'] ?? null;
+$folioCopia = $_GET['folio'] ?? null;
 ?>
 
 <div class="w-full max-w-5xl bg-white shadow-lg rounded-2xl p-8 lg:p-12 border border-gray-300 mx-auto mb-10">
@@ -29,9 +34,13 @@ $listaUsuario = $usuario->mostrar();
     <form action="../controladores/insertar_prestamo.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4">
     
     <!--  Fecha Límite -->
+      <?php
+        $diaMin = date('Y-m-d', strtotime('+1 days'));
+        $diaMax = date('Y-m-d', strtotime('+7 days'));
+      ?>
      <div>
       <label class="block text-sm font-medium text-gray-700">Fecha Limite <span class="text-red-500 text-2xl">*</span></label>
-      <input type="date" name="fechaLimite" required
+      <input type="date" name="fechaLimite" required min="<?= $diaMin ?>" min="<?= $diaMax ?>" 
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
     </div>
     
@@ -49,7 +58,12 @@ $listaUsuario = $usuario->mostrar();
     </div>
     <!-- Folio Copia -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Folio Copia</label>
+      <label class="block text-sm font-medium text-gray-700">Folio Copia <span class="text-red-500 text-2xl">*</span></label>
+      <?php if($fkCopiaF): ?>
+        <input type="text" name="folioVisible" value="<?= $folioCopia  ?>" required readonly
+        class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]">
+        <input type="hidden" name="folio" value="<?= $fkCopiaF ?>">
+        <?php else: ?>
       <select name="folio" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
 
@@ -61,11 +75,12 @@ $listaUsuario = $usuario->mostrar();
             </option>
         <?php endforeach; ?>
       </select>
+      <?php endif; ?>
     </div>
 
           <!-- Usuario solicitante -->
         <div>
-      <label class="block text-sm font-medium text-gray-700">Usuario Solicitante</label>
+      <label class="block text-sm font-medium text-gray-700">Usuario Solicitante <span class="text-red-500 text-2xl">*</span></label>
       <select name="numCredS" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
 

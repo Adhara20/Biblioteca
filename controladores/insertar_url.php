@@ -3,7 +3,7 @@ session_start(); // Iniciar sesión
 
 // Recibir datos del formulario
 $url     = $_POST['url'];
-$fkLibro = $_POST['fkLibro'] ?? null;
+$fkLibro = $_POST['fkLibro'];
 
 // Guardar los datos en sesión por si ocurre un error
 $_SESSION['form_url'] = [

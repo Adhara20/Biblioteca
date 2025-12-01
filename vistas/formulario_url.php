@@ -4,6 +4,10 @@ include('../clases/libro.php');
 
 $claseLibro = new Libro();
 
+// Por si el libro se especifico en lista
+$fkLibro = $_GET['pkLibro'] ?? NULL;
+$isbnLibro = $_GET['isbn'] ?? NULL;
+
 // Obtener todos los libros activos
 $libros = $claseLibro->filtrar('', '', 'A');
 
@@ -32,23 +36,31 @@ ob_end_clean();
                 value="<?= $_SESSION['form_url']['url'] ?? '' ?>">
         </div>
 
-        <!-- Libro -->
-        <div class="md:col-span-2">
-            <label class="block text-sm font-medium text-gray-700">Libro (opcional)</label>
-            <select name="fkLibro" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
-                <option value="">Seleccione un libro</option>
-                <?php if (!empty($libros)): ?>
-                    <?php foreach ($libros as $libro): ?>
-                        <option value="<?= $libro['pkLibro'] ?>"
-                            <?= (isset($_SESSION['form_url']['fkLibro']) && $_SESSION['form_url']['fkLibro'] == $libro['pkLibro']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($libro['titulo']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <option value="">No hay libros activos</option>
-                <?php endif; ?>
-            </select>
-        </div>
+    <?php if($fkLibro): ?>
+    <!-- Libro específico -->
+    <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">ISBN del Libro</label>
+        <input type="hidden" name="fkLibro" value="<?= htmlspecialchars($fkLibro) ?>">
+        <input type="text" name="isbnLibro" placeholder="eje. 9781368098014" required
+            class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
+            value="<?= htmlspecialchars($isbnLibro) ?>">
+    </div>
+<?php else: ?>
+    <!-- Selección de libro -->
+    <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">Libro</label>
+        <select name="fkLibro" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white" required>
+            <option value="">Seleccione un libro</option>
+                <?php foreach ($libros as $libro): ?>
+                    <option value="<?= $libro['pkLibro'] ?>"
+                        <?= (isset($_SESSION['form_url']['fkLibro']) && $_SESSION['form_url']['fkLibro'] == $libro['pkLibro']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($libro['titulo']) ?>
+                    </option>
+                <?php endforeach; ?>
+        </select>
+    </div>
+<?php endif; ?>
+
 
         <!-- Botones -->
         <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">

@@ -118,21 +118,20 @@ include('../includes/header.php');
                 ?>
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
             </div>
-
+    <?php if($rol != 'A' && $estatusLog == 'A'): ?>
       <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
         <a href="editar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>" 
         class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
-          hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
+          hover:bg-[#020305] hover:text-blue-200  shadow-sm">
           Editar
         </a>
 
-        <a href="formulario_prestamo.php?folio=<?= $fila['folio'] ?>" 
+        <a href="formulario_prestamo.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>&folio=<?= urlencode($fila['folio']) ?>" 
         class="px-4 py-2.5 rounded-md font-medium transition border border-yellow-400 text-yellow-400 bg-yellow-100 
           hover:bg-yellow-400 hover:text-yellow-100 shadow-sm">
           Prestar
         </a>
-
         <?php
           if($fila['estatus'] == 'A'){
         ?>
@@ -147,6 +146,7 @@ include('../includes/header.php');
           Activar
         </a>
         <?php }?>
+      <?php endif; ?>
       </div>
     </div>
   </div>

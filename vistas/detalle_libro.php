@@ -140,14 +140,9 @@ include('../includes/header.php');
         </dl>
       </div>
       <div class="flex items-center gap-6 mt-6">
-  <a href="lista_urls.php?pkLibro=<?= $fila['pkLibro'] ?>"
+  <a href="lista_urls.php?pkLibro=<?= $fila['pkLibro'] ?>&isbn=<?= urlencode($fila['isbn']) ?>"
      class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
-     Ver URLs
-  </a>
-
-  <a href="lista_copias.php?pkLibro=<?= $fila['pkLibro'] ?>"
-     class="text-[#5780B5] hover:text-[#3B5680] font-medium underline">
-     Ver Copias Físicas
+     Ver URLs de este Libro
   </a>
 </div>
       

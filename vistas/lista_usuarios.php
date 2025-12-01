@@ -25,11 +25,12 @@ include('../includes/multasRetraso.php');
         <h1 class="titulos">Usuarios</h1>
       </div>
       <div class="flex items-center">
-        <?php if($rol == 'A' && $estatusLog == 'A') ?>
+        <?php if($rol != 'L' && $estatusLog == 'A'): ?>
         <a href="formulario_usuario.php" 
           class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           Agregar Usuario
         </a>
+        <?php endif; ?>
       </div>
     </div>
     <hr class="linea-separadora-listas">
@@ -128,6 +129,8 @@ include('../includes/multasRetraso.php');
     <!-- Lista de usuarios -->
     <ul role="list" class="bg-gray-100">
       <?php foreach ($resultado as $fila) {
+        // Actualizar estatus de prestamista según multas pendientes
+        $clase->actualizarEstatusPrestamista($fila['pkUsuario']);
         // Obtener el Rol y traducir
         if ($fila["rol"] === 'A') {
         $rolTraducido = 'Administrador';
@@ -158,6 +161,19 @@ include('../includes/multasRetraso.php');
             <p class="text-lg font-semibold text-[#4F0087]"><?= htmlspecialchars($nombreCompleto) ?></p>
             <p class="text-xs text-gray-500"><span class="font-semibold">Núm. Credencial:</span> <span class="font-bold"><?= htmlspecialchars($fila["numCredencial"] ?? '') ?></span></p>
             <p class="text-sm text-gray-600"><span class="font-semibold">CURP:</span> <?= htmlspecialchars($fila["curp"] ?? '') ?></p>
+            <?php if($fila['rol']=='L'): ?>
+    <?php
+      $estatusPrestamista = $fila['estatusPrestamista'] ?? 'A';
+      $colorPrestamista = $estatusPrestamista === 'V' ? 'text-yellow-500 font-bold' : 'text-blue-500 font-bold';
+    ?>
+    <p class="text-sm">
+        <span class="font-semibold text-gray-600">¿Puedo pedir Libros?</span>
+        <span class="<?= $colorPrestamista ?> [text-shadow:0_2px_4px_rgba(0,0,0,.3)]">
+            <?= $estatusPrestamista === 'V' ? 'Vetado' : 'Sí' ?>
+        </span>
+    </p>
+<?php endif; ?>
+
           </div>
 
           <!-- Info a la derecha -->
@@ -176,6 +192,8 @@ include('../includes/multasRetraso.php');
             ?>
             <p class="text-xs <?= $color ?>"><?= $estatus ?></p>
           </div>
+
+          
 
           <!-- Botón Kebab (tres puntitos) -->
           <button 
