@@ -20,14 +20,14 @@ $resultado = $clase->listaNacionalidades();
 
     <!-- NOMBRE EDITORIAL -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nombre de la Editorial</label>
+      <label class="block text-sm font-medium text-gray-700">Nombre de la Editorial<span class="text-red-500 text-2xl">*</span></label>
       <input type="text" name="nombreEditorial" placeholder="Ej. Penguin, Planeta, Anagrama…" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
     </div>
 
     <!-- NACIONALIDAD -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nacionalidad</label>
+      <label class="block text-sm font-medium text-gray-700">Nacionalidad<span class="text-red-500 text-2xl">*</span></label>
       <select name="fkNacionalidad" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
         <option value="">Seleccione una nacionalidad</option>

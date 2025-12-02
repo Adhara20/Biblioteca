@@ -21,7 +21,7 @@ $fkPrestamo = $_GET['fkPrestamo'] ?? null;
 
         <!-- Tipo de multa -->
         <div>
-            <label class="block text-sm font-medium text-gray-700">Tipo de Multa</label>
+            <label class="block text-sm font-medium text-gray-700">Tipo de Multa<span class="text-red-500 text-2xl">*</span></label>
             <select name="tipoMulta" required
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
                 <option value="">Seleccione un tipo</option>
@@ -33,7 +33,7 @@ $fkPrestamo = $_GET['fkPrestamo'] ?? null;
 
         <!-- Monto -->
 <div>
-    <label class="block text-sm font-medium text-gray-700 w-1/2">Monto ($0.00 a $9,999.99)</label>
+   <label class="block text-sm font-medium text-gray-700 w-1/2 whitespace-nowrap">Monto ($0.00 a $9,999.99)<span class="text-red-500 text-2xl ml-1">*</span></label>
 
     <div class="relative">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">$</span>

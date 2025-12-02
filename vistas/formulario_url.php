@@ -30,7 +30,7 @@ ob_end_clean();
 
         <!-- URL -->
         <div class="md:col-span-2">
-            <label class="block text-sm font-medium text-gray-700">URL</label>
+            <label class="block text-sm font-medium text-gray-700">URL<span class="text-red-500 text-2xl">*</span></label>
             <input type="url" name="url" placeholder="https://ejemplo.com" required
                 class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
                 value="<?= $_SESSION['form_url']['url'] ?? '' ?>">
@@ -48,7 +48,7 @@ ob_end_clean();
 <?php else: ?>
     <!-- Selección de libro -->
     <div class="md:col-span-2">
-        <label class="block text-sm font-medium text-gray-700">Libro</label>
+        <label class="block text-sm font-medium text-gray-700">Libro<span class="text-red-500 text-2xl">*</span></label>
         <select name="fkLibro" class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white" required>
             <option value="">Seleccione un libro</option>
                 <?php foreach ($libros as $libro): ?>
