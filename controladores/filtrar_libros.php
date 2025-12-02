@@ -2,7 +2,7 @@
 include_once('../clases/libro.php');
 $clase = new Libro();
 
-$buscar = strtoupper($_GET['buscar'] ?? '');
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $categoria = $_GET['categoria'] ?? '';
 $idioma = $_GET['idioma'] ?? '';
 $estatus = $_GET['estatus'] ?? '';

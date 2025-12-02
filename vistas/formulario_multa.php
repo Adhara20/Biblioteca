@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <?php include('../includes/header.php'); ?>
 <body class="bg-gray-100 text-gray-900">
 

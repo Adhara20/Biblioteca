@@ -1,6 +1,13 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $pkAutor = $_POST['pkAutor'];
-$nombreAutor = strtoupper($_POST['nombreAutor']);
+$nombreAutor = mb_strtoupper($_POST['nombreAutor'], 'UTF-8');
  // <- Nombre consistente
 $iconoAutorActual = $_POST['iconoAutorActual'];
 $fkNacionalidad = $_POST['fkNacionalidad'];

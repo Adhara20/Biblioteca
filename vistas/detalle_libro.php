@@ -149,7 +149,7 @@ include('../includes/header.php');
     
       <!-- Botones de acción | Se queda igual -->
        <!-- Nuevo if ¡¡¡ -->
-    <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
+    <?php if($rol != 'L' && $estatusLog == 'A'){ ?>
       <div class="flex justify-end gap-3 mt-8">
         
         <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>" 

@@ -10,7 +10,7 @@ $pkUsuarioLog = $_SESSION['pkUsuarioLog'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 
 // FILTROS
-$buscar = $_GET['buscar'] ?? '';
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $estatus = $_GET['estatus'] ?? '';
 $estatusDevolucion = $_GET['estatusDevolucion'] ?? '';
 $fechaRegistro = $_GET['fechaRegistro'] ?? '';

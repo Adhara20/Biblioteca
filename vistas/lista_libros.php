@@ -43,12 +43,12 @@ include('../includes/header.php');
 
       <div class="flex items-center">
         <!-- !!!! Aquí le ponen el nombre de su formulario -->
-         <?php if($rol=='A' && $estatusLog == 'A'){ ?>
+         <?php if($rol != 'L' && $estatusLog =='A'): ?>
         <a href="formulario_libro.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
           <!-- Y así que cambian "Libro" por lo que vayan a hacer -->
           Agregar Libro
         </a>
-        <?php } ?>
+        <?php endif; ?>
       </div>
     </div>
     <hr class="linea-separadora-listas">
@@ -201,7 +201,7 @@ include('../includes/header.php');
           </a>
 
           <!-- ¡Agregar! -->
-          <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
+          <?php if($rol != 'L' && $estatusLog == 'A'){ ?>
           <!-- Editar -->
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_libro.php?pkLibro=<?= $fila['pkLibro'] ?>"

@@ -2,7 +2,7 @@
 include_once('../clases/copia.php');
 $clase = new Copia();
 
-$buscar = $_GET['buscar'] ?? '';
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $subcategoria = $_GET['subcategoria'] ?? '';
 $estatus = $_GET['estatus'] ?? '';
 

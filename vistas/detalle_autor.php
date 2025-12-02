@@ -1,3 +1,10 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
 <!-- incluir Header y Menu-->
 <?php 
 include('../includes/header.php');
@@ -91,9 +98,11 @@ include('../includes/header.php');
       </div>
 
       <!-- Botones de acción | Se queda igual -->
+      <?php if($rol != 'A' && $estatusLog == 'A'): ?>
       <div class="flex justify-end gap-3 mt-8">
         <a href="editar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 
-        class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#5780B5] hover:bg-[#6b92c2] shadow-sm">
+        class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
+          hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
           Editar
         </a>
         <!-- !!!!!! -->
@@ -102,14 +111,26 @@ include('../includes/header.php');
         <?php
           if($fila['estatus'] == 'A'){
         ?>
-          <a href="../controladores/desactivar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
-          Dar de baja
+          <a href="../controladores/desactivar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 
+            class="px-4 py-2.5 rounded-md text-white font-medium transition
+           bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
+          Desactivar
         </a>
+        <?php
+          }else{
+        ?>
+          <a href="../controladores/activar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 
+            class=" px-4 py-2.5 rounded-md text-white font-medium transition
+          bg-[#34B980] hover:bg-[#c0eed9] hover:text-[#34B980] border hover:border-[#34B980] shadow-sm">
+          Activar
+        </a>
+
         <?php
           }
         ?>
         <!-- : Hasta acá y reemplazan el botón de Dar de Baja -->
       </div>
+    <?php endif; ?>
     </div>
   </div>
 

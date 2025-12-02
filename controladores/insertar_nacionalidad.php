@@ -1,8 +1,15 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start();
 
 // Recibir datos
-$nombreNaci = strtoupper($_POST['nombreNaci']);
+$nombreNaci = mb_strtoupper($_POST['nombreNaci'], 'UTF-8');
 
 // Guardar datos en sesión por si hay error
 $_SESSION['form_nacionalidad'] = [

@@ -1,8 +1,15 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start();
 
 // Recibir datos del formulario
-$nombreEditorial = strtoupper($_POST['nombreEditorial']);
+$nombreEditorial = mb_strtoupper($_POST['nombreEditorial'], 'UTF-8');
 $fkNacionalidad = $_POST['fkNacionalidad'];
 
 // Guardar datos en sesión por si ocurre un error

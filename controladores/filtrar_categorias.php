@@ -2,7 +2,7 @@
 include_once('../clases/categoria.php');
 $clase = new Categoria();
 
-$buscar = strtoupper($_GET['buscar'] ?? '');
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 // $nombre = $_GET['nombre'] ?? '';
 $estatus = $_GET['estatus'] ?? '';
 

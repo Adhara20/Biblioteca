@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B', 'L']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,7 +38,11 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
   <div class="px-10 mb-6">
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="titulos">Multas</h1>
+        <?php if ($rol== 'L') { ?>
+                <h1 class="titulos">Mis Multas</h1>
+            <?php } else { ?>
+                <h1 class="titulos">Prestamos</h1>
+            <?php } ?>
       </div>
       <div class="flex items-center">
         <?php if($rol!='L' && $estatusLog == 'A'){ ?>
@@ -58,7 +68,7 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_multas.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
     <input type="text" name="buscar" class="input-busqueda uppercase"
-           placeholder="Buscar por código o tipo..."
+           placeholder="Buscar por código de multa..."
            value="<?= htmlspecialchars($buscar) ?>">
 
     <select name="tipo" class="select-filtro">
@@ -87,7 +97,7 @@ if ($rol !== 'L' && $estatusLog=='A' ) {
 
       <form method="GET" action="lista_multas.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
-               placeholder="Buscar por código o tipo..."
+               placeholder="Buscar por código de multa..."
                value="<?= htmlspecialchars($buscar) ?>">
 
         <select name="tipo" class="select-filtro">

@@ -1,7 +1,14 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 
 $pkNacionalidad = $_POST['pkNacionalidad'];
-$nombre = strtoupper($_POST['nombre']);
+$nombre = mb_strtoupper($_POST['nombre'], 'UTF-8');
 
 include('../clases/nacionalidad.php');
 $n = new Nacionalidad();

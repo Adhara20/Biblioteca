@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'L']);
+?>
+
+<?php
 session_start();
 
 include('../clases/usuario.php');
@@ -6,9 +13,9 @@ $usuario = new Usuario();
 
 // Datos principales
 $pkUsuario = $_POST['pkUsuario'];
-$nombres   = strtoupper($_POST['nombres']);
-$apaterno  = strtoupper($_POST['apaterno']);
-$amaterno  = strtoupper($_POST['amaterno']);
+$nombres   = mb_strtoupper($_POST['nombres'], 'UTF-8');
+$apaterno  = mb_strtoupper($_POST['apaterno'], 'UTF-8');
+$amaterno  = mb_strtoupper($_POST['amaterno'], 'UTF-8');
 $correo    = $_POST['correo'];
 
 $rolLog = $_SESSION['rol'];

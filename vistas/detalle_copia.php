@@ -118,7 +118,7 @@ include('../includes/header.php');
                 ?>
                 <dd class="col-span-2 <?= $color ?>"><?= $estatus ?></dd>
             </div>
-    <?php if($rol != 'A' && $estatusLog == 'A'): ?>
+    <?php if($rol != 'L' && $estatusLog == 'A'): ?>
       <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
         <a href="editar_copia.php?pkCopiaF=<?= $fila['pkCopiaF'] ?>" 

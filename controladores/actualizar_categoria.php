@@ -1,6 +1,13 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $pkCategoria = $_POST['pkCategoria'];
-$nombreCategoria = strtoupper($_POST['nombreCategoria']);
+$nombreCategoria = mb_strtoupper($_POST['nombreCategoria'], 'UTF-8');
  // <- Nombre consistente
 
 $iconoCategoriaActual = $_POST['iconoCategoriaActual'];

@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,7 +43,7 @@ include('../includes/header.php');
 <div class="px-10 mb-6">
         <div class="flex items-center justify-between">
             <h1 class="titulos">Nacionalidades</h1>
-
+      <?php if($rol != 'L' && $estatusLog =='A'): ?>
             <a href="formulario_nacionalidad.php" 
    class="rounded-md text-white font-medium transition 
           bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
@@ -45,6 +51,7 @@ include('../includes/header.php');
           sm:min-w-[11rem] md:min-w-[12rem]">
    Agregar Nacionalidad
 </a>
+<?php endif; ?>
 
         </div>
         <hr class="linea-separadora-listas">
@@ -130,7 +137,7 @@ include('../includes/header.php');
         <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
         <span class="text-sm/6">Ver Detalles</span>
       </a>
-
+    <?php if($rol != 'L' && $estatusLog =='A'): ?>
       <a href="editar_nacionalidad.php?pkNacionalidad=<?= $fila['pkNacionalidad'] ?>" class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400" onclick="event.stopPropagation();">
         <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
         <span class="text-sm/6">Editar</span>
@@ -146,6 +153,7 @@ include('../includes/header.php');
           <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
           <span class="text-sm/6">Activar</span>
         </a>
+      <?php endif; ?>
       <?php endif; ?>
     </div>
 

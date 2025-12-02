@@ -1,3 +1,10 @@
+
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B', 'L']);
+?>
 <?php
 // Iniciar sesión si no está iniciada
 if (session_status() === PHP_SESSION_NONE) {

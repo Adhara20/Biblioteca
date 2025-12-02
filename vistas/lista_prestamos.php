@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B', 'L']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -84,7 +90,7 @@ include('../includes/menu.php');
             <?php } else { ?>
                 <h1 class="titulos">Prestamos</h1>
             <?php } ?>
-        <?php if($rol == 'B' || $rol == 'A'): ?>
+        <?php if($rol != 'L' || $estatusLog == 'A'): ?>
             <a href="formulario_prestamo.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D] shadow-sm px-4 py-2 text-center whitespace-nowrap
             sm:min-w-[11rem] md:min-w-[12rem]">
                 Agregar Préstamo
@@ -259,7 +265,7 @@ if($fila['estatus'] == 'EnProceso'){
             <span class="text-sm">Ver Detalles</span>
         </a>
 <!-- Solo Admin/Bibliotecarios -->
-    <?php if($rol == 'A' || $rol == 'B'){ ?>
+    <?php if($rol != 'L' || $estatusLog == 'A'){ ?>
         <a href="editar_prestamo.php?pkPrestamo=<?= $fila['pkPrestamo'] ?>"
             class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400">
             <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">

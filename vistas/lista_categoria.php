@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,7 +32,7 @@ include('../includes/header.php');
   <div class="px-10 mb-6">
         <div class="flex items-center justify-between">
             <h1 class="titulos">Categorías</h1>
-
+    <?php if($rol != 'L' && $estatusLog =='A'): ?>
             <a href="formulario_categoria.php" 
    class="rounded-md text-white font-medium transition 
           bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]
@@ -34,6 +40,7 @@ include('../includes/header.php');
           sm:min-w-[11rem] md:min-w-[12rem]">
    Agregar Categoría
 </a>
+<?php endif; ?>
 
         </div>
         <hr class="linea-separadora-listas">
@@ -53,7 +60,7 @@ include('../includes/header.php');
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_categoria.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
     <input type="text" name="buscar" class="input-busqueda uppercase"
-           placeholder="Buscar por nombre"
+           placeholder="Buscar Categoría..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
 
@@ -74,7 +81,7 @@ include('../includes/header.php');
 
       <form method="GET" action="lista_categoria.php" class="form-filtros-movil">
         <input type="text" name="buscar" class="input-busqueda"
-               placeholder="Buscar por nombre..."
+               placeholder="Buscar Categoría..."
                value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
 
@@ -128,6 +135,7 @@ include('../includes/header.php');
            <span class="text-sm/6">Ver Detalles</span>
           </a>
           <!-- Editar -->
+        <?php if($rol != 'L' && $estatusLog =='A'): ?>
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_categoria.php?pkCategoria=<?= $fila['pkCategoria'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
@@ -154,6 +162,7 @@ include('../includes/header.php');
            <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">
            <span class="text-sm/6">Activar</span>
           </a>
+        <?php endif; ?>
         <?php endif; ?>
     </div>
     <!-- Contenido (Tarjeta)-->

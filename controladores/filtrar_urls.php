@@ -2,7 +2,7 @@
     include_once('../clases/url.php');
     $clase = new Url();
 
-    $buscar  = $_GET['buscar'] ?? '';
+    $buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
     $estatus = $_GET['estatus'] ?? '';
     $pkLibro = $_GET['pkLibro'] ?? Null;
 

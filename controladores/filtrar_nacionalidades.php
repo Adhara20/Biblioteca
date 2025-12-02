@@ -2,7 +2,7 @@
 include_once('../clases/nacionalidad.php');
 $clase = new Nacionalidad();
 
-$buscar = $_GET['buscar'] ?? '';
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $estatus = $_GET['estatus'] ?? '';
 
 $resultado = $clase->filtrar($buscar, $estatus);

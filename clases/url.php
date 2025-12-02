@@ -67,7 +67,7 @@ class URL {
 
     if (!empty($buscar)) {
         $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-        $consulta .= " AND (url LIKE '%$buscar%' OR titulo LIKE '%$buscar%')";
+        $consulta .= " AND (titulo LIKE '%$buscar%')";
     }
 
     if (!empty($estatus)) {
@@ -89,8 +89,7 @@ class URL {
 
         if (!empty($buscar)) {
             $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-            $consulta .= " AND (u.url LIKE '%$buscar%'
-                            OR l.titulo LIKE '%$buscar%')";
+            $consulta .= " AND (sl.titulo LIKE '%$buscar%')";
         }
 
         if (!empty($estatus)) {
