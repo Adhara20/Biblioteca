@@ -223,7 +223,7 @@ class Usuario {
 }
 
 function mostrar(){
-    $consulta = "SELECT pkUsuario, numCredencial FROM usuario WHERE estatus = 'A'";
+    $consulta = "SELECT pkUsuario, numCredencial FROM usuario WHERE estatus = 'A' AND estatusPrestamista = 'A' AND rol = 'L'";
     $resultado = $this->conexion->query($consulta);
     return $resultado;
 }
