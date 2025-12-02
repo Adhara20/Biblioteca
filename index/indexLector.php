@@ -6,11 +6,9 @@ $imagenes = [];
 foreach (glob($carpeta . "*") as $archivo) {
     $ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
     if (in_array($ext, $extensiones)) {
-        // Para mostrar en <img>, convertimos la ruta absoluta a relativa
-        $imagenes[] = "../imagenes/portadas/" . basename($archivo);
+        $imagenes[] = "imagenes/portadas/" . basename($archivo);
     }
 }
-
 shuffle($imagenes);
 $imagenes = array_slice($imagenes, 0, 15);
 ?>
