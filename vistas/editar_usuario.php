@@ -2,7 +2,7 @@
 require_once('../includes/auth.php');
 
 // Solo Admin y Bibliotecario
-requireRole(['A', 'L']);
+requireRole(['A', 'B', 'L']);
 ?>
 
 <!DOCTYPE html>
