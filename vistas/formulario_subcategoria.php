@@ -23,27 +23,31 @@
         class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nombre subcategoría:</label>
+      <label class="block text-sm font-medium text-gray-700">Nombre subcategoría: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Nombre subcategoría:</label> -->
       <input type="text" name="nombreSubCategoria" placeholder="Nombre subcategoria" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_subcategoria']['nombreSubCategoria'] ?? '' ?>">
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría:</label>
+      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría:</label> -->
       <input type="file" name="iconoSubCategoria"
         class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Abreviarura:</label>
+      <label class="block text-sm font-medium text-gray-700">Abreviarura: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Abreviarura:</label> -->
       <input type="text" name="abreviatura" placeholder="Abreviatura de la subcategoria" minlength="3" maxlength="3" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_subcategoria']['abreviatura'] ?? '' ?>">
     </div>
 
         <div>
-      <label class="block text-sm font-medium text-gray-700">Categoría:</label>
+      <label class="block text-sm font-medium text-gray-700">Categoría: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Categoría:</label> -->
       <select name="fkCategoria" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
         <option value="">Seleccione una categoria</option>
