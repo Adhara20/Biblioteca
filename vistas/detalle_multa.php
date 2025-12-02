@@ -1,3 +1,10 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B', 'L']);
+?>
+
 <?php 
 include('../includes/header.php');
 include('../clases/multa.php');
@@ -102,12 +109,14 @@ if ($fila['estatus'] === 'A') {
         Editar
       </a>
         <a href="../controladores/pagar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
-           class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#4FAF8C] hover:bg-[#5BBE9A] shadow-sm">
+           class=" px-4 py-2.5 rounded-md text-white font-medium transition
+          bg-[#34B980] hover:bg-[#c0eed9] hover:text-[#34B980] border hover:border-[#34B980] shadow-sm">
           Marcar como Pagada
         </a>
 
         <a href="../controladores/cancelar_multa.php?pkMulta=<?= $fila['pkMulta'] ?>" 
-          class="px-4 py-2.5 rounded-md text-white font-medium transition bg-[#B55780] hover:bg-[#c46b93] shadow-sm">
+          class="px-4 py-2.5 rounded-md text-white font-medium transition
+           bg-[#B55780] hover:bg-[#e5b6ca] hover:text-[#B55780] border hover:border-[#B55780] shadow-sm">
           Cancelar
         </a>
  

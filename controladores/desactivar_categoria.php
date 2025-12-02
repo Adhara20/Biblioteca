@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
     $pkCategoria=$_GET['pkCategoria'];
 
     include('../clases/categoria.php');

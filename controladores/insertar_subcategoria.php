@@ -1,10 +1,18 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start(); // Iniciar sesión
-$nombreSubCategoria = strtoupper($_POST['nombreSubCategoria']);
+$nombreSubCategoria = mb_strtoupper($_POST['nombreSubCategoria'], 'UTF-8');
 // $iconoSubCategoria = $_FILES['IconoSubCategoria']['name']; 
 // $ruta = $_FILES['IconoSubCategoria']['tmp_name'];
 // move_uploaded_file($ruta, '../imagenes/subcategorias/'.$iconoSubCategoria);
-$abreviatura = strtoupper($_POST['abreviatura']);
+
+$abreviatura = mb_strtoupper($_POST['abreviatura'], 'UTF-8');
 $fkCategoria = $_POST['fkCategoria'];
 $_SESSION['form_subcategoria'] = [
     'nombreSubCategoria' => $_POST['nombreSubCategoria'],

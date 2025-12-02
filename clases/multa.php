@@ -36,8 +36,7 @@ class Multa {
         $buscar = mysqli_real_escape_string($this->conexion, $buscar);
         $consulta .= " AND (u.nombres LIKE '%$buscar%'
                         OR u.apaterno LIKE '%$buscar%'
-                        OR p.codigoPrestamo LIKE '%$buscar%'
-                        OR m.tipoMulta LIKE '%$buscar%')";
+                        OR p.codigoPrestamo LIKE '%$buscar%')";
     }
 
     if (!empty($estatus)) {
@@ -69,8 +68,7 @@ class Multa {
 
     if (!empty($buscar)) {
         $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-        $consulta .= " AND (p.codigoPrestamo LIKE '%$buscar%'
-                        OR m.tipoMulta LIKE '%$buscar%')";
+        $consulta .= " AND (p.codigoPrestamo LIKE '%$buscar%')";
     }
 
     if (!empty($estatus)) {

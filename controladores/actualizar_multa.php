@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start();
 $pkMulta       = $_POST['pkMulta'] ?? null;
 $tipoMulta     = $_POST['tipoMulta'] ?? '';

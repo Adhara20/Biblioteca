@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,9 +43,11 @@ include('../includes/header.php');
       <h1 class="titulos">Editoriales</h1>
     </div>
     <div class="flex items-center">
+    <?php if($rol != 'L' && $estatusLog =='A'): ?>
       <a href="formulario_editorial.php" class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
         Agregar Editorial
       </a>
+      <?php endif; ?>
     </div>
   </div>
   <hr class="linea-separadora-listas">
@@ -108,6 +116,7 @@ include('../includes/header.php');
         <img src="/Biblioteca/imagenes/btn Iconos/btnVer.png" class="size-4">
         <span class="text-sm/6">Ver Detalles</span>
       </a>
+    <?php if($rol != 'L' && $estatusLog =='A'): ?>
       <a href="editar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-purple-400" onclick="event.stopPropagation();">
         <img src="/Biblioteca/imagenes/btn Iconos/btnEditar.png" class="size-4">
         <span class="text-sm/6">Editar</span>
@@ -123,6 +132,7 @@ include('../includes/header.php');
           <span class="text-sm/6">Activar</span>
         </a>
       <?php endif; ?>
+    <?php endif; ?>
     </div>
 
     <!-- Contenido de tarjeta -->

@@ -1,8 +1,7 @@
 <?php
 include('../clases/editorial.php');
 
-$busqueda = $_GET['buscador'];
-
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $clase = new Editorial();
 $resultado = $clase->buscarEditorial($busqueda);
 ?>

@@ -1,3 +1,10 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
 <?php 
 include('../includes/header.php');
 include('../clases/editorial.php');
@@ -91,7 +98,7 @@ if($fila['estatus'] == 'A'){
     </div>
 
     <!-- Botones de acción -->
-    <?php if($rol == 'A' && $estatusLog == 'A'){ ?>
+    <?php if($rol != 'L' && $estatusLog == 'A'){ ?>
       <div class="flex justify-end gap-3 mt-8">
         
         <a href="editar_editorial.php?pkEditorial=<?= $fila['pkEditorial'] ?>" 

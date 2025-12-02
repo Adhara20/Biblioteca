@@ -1,3 +1,10 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B', 'L']);
+?>
+
 <!-- incluir Header y Menu-->
 <?php 
 include('../includes/header.php');
@@ -140,13 +147,13 @@ include('../includes/header.php');
                     <?php
                     if($fila['estatusPrestamista'] == 'A'){
                         $estatusPrestamista ='ACTIVO';
-                        $colorEP = 'text-emerald-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
+                        $colorEP = 'text-blue-500 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
                     }else{
                         $estatusPrestamista ='VETADO';
                         $colorEP = 'text-rose-400 font-semibold [text-shadow:0_2px_4px_rgba(0,0,0,.3)]';
                     }
                     ?>
-                    <dd class="col-span-2 <?= $colorEP ?>"><?= $estatusPrestamista ?></dd>
+                    <dd class="col-span-2  <?= $colorEP ?>"><?= $estatusPrestamista ?></dd>
                 </div>
           <?php } ?>
 
@@ -174,6 +181,7 @@ include('../includes/header.php');
     
       <!-- Botones de acción | Se queda igual -->
       <div class="flex justify-end gap-3 mt-8">
+        <?php if($estatusLog =='A'): ?>
         <?php if($rol == 'A' || $miPerfil){  ?>
         <a href="editar_usuario.php?pkUsuario=<?= $fila['pkUsuario'] ?>" class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
           hover:bg-[#5780B5] hover:text-blue-200  shadow-sm">
@@ -201,6 +209,7 @@ include('../includes/header.php');
         <?php } ?>
         <!-- Hasta acá y reemplazan el botón de Dar de Baja -->
       <?php } ?>
+    <?php endif; ?>
         
       </div>
     </div>

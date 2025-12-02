@@ -1,6 +1,13 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start(); // Iniciar sesión
-$nombreCategoria = strtoupper($_POST['nombreCategoria']);
+$nombreCategoria = mb_strtoupper($_POST['nombreCategoria'], 'UTF-8');
 // $iconoCategoria = $_FILES['IconoCategoria']['name']; 
 // $ruta = $_FILES['IconoCategoria']['tmp_name'];
 // move_uploaded_file($ruta, '../imagenes/categorias/'.$iconoCategoria);

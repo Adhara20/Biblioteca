@@ -1,3 +1,10 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'L']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -177,7 +184,7 @@ $imgRuta = !empty($fila['foto'])
 <!-- FIN PASS -->
 
 
-      <?php if($rol === 'A' && $pkUsuario != $pkUsuarioLog): ?>
+      <?php if($rol === 'A' && $pkUsuario != $pkUsuarioLog && $estatusLog=='A'): ?>
         <div>
             <label class="block text-sm font-medium text-gray-700">Rol</label>
             <select name="rol" 

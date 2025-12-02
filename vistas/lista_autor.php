@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -34,10 +40,12 @@ include('../includes/header.php');
             <h1 class="titulos">Autores</h1>
 
             <div class="flex items-center">
+              <?php if($rol != 'L' && $estatusLog =='A'): ?>
                 <a href="formulario_autor.php" 
                    class="rounded-md text-white font-medium transition bg-[#3BAA8D] hover:bg-[#abe4d5] hover:text-[#3BAA8D] border hover:border-[#3BAA8D]  shadow-sm px-4 py-2 w-full sm:w-40 text-center">
                    Agregar Autor
                 </a>
+                <? endif; ?>
             </div>
         </div>
         <hr class="linea-separadora-listas">
@@ -57,7 +65,7 @@ include('../includes/header.php');
   <!-- Formulario en pantallas grandes -->
   <form method="GET" action="lista_autor.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
     <input type="text" name="buscar" class="input-busqueda uppercase"
-           placeholder="Buscar por nombre..."
+           placeholder="Buscar por nombre o nacionalidad..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
     <select name="nacionalidad" class="select-filtro ">
@@ -139,6 +147,7 @@ include('../includes/header.php');
            <span class="text-sm/6">Ver Detalles</span>
           </a>
           <!-- Editar -->
+           <?php if($rol != 'L' && $estatusLog =='A'): ?>
            <!-- cambiar la ruta del archivo en  href y el pk-->
         <a href="editar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>"
           class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-purple-400"
@@ -166,6 +175,7 @@ include('../includes/header.php');
            <span class="text-sm/6">Activar</span>
           </a>
         <?php endif; ?>
+      <?php endif; ?>
     </div>
  <!-- Contenido (Tarjeta)-->
     <a href="detalle_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 

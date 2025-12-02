@@ -1,10 +1,17 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $pkSubCategoria = $_POST['pkSubCategoria'];
-$nombreSubCategoria = strtoupper($_POST['nombreSubCategoria']);
+$nombreSubCategoria = mb_strtoupper($_POST['nombreSubCategoria'], 'UTF-8');
  // <- Nombre consistente
 
 $iconoSubCategoriaActual = $_POST['iconoSubCategoriaActual'];
-$abreviatura = strtoupper($_POST['abreviatura']);
+$abreviatura = mb_strtoupper($_POST['abreviatura'], 'UTF-8');
 $fkCategoria = $_POST['fkCategoria'];
 
 

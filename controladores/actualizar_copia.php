@@ -1,3 +1,10 @@
+
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <?php
 $isbn = $_POST['isbn'];
 $pkCopiaF = $_POST['pkCopiaF']; 

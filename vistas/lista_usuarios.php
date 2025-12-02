@@ -1,3 +1,9 @@
+<?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -52,7 +58,7 @@ include('../includes/multasRetraso.php');
   <!-- Filtros en pantallas grandes -->
   <form method="GET" action="lista_usuarios.php" class="filtros hidden lg:flex flex-wrap items-center gap-x-4 gap-y-2">
     <input type="text" name="buscar" class="input-busqueda w-48"
-           placeholder="Buscar por Nombre, CURP, Número de Credencia..."
+           placeholder="Buscar por Nombre, CURP o Número de Credencia..."
            value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>">
 
     <select name="rol"  class="select-filtro w-40">
@@ -164,7 +170,7 @@ include('../includes/multasRetraso.php');
             <?php if($fila['rol']=='L'): ?>
     <?php
       $estatusPrestamista = $fila['estatusPrestamista'] ?? 'A';
-      $colorPrestamista = $estatusPrestamista === 'V' ? 'text-yellow-500 font-bold' : 'text-blue-500 font-bold';
+      $colorPrestamista = $estatusPrestamista === 'V' ? 'text-rose-400 font-bold' : 'text-blue-500 font-bold';
     ?>
     <p class="text-sm">
         <span class="font-semibold text-gray-600">¿Puedo pedir Libros?</span>

@@ -1,7 +1,14 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 
 $pkEditorial = $_POST['pkEditorial'];
-$nombre = strtoupper($_POST['nombreEditorial']);
+$nombre = mb_strtoupper($_POST['nombreEditorial'], 'UTF-8');
 $fkNacionalidad = $_POST['fkNacionalidad'];
 
 include('../clases/editorial.php');

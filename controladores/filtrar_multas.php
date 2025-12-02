@@ -3,7 +3,7 @@ include_once('../clases/multa.php');
 $clase = new Multa();
 $clase->generarMultasAutomaticas();
 
-$buscar  = $_GET['buscar'] ?? '';
+$buscar = mb_strtoupper($_GET['buscar'] ?? '', 'UTF-8');
 $estatus = $_GET['estatus'] ?? '';
 $tipo    = $_GET['tipo'] ?? '';
 

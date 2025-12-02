@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A']);
+?>
+
+<?php
 $pkURL = $_GET['pkURL'];
 
 include('../clases/url.php');

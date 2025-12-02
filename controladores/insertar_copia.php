@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $isbn = $_POST['isbn'];
 $observaciones = empty($_POST['observaciones']) ? null : $_POST['observaciones'];
 // $observaciones = $_POST['observaciones'];

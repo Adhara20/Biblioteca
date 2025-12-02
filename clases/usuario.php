@@ -159,8 +159,7 @@ class Usuario {
                     COALESCE(apaterno, ''), ' ',
                     COALESCE(amaterno, '')
                 ) LIKE '%$buscar%'
-                OR curp LIKE '%$buscar%' 
-                OR correo LIKE '%$buscar%')";
+                OR curp LIKE '%$buscar%')";
         }
         // Select Rol
         if (!empty($rol)) {

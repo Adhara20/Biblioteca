@@ -1,4 +1,11 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $pkPrestamo = $_POST['pkPrestamo']; 
 $fechaLimite = $_POST['fechaLimite']; 
 $folioContrato = $_POST['folioContrato']; 

@@ -1,9 +1,16 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A']);
+?>
+
+<?php
 session_start();
 // Recivir datos del formulario
-$nombres   = strtoupper($_POST['nombres']);
-$apaterno  = strtoupper($_POST['apaterno']);
-$amaterno  = strtoupper($_POST['amaterno']);
+$nombres   = mb_strtoupper($_POST['nombres'], 'UTF-8');
+$apaterno  = mb_strtoupper($_POST['apaterno'], 'UTF-8');
+$amaterno  = mb_strtoupper($_POST['amaterno'], 'UTF-8');
 $curp      = strtoupper($_POST['curp']);
 $fechaNac  = $_POST['fechaNac'];
 $sexo      = $_POST['sexo'];

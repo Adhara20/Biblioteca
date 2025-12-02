@@ -1,8 +1,15 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 $pkLibro = $_POST['pkLibro'];
 $isbn = $_POST['isbn'];
-$titulo = strtoupper($_POST['titulo']);
-$edicion = strtoupper($_POST['edicion']);
+$titulo  = mb_strtoupper($_POST['titulo'], 'UTF-8');
+$edicion = mb_strtoupper($_POST['edicion'], 'UTF-8');
 $numPaginas = $_POST['numPaginas'];
 $anioPublicacion = $_POST['anioPublicacion'];
 $fkIdioma = $_POST['fkIdioma'];

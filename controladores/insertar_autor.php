@@ -1,6 +1,13 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+
+<?php
 session_start(); // Iniciar sesión
-$nombreAutor = strtoupper($_POST['nombreAutor']);
+$nombreAutor = mb_strtoupper($_POST['nombreAutor'], 'UTF-8');
 $fkNacionalidad = $_POST['fkNacionalidad'];
 $_SESSION['form_autor'] = [
     'nombreAutor' => $_POST['nombreAutor'],

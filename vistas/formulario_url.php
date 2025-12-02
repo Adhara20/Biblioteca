@@ -1,4 +1,10 @@
 <?php
+require_once('../includes/auth.php');
+
+// Solo Admin y Bibliotecario
+requireRole(['A', 'B']);
+?>
+<?php
 ob_start();
 include('../clases/libro.php');
 
@@ -7,6 +13,8 @@ $claseLibro = new Libro();
 // Por si el libro se especifico en lista
 $fkLibro = $_GET['pkLibro'] ?? NULL;
 $isbnLibro = $_GET['isbn'] ?? NULL;
+
+
 
 // Obtener todos los libros activos
 $libros = $claseLibro->filtrar('', '', 'A');
