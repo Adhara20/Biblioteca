@@ -40,7 +40,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- ISBN -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">ISBN</label>
+      <label class="block text-sm font-medium text-gray-700">ISBN<span class="text-red-500 text-2xl">*</span></label>
       <input type="text" name="isbn" placeholder="ISBN" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]"
         value="<?= $_SESSION['form_libro']['isbn'] ?? '' ?>">
@@ -48,7 +48,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- TITULO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Título</label>
+      <label class="block text-sm font-medium text-gray-700">Título<span class="text-red-500 text-2xl">*</span></label>
       <input type="text" name="titulo" placeholder="Título del libro" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_libro']['titulo'] ?? '' ?>">
@@ -56,7 +56,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- AUTOR -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Autor</label>
+      <label class="block text-sm font-medium text-gray-700">Autor<span class="text-red-500 text-2xl">*</span></label>
       <select name="fkAutor" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
         <option value="">Seleccione el autor</option>
@@ -73,15 +73,15 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- EDICION -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Edición</label>
-      <input type="text" name="edicion" placeholder="Ej. 3ra Edición"
+      <label class="block text-sm font-medium text-gray-700">Edición<span class="text-red-500 text-2xl">*</span></label>
+      <input type="text" name="edicion" placeholder="Ej. 3ra Edición, Deluxe..."
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_libro']['edicion'] ?? '' ?>">
     </div>
 
     <!-- EDITORIAL -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Editorial</label>
+      <label class="block text-sm font-medium text-gray-700">Editorial<span class="text-red-500 text-2xl">*</span></label>
       <select name="fkEditorial" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
 
@@ -99,14 +99,14 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- PORTADA -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Portada</label>
+      <label class="block text-sm font-medium text-gray-700">Portada<span class="text-red-500 text-2xl">*</span></label>
       <input type="file" name="portada"
         class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
     </div>
 
     <!-- NUM PAGINAS -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Número de Páginas</label>
+      <label class="block text-sm font-medium text-gray-700">Número de Páginas<span class="text-red-500 text-2xl">*</span></label>
       <input type="number" name="numPaginas" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" min="1"
         value="<?= $_SESSION['form_libro']['numPaginas'] ?? '' ?>">
@@ -114,7 +114,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- AÑO PUBLICACION -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Año de Publicación</label>
+      <label class="block text-sm font-medium text-gray-700">Año de Publicación<span class="text-red-500 text-2xl">*</span></label>
       <input type="number" name="anioPublicacion" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087]" min="1000"
         value="<?= $_SESSION['form_libro']['anioPublicacion'] ?? '' ?>">
@@ -122,7 +122,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- IDIOMA -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Idioma</label>
+      <label class="block text-sm font-medium text-gray-700">Idioma<span class="text-red-500 text-2xl">*</span></label>
       <select name="fkIdioma" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
         <option value="">Seleccione el Idioma</option>
@@ -137,7 +137,7 @@ $listaIdiomas = $idioma->mostrar();
 
     <!-- SUBCATEGORIA -->
     <div>
-      <label class="block text-sm font-medium text-gray-700">Subcategoría</label>
+      <label class="block text-sm font-medium text-gray-700">Subcategoría<span class="text-red-500 text-2xl">*</span></label>
       <select name="fkSubCategoria" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
 
