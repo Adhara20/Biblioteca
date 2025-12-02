@@ -20,14 +20,16 @@
         class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nombre categoría:</label>
+      <label class="block text-sm font-medium text-gray-700">Nombre categoria: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Nombre categoría:</label> -->
       <input type="text" name="nombreCategoria" placeholder="Nombre categoria" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_categoria']['nombreCategoria'] ?? '' ?>">
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría:</label>
+      <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Icono de la subcategoría:</label> -->
       <input type="file" name="iconoCategoria"
         class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
 

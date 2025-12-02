@@ -26,20 +26,23 @@ $resultado = $clase->listaNacionalidades();
 
         
     <div>
-      <label class="block text-sm font-medium text-gray-700">Nombre Autor:</label>
+      <label class="block text-sm font-medium text-gray-700">Nombre autor: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Nombre Autor:</label> -->
       <input type="text" name="nombreAutor" placeholder="Nombre autor" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase"
         value="<?= $_SESSION['form_autor']['nombreAutor'] ?? '' ?>">
     </div>
 
         <div>
-      <label class="block text-sm font-medium text-gray-700">Foto Autor:</label>
+      <label class="block text-sm font-medium text-gray-700">Foto autor: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Foto Autor:</label> -->
       <input type="file" name="iconoAutor"
         class="w-full mt-1 p-2 border rounded-md bg-white focus:outline-[#4F0087]">
     </div>
 
            <div>
-      <label class="block text-sm font-medium text-gray-700">Nacionalidad:</label>
+      <label class="block text-sm font-medium text-gray-700">Nacionalidad: <span class="text-red-500 text-2xl">*</span></label>
+      <!-- <label class="block text-sm font-medium text-gray-700">Nacionalidad:</label> -->
       <select name="fkNacionalidad" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
         <option value="">Seleccione una nacionalidad</option>
