@@ -98,7 +98,7 @@ include('../includes/header.php');
       </div>
 
       <!-- Botones de acción | Se queda igual -->
-      <?php if($rol != 'A' && $estatusLog == 'A'): ?>
+      <?php if($rol != 'L' && $estatusLog == 'A'): ?>
       <div class="flex justify-end gap-3 mt-8">
         <a href="editar_autor.php?pkAutor=<?= $fila['pkAutor'] ?>" 
         class="px-4 py-2.5 rounded-md font-medium transition border border-[#5780B5] text-[#5780B5] bg-blue-200 
