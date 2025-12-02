@@ -80,7 +80,8 @@ $folioCopia = $_GET['folio'] ?? null;
 
           <!-- Usuario solicitante -->
         <div>
-      <label class="block text-sm font-medium text-gray-700">Usuario Solicitante <span class="text-red-500 text-2xl">*</span></label>
+      <label><span class="block text-sm font-medium text-gray-700">Usuario Solicitante</span> <span class="text-xs font-medium text-gray-500">(Solo usuarios no vetados)</span> <span class="text-red-500 text-2xl">*</span></label>
+      
       <select name="numCredS" required
         class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] bg-white">
 
