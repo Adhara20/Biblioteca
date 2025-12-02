@@ -20,7 +20,7 @@
 
     <!-- NOMBRE NACIONALIDAD -->
     <div>
-        <label class="block text-sm font-medium text-gray-700">Nombre de la Nacionalidad</label>
+        <label class="block text-sm font-medium text-gray-700">Nombre de la Nacionalidad<span class="text-red-500 text-2xl">*</span></label>
         <input type="text" name="nombreNaci" placeholder="Ej. Mexicana, Argentina, Española…" required
           class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase">
     </div>
