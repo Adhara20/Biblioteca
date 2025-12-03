@@ -63,22 +63,26 @@ class URL {
     function filtrarPorLibro($pkLibro, $buscar = '', $estatus = '') {
     $pkLibro = intval($pkLibro);
 
-    $consulta = "SELECT * FROM url WHERE fkLibro = $pkLibro";
+    $consulta = "
+        SELECT u.pkURL, u.url, u.estatus, l.titulo FROM url u 
+        INNER JOIN libro l ON u.fkLibro = l.pkLibro
+        WHERE u.fkLibro = '{$pkLibro}'
+    ";
 
     if (!empty($buscar)) {
         $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-        $consulta .= " AND (titulo LIKE '%$buscar%')";
+        $consulta .= " AND l.titulo LIKE '%$buscar%'";
     }
 
     if (!empty($estatus)) {
         $estatus = mysqli_real_escape_string($this->conexion, $estatus);
-        $consulta .= " AND estatus = '$estatus'";
+        $consulta .= " AND u.estatus = '$estatus'";
     }
-
 
     $resultado = mysqli_query($this->conexion, $consulta);
     return mysqli_fetch_all($resultado, MYSQLI_ASSOC);
-    }
+}
+
 
     // Filtrar general
     function filtrar($buscar = '', $estatus = '', $libro = '') {
@@ -89,7 +93,7 @@ class URL {
 
         if (!empty($buscar)) {
             $buscar = mysqli_real_escape_string($this->conexion, $buscar);
-            $consulta .= " AND (sl.titulo LIKE '%$buscar%')";
+            $consulta .= " AND (l.titulo LIKE '%$buscar%')";
         }
 
         if (!empty($estatus)) {

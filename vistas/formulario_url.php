@@ -17,7 +17,7 @@ $isbnLibro = $_GET['isbn'] ?? NULL;
 
 
 // Obtener todos los libros activos
-$libros = $claseLibro->filtrar('', '', 'A');
+$libros = $claseLibro->verLibro();
 
 ob_end_clean();
 ?>

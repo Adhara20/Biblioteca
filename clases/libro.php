@@ -31,9 +31,8 @@ class Libro {
         return $resultado;
     }
     
-    function verLibro($pkLibro) {
-        $consulta = "SELECT * FROM libro 
-                     WHERE pkLibro = '$pkLibro'";
+    function verLibro() {
+        $consulta = "SELECT pkLibro, titulo FROM libro WHERE estatus ='A'";
         $resultado = $this->conexion->query($consulta);
         return $resultado;
     }
