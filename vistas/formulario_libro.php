@@ -161,10 +161,15 @@ $listaIdiomas = $idioma->mostrar();
     </div>
 
     <!-- BOTONES -->
-    <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
+    <!-- <div class="md:col-span-2 flex flex-col gap-3 md:flex-row md:justify-end mt-4">
       <button class="w-full md:w-32 bg-[#B55780] text-white py-2 rounded-md font-semibold hover:bg-[#c46b93] transition">
         Cancelar
-      </button>
+      </button> -->
+        <div class="flex flex-col gap-3 md:flex-row md:justify-end mt-4">
+      <a href="lista_libros.php"
+        class="w-full md:w-32 bg-[#B55780] text-white text-center py-2 rounded-md font-semibold hover:bg-[#c46b93] transition">
+        Cancelar
+        </a>
       <button type="submit"
         class="w-full md:w-32 bg-[#4F0087] text-white py-2 rounded-md font-semibold hover:bg-[#6A00B8] transition">
         Guardar
