@@ -10,9 +10,7 @@ $subcategoriasTotal  = $dash->totalSubcategorias();
 $usuariosTotal       = $dash->totalUsuarios();
 $autoresTotal        = $dash->totalAutores();
 $editorialesTotal    = $dash->totalEditoriales();
-
-// Si vas a añadir en el futuro:
-$nacionalidadesTotal = $nacionalidadesTotal ?? 0;
+$nacionalidadesTotal = $dash->totalNacionalidades();
 ?>
 <div class="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 px-4 mb-10">
 
