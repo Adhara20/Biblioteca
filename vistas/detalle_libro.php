@@ -1,5 +1,8 @@
 <!-- incluir Header y Menu-->
 <?php 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include('../includes/header.php');
 ?>
 <body class="bg-gray-100 text-gray-900">

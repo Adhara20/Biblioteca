@@ -19,7 +19,7 @@ class Usuario {
 
 
     // Atualizar el estatusPrestamista
-    public function actualizarEstatusPrestamista($pkUsuario){
+    function actualizarEstatusPrestamista($pkUsuario){
         $multasPendientes = $this->contarMultasPendiente($pkUsuario);
 
         if ($multasPendientes >= 3) {
@@ -67,6 +67,7 @@ class Usuario {
     }
     // ver
     function detalles($pkUsuario) {
+        $this->actualizarEstatusPrestamista($pkUsuario);
         $consulta = "SELECT *, CONCAT(nombres, ' ', apaterno, ' ', COALESCE(amaterno, ' ')) AS nombreCompleto FROM usuario 
                      WHERE pkUsuario = '{$pkUsuario}'";
         $resultado = $this->conexion->query($consulta);

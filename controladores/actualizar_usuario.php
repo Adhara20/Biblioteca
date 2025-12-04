@@ -6,7 +6,6 @@ requireRole(['A', 'B', 'L']);
 ?>
 
 <?php
-session_start();
 
 include('../clases/usuario.php');
 $usuario = new Usuario();
@@ -70,7 +69,7 @@ if ($rolLog == 'A' && $pkUsuarioLog != $pkUsuario) {
     $curp = strtoupper($_POST['curp']);
     $fechaNac = $_POST['fechaNac'];
     $sexo = $_POST['sexo'];
-    $rolNuevo = $_POST['rol']; // admin sí puede cambiar rol
+    $rolNuevo    = $_POST['rol'] ?? null; // admin sí puede cambiar rol
 
     $passParaGuardar = $cambiarPass ? $passNueva : ($_POST['pass_actual_bd'] ?? null);
 

@@ -1,7 +1,13 @@
-<?php include('includes/header.php'); ?>
+<?php 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include('includes/header.php'); ?>
 <body>
 
-<?php include('includes/menu.php');
+<?php 
+include('includes/menu.php');
+include('includes/notificacion.php');
 ?>
 
 <main class="flex-grow mt-24 flex flex-col items-center px-4">

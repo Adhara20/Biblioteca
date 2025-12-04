@@ -89,6 +89,8 @@ $imgRuta = !empty($fila['foto'])
           <input type="text" name="curp" placeholder="CURP" 
             class="w-full mt-1 p-2 border rounded-md focus:outline-[#4F0087] uppercase" value="<?= $fila['curp'] ?>">  <!-- uppercase (es una clase de Talwing para que lo que escribas se VEA MAYÚSCULAS. Ojo, es solo para que al escribir se vea en MAYÚSCULAS, para que se guarde como Mayuscula se hace en insertar) -->
         </div>
+      <?php else: ?>
+        <input type="hidden" name="curp" value="<?= $fila['curp'] ?>">
       <?php endif; ?>
 
         <div>
@@ -183,8 +185,8 @@ $imgRuta = !empty($fila['foto'])
 </div>
 <!-- FIN PASS -->
 
-
-      <?php if($rol === 'A' && $pkUsuario != $pkUsuarioLog && $estatusLog=='A'): ?>
+          <!-- Si quien lo edita es Admin y no es su propio perfil, ademas del perfil en edicion no es Lector -->
+      <?php if($rol === 'A' && $pkUsuario != $pkUsuarioLog && $estatusLog=='A' && $fila['rol']!='L'): ?>
         <div>
             <label class="block text-sm font-medium text-gray-700">Rol</label>
             <select name="rol" 
@@ -193,6 +195,9 @@ $imgRuta = !empty($fila['foto'])
                 <option value="A" <?= $fila['rol'] === 'A' ? 'selected' : '' ?>>Administrador</option>
             </select>
         </div>
+        <!-- Si es usuario lector, independiente de quien lo edite -->
+    <?php else: ?>
+      <input type="hidden" name="rol" value="<?= $fila['rol'] ?>">
     <?php endif; ?>
 
         <!-- Imagen -->
