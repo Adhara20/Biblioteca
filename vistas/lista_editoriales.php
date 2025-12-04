@@ -15,20 +15,15 @@ requireRole(['A', 'B']);
 </head>
 
 <?php
-include('../clases/editorial.php');
-
-$edi = new Editorial();
-
 // Recuperar filtros
 $buscar = $_GET['buscar'] ?? '';
+$nacionalidad = $_GET['nacionalidad'] ?? '';
 $estatus = $_GET['estatus'] ?? '';
+require_once('../controladores/filtrar_editoriales.php');
+include('../clases/nacionalidad.php');
+$claseNaci = new Nacionalidad();
+$naci = $claseNaci->listaNacionalidades();
 
-// Filtrar si hay filtros
-if (!empty($buscar) || !empty($estatus)) {
-    $resultado = $edi->filtrar($buscar, $estatus);
-} else {
-    $resultado = $edi->listaEditoriales();
-}
 
 include('../includes/header.php');
 ?>
@@ -68,6 +63,15 @@ include('../includes/header.php');
 <!-- Filtros PC -->
 <form method="GET" action="lista_editoriales.php" class="filtros hidden lg:flex flex-wrap items-center gap-4">
   <input type="text" name="buscar" class="input-busqueda uppercase" placeholder="Buscar editorial..." value="<?= htmlspecialchars($buscar) ?>">
+  <select name="nacionalidad" class="select-filtro">
+      <option value="">Nacionalidad</option>
+      <?php foreach ($naci as $filaNa): ?>
+        <option value="<?= htmlspecialchars($filaNa['pkNacionalidad']) ?>"
+          <?= (isset($_GET['pkNacionalidad']) && $_GET['nacionalidad'] == $filaNa['pkNacionalidad']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($filaNa['nombreNaci']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
   <select name="estatus" class="select-filtro">
       <option value="">Estatus</option>
       <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Activo</option>
@@ -83,6 +87,15 @@ include('../includes/header.php');
     <h2>Filtros</h2>
     <form method="GET" action="lista_editoriales.php" class="form-filtros-movil">
       <input type="text" name="buscar" class="input-busqueda" placeholder="Buscar editorial..." value="<?= htmlspecialchars($buscar) ?>">
+      <select name="nacionalidad" class="select-filtro">
+      <option value="">Nacionalidad</option>
+      <?php foreach ($naci as $filaNa): ?>
+        <option value="<?= htmlspecialchars($filaNa['pkNacionalidad']) ?>"
+          <?= (isset($_GET['pkNacionalidad']) && $_GET['nacionalidad'] == $filaNa['pkNacionalidad']) ? 'selected' : '' ?>>
+          <?= htmlspecialchars($filaNa['nombreNaci']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
       <select name="estatus" class="select-filtro">
         <option value="">Estatus</option>
         <option value="A" <?= ($estatus === 'A') ? 'selected' : '' ?>>Activo</option>

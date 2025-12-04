@@ -28,7 +28,7 @@ $isbnLibro = $_GET['isbn'] ?? NULL;
 <div class="px-10 mb-6">
     <div class="flex items-center justify-between">
         <h1 class="titulos">Registro de URLs</h1>
-      <?php if($rol == 'A' && $estatusLog == 'A'): ?>
+      <?php if($rol != 'L' && $estatusLog == 'A'): ?>
         <div class="flex items-center">
           <?php if($isbnLibro): ?>
             <a href="formulario_url.php?pkLibro=<?= urlencode($fklibro) ?>&isbn=<?= urlencode($isbnLibro) ?>"
@@ -121,7 +121,7 @@ $isbnLibro = $_GET['isbn'] ?? NULL;
   <div class="relative bg-white rounded-xl shadow p-4 flex flex-col gap-2 hover:shadow-md transition group w-full max-w-[520px] border-[3px] overflow-visible">
 
     <!-- botones -->
-    <?php if ($rol == 'A' && $estatusLog == 'A'): ?>
+    <?php if ($rol != 'L' && $estatusLog == 'A'): ?>
       <button class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded hover:bg-gray-200 z-20 btn-kebab"
               onclick="event.stopPropagation(); toggleKebab(this)">
           <img src="/Biblioteca/imagenes/btn Iconos/btnAcciones.png" class="size-6">
@@ -130,14 +130,14 @@ $isbnLibro = $_GET['isbn'] ?? NULL;
       <div class="menu-kebab hidden absolute right-4 top-14 bg-white shadow-lg rounded-lg border w-40 z-30">
 
         <?php if (!isset($fila['estatus']) || $fila['estatus'] === 'A'): ?>
-        <a href="../controladores/desactivar_url.php?pkURL=<?= $fila['pkURL'] ?>"
+        <a href="../controladores/desactivar_url.php?pkUrl=<?= $fila['pkUrl'] ?>"
            class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-red-400"
            onclick="event.stopPropagation();">
             <img src="/Biblioteca/imagenes/btn Iconos/btbBaja.png" class="size-4">
             <span class="text-sm leading-6">Desactivar</span>
         </a>
         <?php else: ?>
-        <a href="../controladores/activar_url.php?pkURL=<?= $fila['pkURL'] ?>"
+        <a href="../controladores/activar_url.php?pkUrl=<?= $fila['pkUrl'] ?>"
            class="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-100 hover:text-green-400"
            onclick="event.stopPropagation();">
             <img src="/Biblioteca/imagenes/btn Iconos/btnAlta.png" class="size-4">

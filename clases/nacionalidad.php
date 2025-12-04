@@ -55,7 +55,7 @@ class Nacionalidad {
             $consulta .= " AND nombreNaci LIKE '%$buscar%'";
         }
 
-        if ($estatus === 'A' || $estatus === 'I') {
+        if (!empty($estatus)) {
             $consulta .= " AND estatus = '$estatus'";
         } else {
             $consulta .= " AND estatus = 'A'";
@@ -90,12 +90,9 @@ class Nacionalidad {
         return ($resultado->num_rows > 0);
     }
 
-    // Lista todas las nacionalidades (opcional por estatus)
-    function listaNacionalidades($estatus = '') {
-        $consulta = "SELECT * FROM nacionalidad WHERE 1=1";
-        if ($estatus === 'A' || $estatus === 'I') {
-            $consulta .= " AND estatus = '$estatus'";
-        }
+    // Lista todas las nacionalidades
+    function listaNacionalidades() {
+        $consulta = "SELECT * FROM nacionalidad WHERE estatus='A'";
         $consulta .= " ORDER BY nombreNaci ASC";
         return $this->conexion->query($consulta);
     }

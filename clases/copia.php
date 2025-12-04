@@ -109,7 +109,7 @@ class Copia
     }
 
     $consulta = "UPDATE copiaF 
-                 SET fkLibro = '{$fkLibro}', observaciones = CONCAT(IFNULL(observaciones, ''), '. ', '{$observaciones}')
+                 SET fkLibro = '{$fkLibro}', observaciones = '{$observaciones}'
                  WHERE pkCopiaF = '{$pkCopiaF}'";
 
     return $this->conexion->query($consulta);

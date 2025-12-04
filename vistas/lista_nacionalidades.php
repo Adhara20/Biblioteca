@@ -20,18 +20,10 @@ include('../clases/nacionalidad.php');
 // --- CONTROLADOR DE FILTRADO (opcional) ---
 include('../controladores/filtrar_nacionalidades.php'); // Si quieres filtros dinámicos
 
-$nac = new Nacionalidad();
 
 // Recuperar filtros enviados por GET
 $buscar = $_GET['buscar'] ?? '';
 $estatusFiltro = $_GET['estatus'] ?? '';
-
-// Obtener resultados según filtros
-if (!empty($buscar) || !empty($estatusFiltro)) {
-    $resultado = $nac->filtrar($buscar, $estatusFiltro);
-} else {
-    $resultado = $nac->listaNacionalidades();  // Solo activos por default
-}
 
 include('../includes/header.php');
 ?>

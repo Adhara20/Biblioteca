@@ -64,7 +64,7 @@ class URL {
     $pkLibro = intval($pkLibro);
 
     $consulta = "
-        SELECT u.pkURL, u.url, u.estatus, l.titulo FROM url u 
+        SELECT u.pkUrl, u.url, u.estatus, l.titulo FROM url u 
         INNER JOIN libro l ON u.fkLibro = l.pkLibro
         WHERE u.fkLibro = '{$pkLibro}'
     ";

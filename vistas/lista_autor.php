@@ -48,7 +48,7 @@ include('../includes/header.php');
                 <? endif; ?>
             </div>
         </div>
-        <hr class="linea-separadora-listas">
+        <hr class="linea-separadora-2">
     </div>
 
       <!-- Botón visible solo en móvil -->

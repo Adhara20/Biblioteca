@@ -1,8 +1,4 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 $pkUsuarioLog = $_SESSION['pkUsuarioLog'] ?? null;
 $rol = $_SESSION['rol'] ?? null;
 $nombreLog = $_SESSION['nombreLog'] ?? null;
@@ -124,23 +120,23 @@ const btnClas = document.getElementById('btn-submenu-clas');
 const offClas = document.getElementById('offcanvas-clas');
 const closeClas = document.getElementById('close-clas');
 
-btnClas?.addEventListener('click', () => { offClas.style.right = '0'; });
-closeClas?.addEventListener('click', () => { offClas.style.right = '-100%'; });
+btnClas?.addEventListener('click', () => {
+  offClas.style.right = '0';
+});
+closeClas?.addEventListener('click', () => {
+  offClas.style.right = '-100%';
+});
 
 /* ─────────────── GESTIÓN BIBLIOGRÁFICA ─────────────── */
 const btnGes = document.getElementById('btn-submenu-ges');
 const offGes = document.getElementById('offcanvas-ges');
 const closeGes = document.getElementById('close-ges');
 
-btnGes?.addEventListener('click', () => { offGes.style.right = '0'; });
-closeGes?.addEventListener('click', () => { offGes.style.right = '-100%'; });
-
-// Cerrar si se hace clic fuera
-document.addEventListener('click', (e) => {
-  if (window.innerWidth < 1024) {
-    if (!offClas.contains(e.target) && !btnClas.contains(e.target)) offClas.style.right = '-100%';
-    if (!offGes.contains(e.target) && !btnGes.contains(e.target)) offGes.style.right = '-100%';
-  }
+btnGes?.addEventListener('click', () => {
+  offGes.style.right = '0';
+});
+closeGes?.addEventListener('click', () => {
+  offGes.style.right = '-100%';
 });
 </script>
 

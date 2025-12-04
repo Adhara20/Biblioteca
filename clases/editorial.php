@@ -83,7 +83,7 @@ class Editorial
     }
 
   
-    function filtrar($buscar = '', $estatus = '')
+    function filtrar($buscar = '',$nacionalidad = '', $estatus = '')
     {
         $consulta = "SELECT 
                         e.pkEditorial,
@@ -98,6 +98,12 @@ class Editorial
         if (!empty($buscar)) {
             $buscar = mysqli_real_escape_string($this->conexion, $buscar);
             $consulta .= " AND e.nombreEditorial LIKE '%$buscar%'";
+        }
+
+        // filtro nacionalidad
+        if (!empty($nacionalidad)) {
+            $buscar = mysqli_real_escape_string($this->conexion, $buscar);
+            $consulta .= " AND e.fkNacionalidad LIKE '$nacionalidad'";
         }
 
         // filtro estatus
