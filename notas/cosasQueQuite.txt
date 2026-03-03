@@ -1,6 +1,0 @@
-Mensaje de error en formulario_usuario:
-<?php if (isset($_GET['error'])) { ?>
-        <div class="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-center font-medium">
-          <?= htmlspecialchars($_GET['error']) ?>
-        </div>
-      <?php } ?>
